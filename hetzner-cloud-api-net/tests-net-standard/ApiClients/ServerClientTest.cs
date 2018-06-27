@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace UnitTestProject1
+namespace tests_net_standard.ApiClients
 {
     [TestClass]
-    public class UnitTest1
+    public class ServerClientTest
     {
         [TestMethod]
         public async void TestMethod1()

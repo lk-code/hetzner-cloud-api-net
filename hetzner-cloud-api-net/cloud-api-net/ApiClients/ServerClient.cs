@@ -1,4 +1,5 @@
 ﻿using CloudApiNet.Core;
+using CloudApiNet.Objects.NetworkObjects;
 using CloudApiNet.Objects.ServerObjects;
 using CloudApiNet.Objects.ServerObjects.Objects;
 using System;
@@ -27,8 +28,23 @@ namespace CloudApiNet.ApiClients
                 {
                     Server server = new Server();
 
+                    server.Id = responseServer.Id;
                     server.Name = responseServer.Name;
                     server.Status = responseServer.Status;
+                    server.Created = responseServer.Created;
+                    server.Network = new Network()
+                    {
+                        Ipv4 = new AddressIpv4()
+                        {
+                            Ip = responseServer.PublicNet.Ipv4.Ip,
+                            Blocked = responseServer.PublicNet.Ipv4.Blocked
+                        },
+                        Ipv6 = new AddressIpv6()
+                        {
+                            Ip = responseServer.PublicNet.Ipv6.Ip,
+                            Blocked = responseServer.PublicNet.Ipv6.Blocked
+                        }
+                    };
 
                     serverList.Add(server);
                 }
