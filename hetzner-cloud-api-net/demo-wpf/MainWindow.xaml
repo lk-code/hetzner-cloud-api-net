@@ -8,16 +8,30 @@
     Title="MainWindow"
     Width="800"
     Height="450"
+    ResizeMode="NoResize"
+    WindowStyle="ToolWindow"
     mc:Ignorable="d">
     <Grid>
+
         <Button
-            Width="215"
-            Height="89"
-            Margin="329,174,0,0"
+            Width="150"
+            Height="40"
+            Margin="10,10,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Click="Button_Click"
-            Content="Button" />
+            Click="GetAllButton_Click"
+            Content="GetServer" />
+
+        <Button
+            Width="150"
+            Height="40"
+            Margin="10,60,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="ShutdownButton_Click"
+            Content="Shutdown" />
+
+        <TextBox x:Name="Log" Margin="10,266,10,10" VerticalScrollBarVisibility="Visible" />
 
     </Grid>
 </Window>

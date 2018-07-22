@@ -35,6 +35,8 @@ namespace CloudApiNet.Api
         /// </summary>
         public Network Network { get; set; }
 
+        #region # static methods #
+
         public static async Task<List<Server>> GetAsync()
         {
             List<Server> serverList = new List<Server>();
@@ -69,5 +71,17 @@ namespace CloudApiNet.Api
 
             return serverList;
         }
+
+        #endregion
+
+        #region # class methods #
+
+        public async void Shutdown()
+        {
+            string responseContent = await ApiCore.SendRequest(string.Format("/servers/{0}/actions/shutdown", this.Id));
+            GetAllResponse response = GetAllResponse.FromJson(responseContent);
+        }
+
+        #endregion
     }
 }
