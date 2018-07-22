@@ -1,90 +1,70 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CloudApiNet.Exceptions;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CloudApiNet.Core
 {
-    public class ApiCore
+    public static class ApiCore
     {
         /// <summary>
         /// 
         /// </summary>
-        private string _apiToken { get; set; } = string.Empty;
+        private static string _apiToken { get; set; } = string.Empty;
         /// <summary>
         /// 
         /// </summary>
-        public string ApiToken
+        public static string ApiToken
         {
             get
             {
-                return this._apiToken;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private string _clientUserAgent { get; set; } = "CloudApi .NET Library";
-        /// <summary>
-        /// 
-        /// </summary>
-        public string ClientUserAgent
-        {
-            get
-            {
-                return this._clientUserAgent;
+                return ApiCore._apiToken;
             }
             set
             {
-                this._clientUserAgent = value;
+                ApiCore._apiToken = value;
             }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        private HttpClient _client { get; set; } = null;
+        private static string _clientUserAgent { get; set; } = "CloudApi .NET Library";
         /// <summary>
         /// 
         /// </summary>
-        public HttpClient Client
+        public static string ClientUserAgent
         {
             get
             {
-                return this._client;
+                return ApiCore._clientUserAgent;
             }
             set
             {
-                this._client = value;
+                ApiCore._clientUserAgent = value;
             }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public readonly string ApiServer = "https://api.hetzner.cloud/v1";
+        public static readonly string ApiServer = "https://api.hetzner.cloud/v1";
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="apiToken"></param>
-        public ApiCore(string apiToken)
+        public static async Task<string> SendRequest(string action)
         {
-            this._apiToken = apiToken;
-            this._client = new HttpClient();
-        }
+            if(string.IsNullOrEmpty (ApiCore.ApiToken) ||
+                string.IsNullOrWhiteSpace(ApiCore.ApiToken))
+            {
+                throw new InvalidAccessTokenException("the access token is null. set it like this: CloudApiNet.Core.ApiCore.ApiToken = \"YOUR_ACCESS_TOKEN_HERE\";");
+            }
 
-        public async Task<string> SendRequest(string action)
-        {
-            this.Client.DefaultRequestHeaders.Accept.Clear();
-            this.Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
-            this.Client.DefaultRequestHeaders.Add("User-Agent", this.ClientUserAgent);
-            this.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this.ApiToken);
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+            client.DefaultRequestHeaders.Add("User-Agent", ApiCore.ClientUserAgent);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiCore.ApiToken);
 
-            string response = await this.Client.GetStringAsync(this.ApiServer + action);
+            string response = await client.GetStringAsync(ApiCore.ApiServer + action);
 
             return response;
         }
