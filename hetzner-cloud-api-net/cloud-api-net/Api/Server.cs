@@ -1,9 +1,7 @@
 ﻿using CloudApiNet.Core;
-using CloudApiNet.Objects.NetworkObjects;
-using CloudApiNet.Objects.ServerObjects.Objects;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CloudApiNet.Api
@@ -42,27 +40,27 @@ namespace CloudApiNet.Api
             List<Server> serverList = new List<Server>();
             
             string responseContent = await ApiCore.SendRequest("/servers");
-            GetAllResponse response = GetAllResponse.FromJson(responseContent);
+            Objects.Server.Get.Response response = JsonConvert.DeserializeObject<Objects.Server.Get.Response>(responseContent);
 
-            foreach (ResponseServer responseServer in response.Servers)
+            foreach (Objects.Server.Get.Server responseServer in response.servers)
             {
                 Server server = new Server();
 
-                server.Id = responseServer.Id;
-                server.Name = responseServer.Name;
-                server.Status = responseServer.Status;
-                server.Created = responseServer.Created;
+                server.Id = responseServer.id;
+                server.Name = responseServer.name;
+                server.Status = responseServer.status;
+                server.Created = responseServer.created;
                 server.Network = new Network()
                 {
                     Ipv4 = new AddressIpv4()
                     {
-                        Ip = responseServer.PublicNet.Ipv4.Ip,
-                        Blocked = responseServer.PublicNet.Ipv4.Blocked
+                        Ip = responseServer.public_net.ipv4.ip,
+                        Blocked = responseServer.public_net.ipv4.blocked
                     },
                     Ipv6 = new AddressIpv6()
                     {
-                        Ip = responseServer.PublicNet.Ipv6.Ip,
-                        Blocked = responseServer.PublicNet.Ipv6.Blocked
+                        Ip = responseServer.public_net.ipv6.ip,
+                        Blocked = responseServer.public_net.ipv6.blocked
                     }
                 };
 
@@ -76,10 +74,22 @@ namespace CloudApiNet.Api
 
         #region # class methods #
 
+        /// <summary>
+        /// 
+        /// </summary>
         public async void Shutdown()
         {
-            string responseContent = await ApiCore.SendRequest(string.Format("/servers/{0}/actions/shutdown", this.Id));
-            GetAllResponse response = GetAllResponse.FromJson(responseContent);
+            string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/shutdown", this.Id));
+            Objects.Server.PostShutdown.Response response = JsonConvert.DeserializeObject<Objects.Server.PostShutdown.Response>(responseContent);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public async void Reset()
+        {
+            string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/reset", this.Id));
+            Objects.Server.PostReset.Response response = JsonConvert.DeserializeObject<Objects.Server.PostReset.Response>(responseContent);
         }
 
         #endregion

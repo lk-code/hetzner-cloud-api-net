@@ -1,6 +1,7 @@
 ﻿using CloudApiNet.Exceptions;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace CloudApiNet.Core
@@ -52,7 +53,7 @@ namespace CloudApiNet.Core
 
         public static async Task<string> SendRequest(string action)
         {
-            if(string.IsNullOrEmpty (ApiCore.ApiToken) ||
+            if (string.IsNullOrEmpty(ApiCore.ApiToken) ||
                 string.IsNullOrWhiteSpace(ApiCore.ApiToken))
             {
                 throw new InvalidAccessTokenException("the access token is null. set it like this: CloudApiNet.Core.ApiCore.ApiToken = \"YOUR_ACCESS_TOKEN_HERE\";");
@@ -67,6 +68,31 @@ namespace CloudApiNet.Core
             string response = await client.GetStringAsync(ApiCore.ApiServer + action);
 
             return response;
+        }
+
+        public static async Task<string> SendPostRequest(string action)
+        {
+            if (string.IsNullOrEmpty(ApiCore.ApiToken) ||
+                string.IsNullOrWhiteSpace(ApiCore.ApiToken))
+            {
+                throw new InvalidAccessTokenException("the access token is null. set it like this: CloudApiNet.Core.ApiCore.ApiToken = \"YOUR_ACCESS_TOKEN_HERE\";");
+            }
+
+            StringContent stringContent = new StringContent("{ \"firstName\": \"John\" }", UnicodeEncoding.UTF8, "application/json");
+
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+            client.DefaultRequestHeaders.Add("User-Agent", ApiCore.ClientUserAgent);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiCore.ApiToken);
+            
+            HttpResponseMessage response = await client.PostAsync(ApiCore.ApiServer + action, stringContent);
+
+            response.EnsureSuccessStatusCode();
+
+            string content = await response.Content.ReadAsStringAsync();
+
+            return content;
         }
     }
 }

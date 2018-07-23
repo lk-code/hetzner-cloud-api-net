@@ -16,6 +16,11 @@ namespace demo_wpf
             InitializeComponent();
         }
 
+        private void AddLogMessage(string message)
+        {
+            this.Log.Text += message + Environment.NewLine;
+        }
+
         private async void GetAllButton_Click(object sender, RoutedEventArgs e)
         {
             this.AddLogMessage("load servers");
@@ -33,11 +38,17 @@ namespace demo_wpf
             this.AddLogMessage(string.Format("shutdown server '{0}'", this.server.Name));
 
             this.server.Shutdown();
+
+            this.AddLogMessage(string.Format("success: shutdown server '{0}'", this.server.Name));
         }
 
-        private void AddLogMessage(string message)
+        private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Log.Text += message + Environment.NewLine;
+            this.AddLogMessage(string.Format("reset server '{0}'", this.server.Name));
+
+            this.server.Reset();
+
+            this.AddLogMessage(string.Format("success: reset server '{0}'", this.server.Name));
         }
     }
 }
