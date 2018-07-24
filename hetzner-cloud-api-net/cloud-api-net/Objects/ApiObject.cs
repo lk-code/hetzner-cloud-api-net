@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CloudApiNet.Objects
+namespace HetznerCloudNet.Objects
 {
     public class ApiObject
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CloudApiNet.Objects.Server.Get
+namespace HetznerCloudNet.Objects.Server.Get
 {
     public class Pagination
     {

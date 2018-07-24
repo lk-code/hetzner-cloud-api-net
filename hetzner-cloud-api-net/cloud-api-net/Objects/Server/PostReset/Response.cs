@@ -1,4 +1,4 @@
-﻿namespace CloudApiNet.Objects.Server.PostReset
+﻿namespace HetznerCloudNet.Objects.Server.PostReset
 {
     public class Response
     {

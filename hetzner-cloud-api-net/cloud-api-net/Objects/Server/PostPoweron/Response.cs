@@ -1,4 +1,4 @@
-﻿namespace CloudApiNet.Objects.Server.PostPoweron
+﻿namespace HetznerCloudNet.Objects.Server.PostPoweron
 {
     public class Response
     {

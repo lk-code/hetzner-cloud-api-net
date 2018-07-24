@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CloudApiNet.Exceptions
+namespace HetznerCloudNet.Exceptions
 {
     public class InvalidAccessTokenException : Exception
     {

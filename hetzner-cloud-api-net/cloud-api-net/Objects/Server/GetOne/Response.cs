@@ -1,6 +1,5 @@
-﻿namespace CloudApiNet.Objects.Server.GetOne
+﻿namespace HetznerCloudNet.Objects.Server.GetOne
 {
-
     public class Response
     {
         public Server.Universal.Server server { get; set; }

@@ -85,6 +85,15 @@
             Click="GetOneButton_Click"
             Content="GetOneServer" />
 
+        <Button
+            Width="150"
+            Height="40"
+            Margin="165,145,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="CreateImageButton_Click"
+            Content="CreateImage" />
+
         <Label Content="Server-ID" Height="24" FontSize="10"  VerticalAlignment="Bottom" Margin="10, 0, 0, 165" />
 
         <TextBox

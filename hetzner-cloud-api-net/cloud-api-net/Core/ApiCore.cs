@@ -1,10 +1,12 @@
-﻿using CloudApiNet.Exceptions;
+﻿using HetznerCloudNet.Exceptions;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CloudApiNet.Core
+namespace HetznerCloudNet.Core
 {
     public static class ApiCore
     {
@@ -80,11 +82,18 @@ namespace CloudApiNet.Core
         /// </summary>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static async Task<string> SendPostRequest(string action)
+        public static async Task<string> SendPostRequest(string action, Dictionary<string, string> arguments = null)
         {
             checkApiToken();
 
-            StringContent stringContent = new StringContent("{ \"firstName\": \"John\" }", UnicodeEncoding.UTF8, "application/json");
+            StringContent argumentsContent = null;
+
+            if (arguments != null &&
+                arguments.Count > 0)
+            {
+                string argumentsJsonContent = JsonConvert.SerializeObject(arguments);
+                argumentsContent = new StringContent(argumentsJsonContent, UnicodeEncoding.UTF8, "application/json");
+            }
 
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Clear();
@@ -92,7 +101,7 @@ namespace CloudApiNet.Core
             client.DefaultRequestHeaders.Add("User-Agent", ApiCore.ClientUserAgent);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiCore.ApiToken);
             
-            HttpResponseMessage httpResponse = await client.PostAsync(ApiCore.ApiServer + action, stringContent);
+            HttpResponseMessage httpResponse = await client.PostAsync(ApiCore.ApiServer + action, argumentsContent);
 
             httpResponse.EnsureSuccessStatusCode();
 

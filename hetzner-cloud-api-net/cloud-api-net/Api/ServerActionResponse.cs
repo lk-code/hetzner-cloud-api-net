@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CloudApiNet.Api
+namespace HetznerCloudNet.Api
 {
     public class ServerActionResponse
     {

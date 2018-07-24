@@ -1,4 +1,4 @@
-﻿namespace CloudApiNet.Objects.Server.PostShutdown
+﻿namespace HetznerCloudNet.Objects.Server.PostShutdown
 {
     public class Response
     {

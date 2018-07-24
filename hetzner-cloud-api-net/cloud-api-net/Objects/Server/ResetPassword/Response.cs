@@ -1,4 +1,4 @@
-﻿namespace CloudApiNet.Objects.Server.ResetPassword
+﻿namespace HetznerCloudNet.Objects.Server.ResetPassword
 {
     public class Response
     {

@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demos", "demos", "{2058E11A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "demo-wpf", "demo-wpf\demo-wpf.csproj", "{8E2A155A-CEF6-429F-A6C4-D27A9F21F1FF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cloud-api-net", "cloud-api-net\cloud-api-net.csproj", "{DBA53C80-1A17-43FB-8030-92262AFC33CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hloud-net", "cloud-api-net\hloud-net.csproj", "{DBA53C80-1A17-43FB-8030-92262AFC33CD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{C555CEDC-9051-4856-9C17-555C1EBE017B}"
 EndProject

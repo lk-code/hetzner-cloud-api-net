@@ -1,4 +1,4 @@
-﻿namespace CloudApiNet.Api
+﻿namespace HetznerCloudNet.Api
 {
     public class Network
     {

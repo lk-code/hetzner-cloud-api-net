@@ -1,4 +1,5 @@
 ﻿using CloudApiNet.Api;
+using CloudApiNet.Components;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -156,6 +157,22 @@ namespace demo_wpf
                 this.server = server;
 
                 this.AddLogMessage(string.Format("loaded server with id {0} and name '{1}'", server.Id, server.Name));
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
+
+        private async void CreateImageButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.AddLogMessage(string.Format("createimage server '{0}'", this.server.Name));
+
+                ServerActionResponse actionResponse = await this.server.CreateImage("test-backup", ServerImageType.BACKUP);
+
+                this.AddLogMessage(string.Format("success: createimage server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.ActionId, actionResponse.Command));
             }
             catch (Exception err)
             {

@@ -1,10 +1,11 @@
-﻿using CloudApiNet.Core;
+﻿using HetznerCloudNet.Core;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace CloudApiNet.Api
+namespace HetznerCloudNet.Api
 {
     public class Server
     {
@@ -152,6 +153,34 @@ namespace CloudApiNet.Api
         public async Task<ServerActionResponse> PowerOff()
         {
             string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/poweroff", this.Id));
+            Objects.Server.PostPoweroff.Response response = JsonConvert.DeserializeObject<Objects.Server.PostPoweroff.Response>(responseContent);
+
+            ServerActionResponse actionResponse = GetServerActionFromResponseData(response.action);
+
+            return actionResponse;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ServerActionResponse> CreateImage(string description, string type)
+        {
+            Dictionary<string, string> arguments = new Dictionary<string, string>();
+
+            if (!string.IsNullOrEmpty(description.Trim()) &&
+                !string.IsNullOrWhiteSpace(description.Trim()))
+            {
+                arguments.Add("description", description);
+            }
+
+            if (!string.IsNullOrEmpty(type.Trim()) &&
+                !string.IsNullOrWhiteSpace(type.Trim()))
+            {
+                arguments.Add("type", type);
+            }
+            
+            string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/create_image", this.Id), arguments);
             Objects.Server.PostPoweroff.Response response = JsonConvert.DeserializeObject<Objects.Server.PostPoweroff.Response>(responseContent);
 
             ServerActionResponse actionResponse = GetServerActionFromResponseData(response.action);

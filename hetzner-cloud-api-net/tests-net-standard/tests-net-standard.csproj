@@ -59,9 +59,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\cloud-api-net\cloud-api-net.csproj">
+    <ProjectReference Include="..\cloud-api-net\hloud-net.csproj">
       <Project>{dba53c80-1a17-43fb-8030-92262afc33cd}</Project>
-      <Name>cloud-api-net</Name>
+      <Name>hloud-net</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

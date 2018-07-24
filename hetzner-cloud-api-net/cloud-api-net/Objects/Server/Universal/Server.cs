@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CloudApiNet.Objects.Server.Universal
+namespace HetznerCloudNet.Objects.Server.Universal
 {
     public class Ipv4
     {
