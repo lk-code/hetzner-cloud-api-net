@@ -67,6 +67,15 @@
             Click="ResetPasswordButton_Click"
             Content="Reset Password" />
 
+        <Button
+            Width="150"
+            Height="40"
+            Margin="165,55,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="PowerOffButton_Click"
+            Content="PowerOff" />
+
         <TextBox
             x:Name="Log"
             Margin="10,266,10,10"

@@ -180,6 +180,26 @@ namespace CloudApiNet.Api
             return actionResponse;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ServerActionResponse> PowerOff()
+        {
+            string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/poweroff", this.Id));
+            Objects.Server.PostPoweroff.Response response = JsonConvert.DeserializeObject<Objects.Server.PostPoweroff.Response>(responseContent);
+
+            ServerActionResponse actionResponse = new ServerActionResponse();
+
+            actionResponse.ActionId = response.action.id;
+            actionResponse.Command = response.action.command;
+            actionResponse.Progress = response.action.progress;
+            actionResponse.Started = response.action.started;
+            actionResponse.Status = response.action.status;
+
+            return actionResponse;
+        }
+
         #endregion
     }
 }

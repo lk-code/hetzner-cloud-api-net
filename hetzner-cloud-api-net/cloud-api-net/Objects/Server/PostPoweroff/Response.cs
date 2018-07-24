@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CloudApiNet.Objects.Server.PostPoweron
+namespace CloudApiNet.Objects.Server.PostPoweroff
 {
     public class Resource
     {

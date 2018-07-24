@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CloudApiNet.Api;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 
@@ -51,7 +52,7 @@ namespace demo_wpf
             {
                 this.AddLogMessage(string.Format("shutdown server '{0}'", this.server.Name));
 
-                var actionResponse = await this.server.Shutdown();
+                ServerActionResponse actionResponse = await this.server.Shutdown();
 
                 this.AddLogMessage(string.Format("success: shutdown server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.ActionId, actionResponse.Command));
             }
@@ -67,7 +68,7 @@ namespace demo_wpf
             {
                 this.AddLogMessage(string.Format("reset server '{0}'", this.server.Name));
 
-                var actionResponse = await this.server.Reset();
+                ServerActionResponse actionResponse = await this.server.Reset();
 
                 this.AddLogMessage(string.Format("success: reset server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.ActionId, actionResponse.Command));
             }
@@ -83,7 +84,7 @@ namespace demo_wpf
             {
                 this.AddLogMessage(string.Format("poweron server '{0}'", this.server.Name));
 
-                var actionResponse = await this.server.PowerOn();
+                ServerActionResponse actionResponse = await this.server.PowerOn();
 
                 this.AddLogMessage(string.Format("success: poweron server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.ActionId, actionResponse.Command));
             }
@@ -99,7 +100,7 @@ namespace demo_wpf
             {
                 this.AddLogMessage(string.Format("reboot server '{0}'", this.server.Name));
 
-                var actionResponse = await this.server.Reboot();
+                ServerActionResponse actionResponse = await this.server.Reboot();
 
                 this.AddLogMessage(string.Format("success: reboot server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.ActionId, actionResponse.Command));
             } catch(Exception err)
@@ -114,11 +115,27 @@ namespace demo_wpf
             {
                 this.AddLogMessage(string.Format("reset password for server '{0}'", this.server.Name));
 
-                var actionResponse = await this.server.ResetPassword();
+                ServerActionResponse actionResponse = await this.server.ResetPassword();
 
                 string password = (string)actionResponse.AdditionalActionContent;
 
                 this.AddLogMessage(string.Format("success: reset password for server '{0}' - actionId '{1}' - actionId '{2}' - new password '{3}'", this.server.Name, actionResponse.ActionId, actionResponse.Command, password));
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
+
+        private async void PowerOffButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.AddLogMessage(string.Format("poweroff server '{0}'", this.server.Name));
+
+                ServerActionResponse actionResponse = await this.server.PowerOff();
+
+                this.AddLogMessage(string.Format("success: poweroff server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.ActionId, actionResponse.Command));
             }
             catch (Exception err)
             {

@@ -1,37 +1,99 @@
-## Welcome to GitHub Pages
+## hetzner-cloud-api for .net
 
-You can use the [editor on GitHub](https://github.com/lk-code/hetzner-cloud-api/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+the project is a .NET Standard 2.0 Library and can be used in the most projects like:
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+- Universal Windows Platform (UWP) (minimum target version is the fall creators update - https://blogs.msdn.microsoft.com/dotnet/2017/10/10/announcing-uwp-support-for-net-standard-2-0/)
+- Xamarin and Xamarin.Forms (only .NET Standard)
+- Windows Presentation Foundation (WPF)
+- Console Application
+- ASP.NET
 
-### Markdown
+### requirements
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+- JSON.NET
 
-```markdown
-Syntax highlighted code block
+# examples
 
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+## initialize
+```
+// this code as first in the init-method
+CloudApiNet.Core.ApiCore.ApiToken = "YOUR_ACCESS_TOKEN_HERE";
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## load server
 
-### Jekyll Themes
+### get all server
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/lk-code/hetzner-cloud-api/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+Server.GetAsync() is a static method and returns all server.
 
-### Support or Contact
+```
+List<CloudApiNet.Api.Server> serverList = await CloudApiNet.Api.Server.GetAsync();
+```
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+### get one server
+
+Server.GetAsync(long id) is a static method and returns a specific server.
+
+```
+long id = 5864;
+CloudApiNet.Api.Server server = await CloudApiNet.Api.Server.GetAsync(id);
+```
+
+## the server object
+
+with the returned server object you can execute every server action.
+
+### Server.PowerOn()
+
+```
+long id = 5864;
+CloudApiNet.Api.Server server = await CloudApiNet.Api.Server.GetAsync(id);
+
+ServerActionResponse actionResponse = await server.PowerOn();
+```
+
+### Server.Reboot()
+
+```
+long id = 5864;
+CloudApiNet.Api.Server server = await CloudApiNet.Api.Server.GetAsync(id);
+
+ServerActionResponse actionResponse = await server.Reboot();
+```
+
+### Server.Reset()
+
+```
+long id = 5864;
+CloudApiNet.Api.Server server = await CloudApiNet.Api.Server.GetAsync(id);
+
+ServerActionResponse actionResponse = await server.Reset();
+```
+
+### Server.Shutdown()
+
+```
+long id = 5864;
+CloudApiNet.Api.Server server = await CloudApiNet.Api.Server.GetAsync(id);
+
+ServerActionResponse actionResponse = await server.Shutdown();
+```
+
+### Server.PowerOff()
+
+```
+long id = 5864;
+CloudApiNet.Api.Server server = await CloudApiNet.Api.Server.GetAsync(id);
+
+ServerActionResponse actionResponse = await server.PowerOff();
+```
+
+### Server.ResetPassword()
+
+```
+long id = 5864;
+CloudApiNet.Api.Server server = await CloudApiNet.Api.Server.GetAsync(id);
+
+ServerActionResponse actionResponse = await server.Shutdown();
+string newPassword = (string)actionResponse.AdditionalActionContent;
+```
