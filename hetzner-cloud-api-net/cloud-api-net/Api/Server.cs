@@ -35,6 +35,10 @@ namespace CloudApiNet.Api
 
         #region # static methods #
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public static async Task<List<Server>> GetAsync()
         {
             List<Server> serverList = new List<Server>();
@@ -77,19 +81,81 @@ namespace CloudApiNet.Api
         /// <summary>
         /// 
         /// </summary>
-        public async void Shutdown()
+        /// <returns></returns>
+        public async Task<ServerActionResponse> Shutdown()
         {
             string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/shutdown", this.Id));
             Objects.Server.PostShutdown.Response response = JsonConvert.DeserializeObject<Objects.Server.PostShutdown.Response>(responseContent);
+
+            ServerActionResponse actionResponse = new ServerActionResponse();
+
+            actionResponse.ActionId = response.action.id;
+            actionResponse.Command = response.action.command;
+            actionResponse.Progress = response.action.progress;
+            actionResponse.Started = response.action.started;
+            actionResponse.Status = response.action.status;
+
+            return actionResponse;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public async void Reset()
+        /// <returns></returns>
+        public async Task<ServerActionResponse> Reset()
         {
             string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/reset", this.Id));
             Objects.Server.PostReset.Response response = JsonConvert.DeserializeObject<Objects.Server.PostReset.Response>(responseContent);
+
+            ServerActionResponse actionResponse = new ServerActionResponse();
+
+            actionResponse.ActionId = response.action.id;
+            actionResponse.Command = response.action.command;
+            actionResponse.Progress = response.action.progress;
+            actionResponse.Started = response.action.started;
+            actionResponse.Status = response.action.status;
+
+            return actionResponse;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ServerActionResponse> PowerOn()
+        {
+            string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/poweron", this.Id));
+            Objects.Server.PostPoweron.Response response = JsonConvert.DeserializeObject<Objects.Server.PostPoweron.Response>(responseContent);
+
+            ServerActionResponse actionResponse = new ServerActionResponse();
+
+            actionResponse.ActionId = response.action.id;
+            actionResponse.Command = response.action.command;
+            actionResponse.Progress = response.action.progress;
+            actionResponse.Started = response.action.started;
+            actionResponse.Status = response.action.status;
+
+            return actionResponse;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ServerActionResponse> Reboot()
+        {
+            string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/reboot", this.Id));
+            Objects.Server.PostReboot.Response response = JsonConvert.DeserializeObject<Objects.Server.PostReboot.Response>(responseContent);
+
+            ServerActionResponse actionResponse = new ServerActionResponse();
+
+            actionResponse.ActionId = response.action.id;
+            actionResponse.Command = response.action.command;
+            actionResponse.Progress = response.action.progress;
+            actionResponse.Started = response.action.started;
+            actionResponse.Status = response.action.status;
+
+            return actionResponse;
         }
 
         #endregion

@@ -40,6 +40,24 @@
             Click="ResetButton_Click"
             Content="Reset" />
 
+        <Button
+            Width="150"
+            Height="40"
+            Margin="10,145,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="PowerOnButton_Click"
+            Content="PowerOn" />
+
+        <Button
+            Width="150"
+            Height="40"
+            Margin="10,190,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="RebootButton_Click"
+            Content="Reboot" />
+
         <TextBox
             x:Name="Log"
             Margin="10,266,10,10"
