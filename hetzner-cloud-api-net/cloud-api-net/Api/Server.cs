@@ -42,7 +42,7 @@ namespace CloudApiNet.Api
         public static async Task<List<Server>> GetAsync()
         {
             List<Server> serverList = new List<Server>();
-            
+
             string responseContent = await ApiCore.SendRequest("/servers");
             Objects.Server.Get.Response response = JsonConvert.DeserializeObject<Objects.Server.Get.Response>(responseContent);
 
@@ -72,6 +72,38 @@ namespace CloudApiNet.Api
             }
 
             return serverList;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static async Task<Server> GetAsync(long id)
+        {
+            Server server = new Server();
+
+            string responseContent = await ApiCore.SendRequest(string.Format("/servers/{0}", id.ToString()));
+            Objects.Server.GetOne.Response response = JsonConvert.DeserializeObject<Objects.Server.GetOne.Response>(responseContent);
+            
+            server.Id = response.server.id;
+            server.Name = response.server.name;
+            server.Status = response.server.status;
+            server.Created = response.server.created;
+            server.Network = new Network()
+            {
+                Ipv4 = new AddressIpv4()
+                {
+                    Ip = response.server.public_net.ipv4.ip,
+                    Blocked = response.server.public_net.ipv4.blocked
+                },
+                Ipv6 = new AddressIpv6()
+                {
+                    Ip = response.server.public_net.ipv6.ip,
+                    Blocked = response.server.public_net.ipv6.blocked
+                }
+            };
+
+            return server;
         }
 
         #endregion

@@ -142,5 +142,25 @@ namespace demo_wpf
                 this.AddLogMessage(string.Format("error: {0}", err.Message));
             }
         }
+
+        private async void GetOneButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.AddLogMessage("load server");
+
+                long id = Convert.ToInt64(this.ServerIdTextBox.Text);
+
+                CloudApiNet.Api.Server server = await CloudApiNet.Api.Server.GetAsync(id);
+
+                this.server = server;
+
+                this.AddLogMessage(string.Format("loaded server with id {0} and name '{1}'", server.Id, server.Name));
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
     }
 }

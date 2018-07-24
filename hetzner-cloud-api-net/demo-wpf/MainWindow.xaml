@@ -20,7 +20,7 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Click="GetAllButton_Click"
-            Content="GetServer" />
+            Content="GetAllServer" />
 
         <Button
             Width="150"
@@ -76,9 +76,25 @@
             Click="PowerOffButton_Click"
             Content="PowerOff" />
 
+        <Button
+            Width="150"
+            Height="40"
+            Margin="165,100,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="GetOneButton_Click"
+            Content="GetOneServer" />
+
+        <Label Content="Server-ID" Height="24" FontSize="10"  VerticalAlignment="Bottom" Margin="10, 0, 0, 165" />
+
+        <TextBox
+            x:Name="ServerIdTextBox"
+            Margin="100,10,10,165" Height="24" VerticalAlignment="Bottom" />
+
         <TextBox
             x:Name="Log"
-            Margin="10,266,10,10"
+            IsReadOnly="True"
+            Margin="10,10,10,10" Height="150" VerticalAlignment="Bottom"
             VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" />
 
     </Grid>

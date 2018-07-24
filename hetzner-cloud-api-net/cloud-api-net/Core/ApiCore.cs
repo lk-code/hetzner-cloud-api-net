@@ -51,13 +51,16 @@ namespace CloudApiNet.Core
         /// </summary>
         public static readonly string ApiServer = "https://api.hetzner.cloud/v1";
 
+        #region # public request methods #
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
         public static async Task<string> SendRequest(string action)
         {
-            if (string.IsNullOrEmpty(ApiCore.ApiToken) ||
-                string.IsNullOrWhiteSpace(ApiCore.ApiToken))
-            {
-                throw new InvalidAccessTokenException("the access token is null. set it like this: CloudApiNet.Core.ApiCore.ApiToken = \"YOUR_ACCESS_TOKEN_HERE\";");
-            }
+            checkApiToken();
 
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Clear();
@@ -67,16 +70,19 @@ namespace CloudApiNet.Core
 
             string response = await client.GetStringAsync(ApiCore.ApiServer + action);
 
+            checkResponseContent(response);
+
             return response;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
         public static async Task<string> SendPostRequest(string action)
         {
-            if (string.IsNullOrEmpty(ApiCore.ApiToken) ||
-                string.IsNullOrWhiteSpace(ApiCore.ApiToken))
-            {
-                throw new InvalidAccessTokenException("the access token is null. set it like this: CloudApiNet.Core.ApiCore.ApiToken = \"YOUR_ACCESS_TOKEN_HERE\";");
-            }
+            checkApiToken();
 
             StringContent stringContent = new StringContent("{ \"firstName\": \"John\" }", UnicodeEncoding.UTF8, "application/json");
 
@@ -86,13 +92,45 @@ namespace CloudApiNet.Core
             client.DefaultRequestHeaders.Add("User-Agent", ApiCore.ClientUserAgent);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiCore.ApiToken);
             
-            HttpResponseMessage response = await client.PostAsync(ApiCore.ApiServer + action, stringContent);
+            HttpResponseMessage httpResponse = await client.PostAsync(ApiCore.ApiServer + action, stringContent);
 
-            response.EnsureSuccessStatusCode();
+            httpResponse.EnsureSuccessStatusCode();
 
-            string content = await response.Content.ReadAsStringAsync();
+            string response = await httpResponse.Content.ReadAsStringAsync();
 
-            return content;
+            checkResponseContent(response);
+
+            return response;
         }
+
+        #endregion
+
+        #region # private methods #
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private static void checkApiToken()
+        {
+            if (string.IsNullOrEmpty(ApiCore.ApiToken) ||
+                string.IsNullOrWhiteSpace(ApiCore.ApiToken))
+            {
+                throw new InvalidAccessTokenException("the access token is null. set it like this: CloudApiNet.Core.ApiCore.ApiToken = \"YOUR_ACCESS_TOKEN_HERE\";");
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private static void checkResponseContent(string response)
+        {
+            if (string.IsNullOrEmpty(response) ||
+                string.IsNullOrWhiteSpace(response))
+            {
+                throw new InvalidJsonResponseException("the json response from the api is empty. maybe an error?");
+            }
+        }
+
+        #endregion
     }
 }
