@@ -1,5 +1,6 @@
 ﻿using HetznerCloudNet.Exceptions;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -32,7 +33,7 @@ namespace HetznerCloudNet.Core
         /// <summary>
         /// 
         /// </summary>
-        private static string _clientUserAgent { get; set; } = "CloudApi .NET Library";
+        private static string _clientUserAgent { get; set; } = "HetznerCloudApi .NET Library";
         /// <summary>
         /// 
         /// </summary>
@@ -66,7 +67,7 @@ namespace HetznerCloudNet.Core
 
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Add("User-Agent", ApiCore.ClientUserAgent);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiCore.ApiToken);
 
@@ -92,20 +93,37 @@ namespace HetznerCloudNet.Core
                 arguments.Count > 0)
             {
                 string argumentsJsonContent = JsonConvert.SerializeObject(arguments);
-                argumentsContent = new StringContent(argumentsJsonContent, UnicodeEncoding.UTF8, "application/json");
+                argumentsContent = new StringContent(argumentsJsonContent, Encoding.UTF8, "application/json");
             }
+            
+            HttpClient client = new HttpClient();
+
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Add("User-Agent", ApiCore.ClientUserAgent);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiCore.ApiToken);
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, ApiCore.ApiServer + action);
+            request.Content = argumentsContent;
+
+            HttpResponseMessage httpResponse = await client.SendAsync(request);
+            string response = await httpResponse.Content.ReadAsStringAsync();
+
+
+
+            /*
 
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Add("User-Agent", ApiCore.ClientUserAgent);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiCore.ApiToken);
             
-            HttpResponseMessage httpResponse = await client.PostAsync(ApiCore.ApiServer + action, argumentsContent);
+            HttpResponseMessage httpResponse = await client.send.PostAsync(ApiCore.ApiServer + action, argumentsContent);
 
             httpResponse.EnsureSuccessStatusCode();
 
             string response = await httpResponse.Content.ReadAsStringAsync();
+            /* */
 
             checkResponseContent(response);
 

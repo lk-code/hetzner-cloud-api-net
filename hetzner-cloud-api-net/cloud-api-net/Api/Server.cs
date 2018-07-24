@@ -1,5 +1,6 @@
 ﻿using HetznerCloudNet.Core;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -181,11 +182,23 @@ namespace HetznerCloudNet.Api
             }
             
             string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/create_image", this.Id), arguments);
-            Objects.Server.PostPoweroff.Response response = JsonConvert.DeserializeObject<Objects.Server.PostPoweroff.Response>(responseContent);
 
-            ServerActionResponse actionResponse = GetServerActionFromResponseData(response.action);
+            dynamic responseObject = JObject.Parse(responseContent);
 
-            return actionResponse;
+            if(responseObject.error != null)
+            {
+                // error
+                int i = 0;
+                return new ServerActionResponse();
+            } else
+            {
+                // success
+                Objects.Server.PostPoweroff.Response response = JsonConvert.DeserializeObject<Objects.Server.PostPoweroff.Response>(responseContent);
+
+                ServerActionResponse actionResponse = GetServerActionFromResponseData(response.action);
+
+                return actionResponse;
+            }
         }
 
         #endregion
