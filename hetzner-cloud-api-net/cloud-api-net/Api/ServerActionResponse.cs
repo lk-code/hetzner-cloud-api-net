@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CloudApiNet.Api
 {
@@ -30,5 +28,10 @@ namespace CloudApiNet.Api
         /// 
         /// </summary>
         public DateTime Started { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public object AdditionalActionContent { get; set; }
     }
 }

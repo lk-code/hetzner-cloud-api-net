@@ -107,5 +107,23 @@ namespace demo_wpf
                 this.AddLogMessage(string.Format("error: {0}", err.Message));
             }
         }
+
+        private async void ResetPasswordButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.AddLogMessage(string.Format("reset password for server '{0}'", this.server.Name));
+
+                var actionResponse = await this.server.ResetPassword();
+
+                string password = (string)actionResponse.AdditionalActionContent;
+
+                this.AddLogMessage(string.Format("success: reset password for server '{0}' - actionId '{1}' - actionId '{2}' - new password '{3}'", this.server.Name, actionResponse.ActionId, actionResponse.Command, password));
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
     }
 }

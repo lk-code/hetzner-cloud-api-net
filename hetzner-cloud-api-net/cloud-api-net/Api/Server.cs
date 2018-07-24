@@ -158,6 +158,28 @@ namespace CloudApiNet.Api
             return actionResponse;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ServerActionResponse> ResetPassword()
+        {
+            string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/reset_password", this.Id));
+            Objects.Server.ResetPassword.Response response = JsonConvert.DeserializeObject<Objects.Server.ResetPassword.Response>(responseContent);
+
+            ServerActionResponse actionResponse = new ServerActionResponse();
+
+            actionResponse.ActionId = response.action.id;
+            actionResponse.Command = response.action.command;
+            actionResponse.Progress = response.action.progress;
+            actionResponse.Started = response.action.started;
+            actionResponse.Status = response.action.status;
+
+            actionResponse.AdditionalActionContent = response.root_password;
+
+            return actionResponse;
+        }
+
         #endregion
     }
 }
