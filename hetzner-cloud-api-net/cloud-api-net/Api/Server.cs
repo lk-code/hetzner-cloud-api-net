@@ -46,27 +46,9 @@ namespace CloudApiNet.Api
             string responseContent = await ApiCore.SendRequest("/servers");
             Objects.Server.Get.Response response = JsonConvert.DeserializeObject<Objects.Server.Get.Response>(responseContent);
 
-            foreach (Objects.Server.Get.Server responseServer in response.servers)
+            foreach (Objects.Server.Universal.Server responseServer in response.servers)
             {
-                Server server = new Server();
-
-                server.Id = responseServer.id;
-                server.Name = responseServer.name;
-                server.Status = responseServer.status;
-                server.Created = responseServer.created;
-                server.Network = new Network()
-                {
-                    Ipv4 = new AddressIpv4()
-                    {
-                        Ip = responseServer.public_net.ipv4.ip,
-                        Blocked = responseServer.public_net.ipv4.blocked
-                    },
-                    Ipv6 = new AddressIpv6()
-                    {
-                        Ip = responseServer.public_net.ipv6.ip,
-                        Blocked = responseServer.public_net.ipv6.blocked
-                    }
-                };
+                Server server = GetServerFromResponseData(responseServer);
 
                 serverList.Add(server);
             }
@@ -80,28 +62,10 @@ namespace CloudApiNet.Api
         /// <returns></returns>
         public static async Task<Server> GetAsync(long id)
         {
-            Server server = new Server();
-
             string responseContent = await ApiCore.SendRequest(string.Format("/servers/{0}", id.ToString()));
             Objects.Server.GetOne.Response response = JsonConvert.DeserializeObject<Objects.Server.GetOne.Response>(responseContent);
-            
-            server.Id = response.server.id;
-            server.Name = response.server.name;
-            server.Status = response.server.status;
-            server.Created = response.server.created;
-            server.Network = new Network()
-            {
-                Ipv4 = new AddressIpv4()
-                {
-                    Ip = response.server.public_net.ipv4.ip,
-                    Blocked = response.server.public_net.ipv4.blocked
-                },
-                Ipv6 = new AddressIpv6()
-                {
-                    Ip = response.server.public_net.ipv6.ip,
-                    Blocked = response.server.public_net.ipv6.blocked
-                }
-            };
+
+            Server server = GetServerFromResponseData(response.server);
 
             return server;
         }
@@ -119,13 +83,7 @@ namespace CloudApiNet.Api
             string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/shutdown", this.Id));
             Objects.Server.PostShutdown.Response response = JsonConvert.DeserializeObject<Objects.Server.PostShutdown.Response>(responseContent);
 
-            ServerActionResponse actionResponse = new ServerActionResponse();
-
-            actionResponse.ActionId = response.action.id;
-            actionResponse.Command = response.action.command;
-            actionResponse.Progress = response.action.progress;
-            actionResponse.Started = response.action.started;
-            actionResponse.Status = response.action.status;
+            ServerActionResponse actionResponse = GetServerActionFromResponseData(response.action);
 
             return actionResponse;
         }
@@ -139,13 +97,7 @@ namespace CloudApiNet.Api
             string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/reset", this.Id));
             Objects.Server.PostReset.Response response = JsonConvert.DeserializeObject<Objects.Server.PostReset.Response>(responseContent);
 
-            ServerActionResponse actionResponse = new ServerActionResponse();
-
-            actionResponse.ActionId = response.action.id;
-            actionResponse.Command = response.action.command;
-            actionResponse.Progress = response.action.progress;
-            actionResponse.Started = response.action.started;
-            actionResponse.Status = response.action.status;
+            ServerActionResponse actionResponse = GetServerActionFromResponseData(response.action);
 
             return actionResponse;
         }
@@ -159,13 +111,7 @@ namespace CloudApiNet.Api
             string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/poweron", this.Id));
             Objects.Server.PostPoweron.Response response = JsonConvert.DeserializeObject<Objects.Server.PostPoweron.Response>(responseContent);
 
-            ServerActionResponse actionResponse = new ServerActionResponse();
-
-            actionResponse.ActionId = response.action.id;
-            actionResponse.Command = response.action.command;
-            actionResponse.Progress = response.action.progress;
-            actionResponse.Started = response.action.started;
-            actionResponse.Status = response.action.status;
+            ServerActionResponse actionResponse = GetServerActionFromResponseData(response.action);
 
             return actionResponse;
         }
@@ -179,13 +125,7 @@ namespace CloudApiNet.Api
             string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/reboot", this.Id));
             Objects.Server.PostReboot.Response response = JsonConvert.DeserializeObject<Objects.Server.PostReboot.Response>(responseContent);
 
-            ServerActionResponse actionResponse = new ServerActionResponse();
-
-            actionResponse.ActionId = response.action.id;
-            actionResponse.Command = response.action.command;
-            actionResponse.Progress = response.action.progress;
-            actionResponse.Started = response.action.started;
-            actionResponse.Status = response.action.status;
+            ServerActionResponse actionResponse = GetServerActionFromResponseData(response.action);
 
             return actionResponse;
         }
@@ -199,14 +139,7 @@ namespace CloudApiNet.Api
             string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/reset_password", this.Id));
             Objects.Server.ResetPassword.Response response = JsonConvert.DeserializeObject<Objects.Server.ResetPassword.Response>(responseContent);
 
-            ServerActionResponse actionResponse = new ServerActionResponse();
-
-            actionResponse.ActionId = response.action.id;
-            actionResponse.Command = response.action.command;
-            actionResponse.Progress = response.action.progress;
-            actionResponse.Started = response.action.started;
-            actionResponse.Status = response.action.status;
-
+            ServerActionResponse actionResponse = GetServerActionFromResponseData(response.action);
             actionResponse.AdditionalActionContent = response.root_password;
 
             return actionResponse;
@@ -221,15 +154,60 @@ namespace CloudApiNet.Api
             string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/poweroff", this.Id));
             Objects.Server.PostPoweroff.Response response = JsonConvert.DeserializeObject<Objects.Server.PostPoweroff.Response>(responseContent);
 
-            ServerActionResponse actionResponse = new ServerActionResponse();
-
-            actionResponse.ActionId = response.action.id;
-            actionResponse.Command = response.action.command;
-            actionResponse.Progress = response.action.progress;
-            actionResponse.Started = response.action.started;
-            actionResponse.Status = response.action.status;
+            ServerActionResponse actionResponse = GetServerActionFromResponseData(response.action);
 
             return actionResponse;
+        }
+
+        #endregion
+
+        #region # private methods for processing #
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="responseServer"></param>
+        /// <returns></returns>
+        private static Server GetServerFromResponseData(Objects.Server.Universal.Server responseData)
+        {
+            Server server = new Server();
+
+            server.Id = responseData.id;
+            server.Name = responseData.name;
+            server.Status = responseData.status;
+            server.Created = responseData.created;
+            server.Network = new Network()
+            {
+                Ipv4 = new AddressIpv4()
+                {
+                    Ip = responseData.public_net.ipv4.ip,
+                    Blocked = responseData.public_net.ipv4.blocked
+                },
+                Ipv6 = new AddressIpv6()
+                {
+                    Ip = responseData.public_net.ipv6.ip,
+                    Blocked = responseData.public_net.ipv6.blocked
+                }
+            };
+            return server;
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="responseData"></param>
+        /// <returns></returns>
+        private static ServerActionResponse GetServerActionFromResponseData(Objects.Server.Universal.ServerAction responseData)
+        {
+            ServerActionResponse serverAction = new ServerActionResponse();
+
+            serverAction.ActionId = responseData.id;
+            serverAction.Command = responseData.command;
+            serverAction.Progress = responseData.progress;
+            serverAction.Started = responseData.started;
+            serverAction.Status = responseData.status;
+
+            return serverAction;
         }
 
         #endregion
