@@ -1,5 +1,5 @@
-﻿using CloudApiNet.Api;
-using CloudApiNet.Components;
+﻿using HetznerCloudNet.Api;
+using HetznerCloudNet.Components;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -11,13 +11,13 @@ namespace demo_wpf
     /// </summary>
     public partial class MainWindow : Window
     {
-        CloudApiNet.Api.Server server = null;
+        HetznerCloudNet.Api.Server server = null;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            CloudApiNet.Core.ApiCore.ApiToken = ApiConfig.API_TOKEN;
+            HetznerCloudNet.Core.ApiCore.ApiToken = ApiConfig.API_TOKEN;
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace demo_wpf
             {
                 this.AddLogMessage("load servers");
 
-                List<CloudApiNet.Api.Server> serverList = await CloudApiNet.Api.Server.GetAsync();
+                List<HetznerCloudNet.Api.Server> serverList = await HetznerCloudNet.Api.Server.GetAsync();
 
                 this.server = serverList[0];
 
@@ -152,7 +152,7 @@ namespace demo_wpf
 
                 long id = Convert.ToInt64(this.ServerIdTextBox.Text);
 
-                CloudApiNet.Api.Server server = await CloudApiNet.Api.Server.GetAsync(id);
+                HetznerCloudNet.Api.Server server = await HetznerCloudNet.Api.Server.GetAsync(id);
 
                 this.server = server;
 
