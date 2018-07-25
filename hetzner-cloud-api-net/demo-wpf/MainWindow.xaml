@@ -91,8 +91,17 @@
             Margin="165,145,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Click="CreateImageButton_Click"
-            Content="CreateImage" />
+            Click="CreateImageBackupButton_Click"
+            Content="CreateImageBackup" />
+
+        <Button
+            Width="150"
+            Height="40"
+            Margin="165,190,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="CreateImageSnapshotButton_Click"
+            Content="CreateImageSnapshot" />
 
         <Label Content="Server-ID" Height="24" FontSize="10"  VerticalAlignment="Bottom" Margin="10, 0, 0, 165" />
 

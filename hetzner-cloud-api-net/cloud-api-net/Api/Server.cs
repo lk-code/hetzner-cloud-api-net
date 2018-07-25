@@ -182,20 +182,23 @@ namespace HetznerCloudNet.Api
             }
             
             string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/create_image", this.Id), arguments);
+            JObject responseObject = JObject.Parse(responseContent);
 
-            dynamic responseObject = JObject.Parse(responseContent);
-
-            if(responseObject.error != null)
+            if(responseObject["error"] != null)
             {
                 // error
-                int i = 0;
-                return new ServerActionResponse();
+                Objects.Server.Universal.ErrorResponse error = JsonConvert.DeserializeObject<Objects.Server.Universal.ErrorResponse>(responseContent);
+                ServerActionResponse response = new ServerActionResponse();
+                response.Error = GetErrorFromResponseData(error);
+
+                return response;
             } else
             {
                 // success
-                Objects.Server.PostPoweroff.Response response = JsonConvert.DeserializeObject<Objects.Server.PostPoweroff.Response>(responseContent);
+                Objects.Server.PostCreateImage.Response response = JsonConvert.DeserializeObject<Objects.Server.PostCreateImage.Response>(responseContent);
 
                 ServerActionResponse actionResponse = GetServerActionFromResponseData(response.action);
+                actionResponse.AdditionalActionContent = GetServerImageFromResponseData(response.image);
 
                 return actionResponse;
             }
@@ -233,7 +236,7 @@ namespace HetznerCloudNet.Api
             };
             return server;
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -243,13 +246,45 @@ namespace HetznerCloudNet.Api
         {
             ServerActionResponse serverAction = new ServerActionResponse();
 
-            serverAction.ActionId = responseData.id;
+            serverAction.Id = responseData.id;
             serverAction.Command = responseData.command;
             serverAction.Progress = responseData.progress;
             serverAction.Started = responseData.started;
             serverAction.Status = responseData.status;
 
             return serverAction;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="responseData"></param>
+        /// <returns></returns>
+        private static ServerImage GetServerImageFromResponseData(Objects.Server.PostCreateImage.Image responseData)
+        {
+            ServerImage serverImage = new ServerImage();
+
+            serverImage.Id = responseData.id;
+            serverImage.Type = responseData.type;
+            serverImage.Name = responseData.name;
+            serverImage.Description = responseData.description;
+
+            return serverImage;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="errorResponse"></param>
+        /// <returns></returns>
+        private static Error GetErrorFromResponseData(Objects.Server.Universal.ErrorResponse errorResponse)
+        {
+            Error error = new Error();
+
+            error.Message = errorResponse.error.message;
+            error.Code = errorResponse.error.code;
+
+            return error;
         }
 
         #endregion

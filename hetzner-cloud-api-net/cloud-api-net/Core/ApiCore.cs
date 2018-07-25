@@ -108,23 +108,6 @@ namespace HetznerCloudNet.Core
             HttpResponseMessage httpResponse = await client.SendAsync(request);
             string response = await httpResponse.Content.ReadAsStringAsync();
 
-
-
-            /*
-
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Add("User-Agent", ApiCore.ClientUserAgent);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiCore.ApiToken);
-            
-            HttpResponseMessage httpResponse = await client.send.PostAsync(ApiCore.ApiServer + action, argumentsContent);
-
-            httpResponse.EnsureSuccessStatusCode();
-
-            string response = await httpResponse.Content.ReadAsStringAsync();
-            /* */
-
             checkResponseContent(response);
 
             return response;

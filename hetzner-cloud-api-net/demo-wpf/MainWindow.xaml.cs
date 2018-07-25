@@ -55,7 +55,7 @@ namespace demo_wpf
 
                 ServerActionResponse actionResponse = await this.server.Shutdown();
 
-                this.AddLogMessage(string.Format("success: shutdown server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.ActionId, actionResponse.Command));
+                this.AddLogMessage(string.Format("success: shutdown server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.Id, actionResponse.Command));
             }
             catch (Exception err)
             {
@@ -71,7 +71,7 @@ namespace demo_wpf
 
                 ServerActionResponse actionResponse = await this.server.Reset();
 
-                this.AddLogMessage(string.Format("success: reset server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.ActionId, actionResponse.Command));
+                this.AddLogMessage(string.Format("success: reset server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.Id, actionResponse.Command));
             }
             catch (Exception err)
             {
@@ -87,7 +87,7 @@ namespace demo_wpf
 
                 ServerActionResponse actionResponse = await this.server.PowerOn();
 
-                this.AddLogMessage(string.Format("success: poweron server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.ActionId, actionResponse.Command));
+                this.AddLogMessage(string.Format("success: poweron server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.Id, actionResponse.Command));
             }
             catch (Exception err)
             {
@@ -103,7 +103,7 @@ namespace demo_wpf
 
                 ServerActionResponse actionResponse = await this.server.Reboot();
 
-                this.AddLogMessage(string.Format("success: reboot server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.ActionId, actionResponse.Command));
+                this.AddLogMessage(string.Format("success: reboot server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.Id, actionResponse.Command));
             } catch(Exception err)
             {
                 this.AddLogMessage(string.Format("error: {0}", err.Message));
@@ -120,7 +120,7 @@ namespace demo_wpf
 
                 string password = (string)actionResponse.AdditionalActionContent;
 
-                this.AddLogMessage(string.Format("success: reset password for server '{0}' - actionId '{1}' - actionId '{2}' - new password '{3}'", this.server.Name, actionResponse.ActionId, actionResponse.Command, password));
+                this.AddLogMessage(string.Format("success: reset password for server '{0}' - actionId '{1}' - actionId '{2}' - new password '{3}'", this.server.Name, actionResponse.Id, actionResponse.Command, password));
             }
             catch (Exception err)
             {
@@ -136,7 +136,7 @@ namespace demo_wpf
 
                 ServerActionResponse actionResponse = await this.server.PowerOff();
 
-                this.AddLogMessage(string.Format("success: poweroff server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.ActionId, actionResponse.Command));
+                this.AddLogMessage(string.Format("success: poweroff server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.Id, actionResponse.Command));
             }
             catch (Exception err)
             {
@@ -164,15 +164,44 @@ namespace demo_wpf
             }
         }
 
-        private async void CreateImageButton_Click(object sender, RoutedEventArgs e)
+        private async void CreateImageBackupButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                this.AddLogMessage(string.Format("createimage server '{0}'", this.server.Name));
+                this.AddLogMessage(string.Format("createimage backup server '{0}'", this.server.Name));
 
                 ServerActionResponse actionResponse = await this.server.CreateImage("test-backup", ServerImageType.BACKUP);
 
-                this.AddLogMessage(string.Format("success: createimage server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.ActionId, actionResponse.Command));
+                if (actionResponse.Error != null)
+                {
+                    this.AddLogMessage(string.Format("error: {0} ({1})", actionResponse.Error.Message, actionResponse.Error.Code));
+                }
+                else
+                {
+                    this.AddLogMessage(string.Format("success: createimage backup server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.Id, actionResponse.Command));
+                }
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
+
+        private async void CreateImageSnapshotButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.AddLogMessage(string.Format("createimage snapshot server '{0}'", this.server.Name));
+
+                ServerActionResponse actionResponse = await this.server.CreateImage("test-snapshot", ServerImageType.SNAPSHOT);
+
+                if(actionResponse.Error != null)
+                {
+                    this.AddLogMessage(string.Format("error: {0} ({1})", actionResponse.Error.Message, actionResponse.Error.Code));
+                } else
+                {
+                    this.AddLogMessage(string.Format("success: createimage snapshot server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.Id, actionResponse.Command));
+                }
             }
             catch (Exception err)
             {

@@ -7,7 +7,7 @@ namespace HetznerCloudNet.Api
         /// <summary>
         /// 
         /// </summary>
-        public int ActionId { get; set; } = 0;
+        public int Id { get; set; } = 0;
 
         /// <summary>
         /// 
@@ -33,5 +33,10 @@ namespace HetznerCloudNet.Api
         /// 
         /// </summary>
         public object AdditionalActionContent { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Error Error { get; set; }
     }
 }
