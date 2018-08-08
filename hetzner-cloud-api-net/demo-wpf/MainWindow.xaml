@@ -1,119 +1,180 @@
-﻿<Window
+﻿<Controls:MetroWindow
     x:Class="demo_wpf.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:demo_wpf"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="MainWindow"
-    Width="800"
-    Height="450"
-    ResizeMode="NoResize"
-    WindowStyle="ToolWindow"
+    Title="Hetzner Cloud API .NET Demo"
     mc:Ignorable="d">
+
     <Grid>
 
-        <Button
-            Width="150"
-            Height="40"
-            Margin="10,10,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Click="GetAllButton_Click"
-            Content="GetAllServer" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="200" />
+        </Grid.RowDefinitions>
 
-        <Button
-            Width="150"
-            Height="40"
-            Margin="10,55,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Click="ShutdownButton_Click"
-            Content="Shutdown" />
+        <TabControl Grid.Row="0">
 
-        <Button
-            Width="150"
-            Height="40"
-            Margin="10,100,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Click="ResetButton_Click"
-            Content="Reset" />
+            <TabItem Header="Pricing">
 
-        <Button
-            Width="150"
-            Height="40"
-            Margin="10,145,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Click="PowerOnButton_Click"
-            Content="PowerOn" />
+                <Grid>
 
-        <Button
-            Width="150"
-            Height="40"
-            Margin="10,190,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Click="RebootButton_Click"
-            Content="Reboot" />
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-        <Button
-            Width="150"
-            Height="40"
-            Margin="165,10,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Click="ResetPasswordButton_Click"
-            Content="Reset Password" />
+                    <ScrollViewer Grid.Column="0">
 
-        <Button
-            Width="150"
-            Height="40"
-            Margin="165,55,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Click="PowerOffButton_Click"
-            Content="PowerOff" />
+                        <StackPanel Orientation="Vertical">
 
-        <Button
-            Width="150"
-            Height="40"
-            Margin="165,100,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Click="GetOneButton_Click"
-            Content="GetOneServer" />
+                            <Button
+                                Margin="5,5,5,5"
+                                Click="GetPricingsButton_Click"
+                                Content="GetAsync" />
 
-        <Button
-            Width="150"
-            Height="40"
-            Margin="165,145,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Click="CreateImageBackupButton_Click"
-            Content="CreateImageBackup" />
+                        </StackPanel>
 
-        <Button
-            Width="150"
-            Height="40"
-            Margin="165,190,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Click="CreateImageSnapshotButton_Click"
-            Content="CreateImageSnapshot" />
+                    </ScrollViewer>
 
-        <Label Content="Server-ID" Height="24" FontSize="10"  VerticalAlignment="Bottom" Margin="10, 0, 0, 165" />
+                    <DataGrid
+                        x:Name="PricingDataGrid"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False">
 
-        <TextBox
-            x:Name="ServerIdTextBox"
-            Margin="100,10,10,165" Height="24" VerticalAlignment="Bottom" />
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
+                            <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+
+                </Grid>
+
+            </TabItem>
+
+            <TabItem Header="Server">
+
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <ScrollViewer Grid.Column="0">
+
+                        <StackPanel Orientation="Vertical">
+
+                            <Button
+                                Margin="5,5,5,5"
+                                Click="GetAllButton_Click"
+                                Content="GetAsync" />
+
+                            <Button
+                                Margin="5,5,5,5"
+                                Click="GetOneButton_Click"
+                                Content="GetAsync With Id" />
+
+                            <Button
+                                Margin="5,5,5,5"
+                                Click="GetAllServerWithFilter_Click"
+                                Content="GetAsync With Filter" />
+
+                            <Button
+                                Margin="5,5,5,5"
+                                Click="RebuildFromImageButton_Click"
+                                Content="RebuildFromImage" />
+
+                            <Button
+                                Margin="5,5,5,5"
+                                Click="GetOneFloatingIpButton_Click"
+                                Content="GetOneFloatingIp" />
+
+                            <Button
+                                Margin="5,5,5,5"
+                                Click="DeleteFloatingIpButton_Click"
+                                Content="DeleteFloatingIp" />
+
+                        </StackPanel>
+
+                    </ScrollViewer>
+
+                    <DataGrid
+                        x:Name="ServerDataGrid"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
+                            <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+                            <DataGridTextColumn Binding="{Binding Status}" Header="Status" />
+                        </DataGrid.Columns>
+
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem
+                                    Click="ServerShutdownContextMenu_Click"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
+                                    Header="Shutdown" />
+                                <MenuItem
+                                    Click="ServerPowerOnContextMenu_Click"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
+                                    Header="PowerOn" />
+                                <MenuItem
+                                    Click="ServerPowerOffContextMenu_Click"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
+                                    Header="PowerOff" />
+                                <MenuItem
+                                    Click="ServerRebootContextMenu_Click"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
+                                    Header="Reboot" />
+                                <MenuItem
+                                    Click="ServerResetContextMenu_Click"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
+                                    Header="Reset" />
+                                <Separator />
+                                <MenuItem
+                                    Click="ServerResetPasswordContextMenu_Click"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
+                                    Header="Reset Password" />
+                                <Separator />
+                                <MenuItem
+                                    Click="ServerCreateImageBackupContextMenu_Click"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
+                                    Header="Create Image Backup" />
+                                <MenuItem
+                                    Click="ServerCreateImageSnapshotContextMenu_Click"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
+                                    Header="Create Image Snapshot" />
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+
+                    </DataGrid>
+
+                </Grid>
+
+            </TabItem>
+
+            <TabItem Header="FloatingIp" />
+
+        </TabControl>
 
         <TextBox
             x:Name="Log"
+            Grid.Row="1"
+            Margin="5,5,5,5"
+            HorizontalScrollBarVisibility="Visible"
             IsReadOnly="True"
-            Margin="10,10,10,10" Height="150" VerticalAlignment="Bottom"
-            VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" />
+            VerticalScrollBarVisibility="Visible" />
 
     </Grid>
-</Window>
+
+</Controls:MetroWindow>

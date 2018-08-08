@@ -1,4 +1,4 @@
-﻿using HetznerCloudNet.Exceptions;
+﻿using lkcode.hetznercloudapi.Exceptions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HetznerCloudNet.Core
+namespace lkcode.hetznercloudapi.Core
 {
     public static class ApiCore
     {
@@ -95,7 +95,7 @@ namespace HetznerCloudNet.Core
                 string argumentsJsonContent = JsonConvert.SerializeObject(arguments);
                 argumentsContent = new StringContent(argumentsJsonContent, Encoding.UTF8, "application/json");
             }
-            
+
             HttpClient client = new HttpClient();
 
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -103,6 +103,41 @@ namespace HetznerCloudNet.Core
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiCore.ApiToken);
 
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, ApiCore.ApiServer + action);
+            request.Content = argumentsContent;
+
+            HttpResponseMessage httpResponse = await client.SendAsync(request);
+            string response = await httpResponse.Content.ReadAsStringAsync();
+
+            checkResponseContent(response);
+
+            return response;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static async Task<string> SendDeleteRequest(string action, Dictionary<string, string> arguments = null)
+        {
+            checkApiToken();
+
+            StringContent argumentsContent = null;
+
+            if (arguments != null &&
+                arguments.Count > 0)
+            {
+                string argumentsJsonContent = JsonConvert.SerializeObject(arguments);
+                argumentsContent = new StringContent(argumentsJsonContent, Encoding.UTF8, "application/json");
+            }
+
+            HttpClient client = new HttpClient();
+
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Add("User-Agent", ApiCore.ClientUserAgent);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiCore.ApiToken);
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, ApiCore.ApiServer + action);
             request.Content = argumentsContent;
 
             HttpResponseMessage httpResponse = await client.SendAsync(request);

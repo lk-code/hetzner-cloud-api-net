@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HetznerCloudNet.Exceptions
+namespace lkcode.hetznercloudapi.Exceptions
 {
     public class InvalidJsonResponseException : Exception
     {

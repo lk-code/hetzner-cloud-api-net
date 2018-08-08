@@ -1,7 +1,7 @@
-﻿using HetznerCloudNet.Objects.Server.Universal;
+﻿using lkcode.hetznercloudapi.Objects.Server.Universal;
 using System;
 
-namespace HetznerCloudNet.Objects.Server.PostCreateImage
+namespace lkcode.hetznercloudapi.Objects.Server.PostCreateImage
 {
     public class CreatedFrom
     {

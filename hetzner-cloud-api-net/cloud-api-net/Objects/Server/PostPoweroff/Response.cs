@@ -1,4 +1,4 @@
-﻿namespace HetznerCloudNet.Objects.Server.PostPoweroff
+﻿namespace lkcode.hetznercloudapi.Objects.Server.PostPoweroff
 {
     public class Response
     {

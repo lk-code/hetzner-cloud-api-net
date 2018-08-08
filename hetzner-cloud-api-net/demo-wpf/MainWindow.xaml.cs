@@ -1,5 +1,7 @@
-﻿using HetznerCloudNet.Api;
-using HetznerCloudNet.Components;
+﻿using lkcode.hetznercloudapi.Api;
+using lkcode.hetznercloudapi.Components;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -9,15 +11,16 @@ namespace demo_wpf
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
-        HetznerCloudNet.Api.Server server = null;
+        lkcode.hetznercloudapi.Api.Server server = null;
+        lkcode.hetznercloudapi.Api.FloatingIp floatingIp = null;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            HetznerCloudNet.Core.ApiCore.ApiToken = ApiConfig.API_TOKEN;
+            lkcode.hetznercloudapi.Core.ApiCore.ApiToken = ApiConfig.API_TOKEN;
         }
 
         /// <summary>
@@ -35,108 +38,11 @@ namespace demo_wpf
             {
                 this.AddLogMessage("load servers");
 
-                List<HetznerCloudNet.Api.Server> serverList = await HetznerCloudNet.Api.Server.GetAsync();
+                List<lkcode.hetznercloudapi.Api.Server> serverList = await lkcode.hetznercloudapi.Api.Server.GetAsync();
 
-                this.server = serverList[0];
+                this.ServerDataGrid.ItemsSource = serverList;
 
                 this.AddLogMessage(string.Format("loaded {0} servers", serverList.Count));
-            }
-            catch (Exception err)
-            {
-                this.AddLogMessage(string.Format("error: {0}", err.Message));
-            }
-        }
-
-        private async void ShutdownButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                this.AddLogMessage(string.Format("shutdown server '{0}'", this.server.Name));
-
-                ServerActionResponse actionResponse = await this.server.Shutdown();
-
-                this.AddLogMessage(string.Format("success: shutdown server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.Id, actionResponse.Command));
-            }
-            catch (Exception err)
-            {
-                this.AddLogMessage(string.Format("error: {0}", err.Message));
-            }
-        }
-
-        private async void ResetButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                this.AddLogMessage(string.Format("reset server '{0}'", this.server.Name));
-
-                ServerActionResponse actionResponse = await this.server.Reset();
-
-                this.AddLogMessage(string.Format("success: reset server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.Id, actionResponse.Command));
-            }
-            catch (Exception err)
-            {
-                this.AddLogMessage(string.Format("error: {0}", err.Message));
-            }
-        }
-
-        private async void PowerOnButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                this.AddLogMessage(string.Format("poweron server '{0}'", this.server.Name));
-
-                ServerActionResponse actionResponse = await this.server.PowerOn();
-
-                this.AddLogMessage(string.Format("success: poweron server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.Id, actionResponse.Command));
-            }
-            catch (Exception err)
-            {
-                this.AddLogMessage(string.Format("error: {0}", err.Message));
-            }
-        }
-
-        private async void RebootButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                this.AddLogMessage(string.Format("reboot server '{0}'", this.server.Name));
-
-                ServerActionResponse actionResponse = await this.server.Reboot();
-
-                this.AddLogMessage(string.Format("success: reboot server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.Id, actionResponse.Command));
-            } catch(Exception err)
-            {
-                this.AddLogMessage(string.Format("error: {0}", err.Message));
-            }
-        }
-
-        private async void ResetPasswordButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                this.AddLogMessage(string.Format("reset password for server '{0}'", this.server.Name));
-
-                ServerActionResponse actionResponse = await this.server.ResetPassword();
-
-                string password = (string)actionResponse.AdditionalActionContent;
-
-                this.AddLogMessage(string.Format("success: reset password for server '{0}' - actionId '{1}' - actionId '{2}' - new password '{3}'", this.server.Name, actionResponse.Id, actionResponse.Command, password));
-            }
-            catch (Exception err)
-            {
-                this.AddLogMessage(string.Format("error: {0}", err.Message));
-            }
-        }
-
-        private async void PowerOffButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                this.AddLogMessage(string.Format("poweroff server '{0}'", this.server.Name));
-
-                ServerActionResponse actionResponse = await this.server.PowerOff();
-
-                this.AddLogMessage(string.Format("success: poweroff server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.Id, actionResponse.Command));
             }
             catch (Exception err)
             {
@@ -150,11 +56,17 @@ namespace demo_wpf
             {
                 this.AddLogMessage("load server");
 
-                long id = Convert.ToInt64(this.ServerIdTextBox.Text);
+                string serverId = await this.ShowInputAsync(
+                    "Server-ID",
+                    "enter the server id");
 
-                HetznerCloudNet.Api.Server server = await HetznerCloudNet.Api.Server.GetAsync(id);
+                long id = Convert.ToInt64(serverId);
 
-                this.server = server;
+                lkcode.hetznercloudapi.Api.Server server = await lkcode.hetznercloudapi.Api.Server.GetAsync(id);
+                List<Server> serverList = new List<Server>();
+                serverList.Add(server);
+
+                this.ServerDataGrid.ItemsSource = serverList;
 
                 this.AddLogMessage(string.Format("loaded server with id {0} and name '{1}'", server.Id, server.Name));
             }
@@ -164,13 +76,35 @@ namespace demo_wpf
             }
         }
 
-        private async void CreateImageBackupButton_Click(object sender, RoutedEventArgs e)
+        private async void GetAllServerWithFilter_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                this.AddLogMessage(string.Format("createimage backup server '{0}'", this.server.Name));
+                this.AddLogMessage("load servers with filter");
 
-                ServerActionResponse actionResponse = await this.server.CreateImage("test-backup", ServerImageType.BACKUP);
+                string filter = await this.ShowInputAsync(
+                    "Server-Name",
+                    "enter the server name to filter");
+
+                List<lkcode.hetznercloudapi.Api.Server> serverList = await lkcode.hetznercloudapi.Api.Server.GetAsync(filter);
+
+                this.ServerDataGrid.ItemsSource = serverList;
+
+                this.AddLogMessage(string.Format("loaded {0} servers with filter", serverList.Count));
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
+
+        private async void RebuildFromImageButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.AddLogMessage(string.Format("rebuild from image for server '{0}'", this.server.Name));
+
+                ServerActionResponse actionResponse = await this.server.RebuildImage("test-snapshot");
 
                 if (actionResponse.Error != null)
                 {
@@ -178,7 +112,7 @@ namespace demo_wpf
                 }
                 else
                 {
-                    this.AddLogMessage(string.Format("success: createimage backup server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.Id, actionResponse.Command));
+                    this.AddLogMessage(string.Format("success: rebuild image for server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.Id, actionResponse.Command));
                 }
             }
             catch (Exception err)
@@ -187,21 +121,225 @@ namespace demo_wpf
             }
         }
 
-        private async void CreateImageSnapshotButton_Click(object sender, RoutedEventArgs e)
+        private async void GetOneFloatingIpButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                this.AddLogMessage(string.Format("createimage snapshot server '{0}'", this.server.Name));
+                this.AddLogMessage("load floating ip");
 
-                ServerActionResponse actionResponse = await this.server.CreateImage("test-snapshot", ServerImageType.SNAPSHOT);
+                string serverId = await this.ShowInputAsync(
+                    "Server-ID",
+                    "enter the server id");
 
-                if(actionResponse.Error != null)
+                long id = Convert.ToInt64(serverId);
+
+                lkcode.hetznercloudapi.Api.FloatingIp floatingIp = await lkcode.hetznercloudapi.Api.FloatingIp.GetAsync(id);
+
+                this.floatingIp = floatingIp;
+
+                this.AddLogMessage(string.Format("loaded floating ip with id {0}", floatingIp.Id));
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
+
+        private async void DeleteFloatingIpButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.AddLogMessage("delete floating ip");
+
+                await this.floatingIp.DeleteAsync();
+
+                this.AddLogMessage(string.Format("deleted floating ip with id {0}", floatingIp.Id));
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
+
+        private async void ServerShutdownContextMenu_Click(object sender, RoutedEventArgs e)
+        {
+            Server server = this.ServerDataGrid.SelectedItem as Server;
+
+            try
+            {
+                this.AddLogMessage(string.Format("shutdown server '{0}'", server.Name));
+
+                ServerActionResponse actionResponse = await server.Shutdown();
+
+                this.AddLogMessage(string.Format("success: shutdown server '{0}' - actionId '{1}' - actionId '{2}'", server.Name, actionResponse.Id, actionResponse.Command));
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
+
+        private async void ServerRebootContextMenu_Click(object sender, RoutedEventArgs e)
+        {
+            Server server = this.ServerDataGrid.SelectedItem as Server;
+
+            try
+            {
+                this.AddLogMessage(string.Format("reboot server '{0}'", server.Name));
+
+                ServerActionResponse actionResponse = await server.Reboot();
+
+                this.AddLogMessage(string.Format("success: reboot server '{0}' - actionId '{1}' - actionId '{2}'", server.Name, actionResponse.Id, actionResponse.Command));
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
+
+        private async void ServerPowerOnContextMenu_Click(object sender, RoutedEventArgs e)
+        {
+            Server server = this.ServerDataGrid.SelectedItem as Server;
+
+            try
+            {
+                this.AddLogMessage(string.Format("poweron server '{0}'", server.Name));
+
+                ServerActionResponse actionResponse = await server.PowerOn();
+
+                this.AddLogMessage(string.Format("success: poweron server '{0}' - actionId '{1}' - actionId '{2}'", server.Name, actionResponse.Id, actionResponse.Command));
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
+
+        private async void ServerPowerOffContextMenu_Click(object sender, RoutedEventArgs e)
+        {
+            Server server = this.ServerDataGrid.SelectedItem as Server;
+            
+            try
+            {
+                this.AddLogMessage(string.Format("poweroff server '{0}'", server.Name));
+
+                ServerActionResponse actionResponse = await server.PowerOff();
+
+                this.AddLogMessage(string.Format("success: poweroff server '{0}' - actionId '{1}' - actionId '{2}'", server.Name, actionResponse.Id, actionResponse.Command));
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
+
+        private async void ServerResetContextMenu_Click(object sender, RoutedEventArgs e)
+        {
+            Server server = this.ServerDataGrid.SelectedItem as Server;
+
+            try
+            {
+                this.AddLogMessage(string.Format("reset server '{0}'", server.Name));
+
+                ServerActionResponse actionResponse = await server.Reset();
+
+                this.AddLogMessage(string.Format("success: reset server '{0}' - actionId '{1}' - actionId '{2}'", server.Name, actionResponse.Id, actionResponse.Command));
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
+
+        private async void ServerResetPasswordContextMenu_Click(object sender, RoutedEventArgs e)
+        {
+            Server server = this.ServerDataGrid.SelectedItem as Server;
+
+            try
+            {
+                this.AddLogMessage(string.Format("reset password for server '{0}'", server.Name));
+
+                ServerActionResponse actionResponse = await server.ResetPassword();
+
+                string password = (string)actionResponse.AdditionalActionContent;
+
+                this.AddLogMessage(string.Format("success: reset password for server '{0}' - actionId '{1}' - actionId '{2}' - new password '{3}'", server.Name, actionResponse.Id, actionResponse.Command, password));
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
+
+        private async void ServerCreateImageBackupContextMenu_Click(object sender, RoutedEventArgs e)
+        {
+            Server server = this.ServerDataGrid.SelectedItem as Server;
+
+            try
+            {
+                this.AddLogMessage(string.Format("createimage backup server '{0}'", server.Name));
+
+                string imageName = await this.ShowInputAsync(
+                    "Image Name",
+                    "enter the image-name");
+
+                ServerActionResponse actionResponse = await server.CreateImage(imageName, ServerImageType.BACKUP);
+
+                if (actionResponse.Error != null)
                 {
                     this.AddLogMessage(string.Format("error: {0} ({1})", actionResponse.Error.Message, actionResponse.Error.Code));
-                } else
-                {
-                    this.AddLogMessage(string.Format("success: createimage snapshot server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.Id, actionResponse.Command));
                 }
+                else
+                {
+                    this.AddLogMessage(string.Format("success: createimage backup server '{0}' - actionId '{1}' - actionId '{2}'", server.Name, actionResponse.Id, actionResponse.Command));
+                }
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
+
+        private async void ServerCreateImageSnapshotContextMenu_Click(object sender, RoutedEventArgs e)
+        {
+            Server server = this.ServerDataGrid.SelectedItem as Server;
+
+            try
+            {
+                this.AddLogMessage(string.Format("createimage snapshot server '{0}'", server.Name));
+
+                string imageName = await this.ShowInputAsync(
+                    "Image Name",
+                    "enter the image-name");
+
+                ServerActionResponse actionResponse = await server.CreateImage(imageName, ServerImageType.SNAPSHOT);
+
+                if (actionResponse.Error != null)
+                {
+                    this.AddLogMessage(string.Format("error: {0} ({1})", actionResponse.Error.Message, actionResponse.Error.Code));
+                }
+                else
+                {
+                    this.AddLogMessage(string.Format("success: createimage snapshot server '{0}' - actionId '{1}' - actionId '{2}'", server.Name, actionResponse.Id, actionResponse.Command));
+                }
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
+
+        private async void GetPricingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.AddLogMessage("load pricings");
+
+                lkcode.hetznercloudapi.Api.Pricing pricing = await lkcode.hetznercloudapi.Api.Pricing.GetAsync();
+
+                //this.PricingDataGrid.ItemsSource = pricingList;
+
+                this.AddLogMessage(string.Format("loaded pricings"));
             }
             catch (Exception err)
             {

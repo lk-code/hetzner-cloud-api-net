@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HetznerCloudNet.Objects.Server.Universal
+namespace lkcode.hetznercloudapi.Objects.Server.Universal
 {
     public class Resource
     {

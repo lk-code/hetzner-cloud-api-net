@@ -1,4 +1,4 @@
-﻿namespace lkcode.hetznercloudapi.Objects.Server.PostPoweron
+﻿namespace lkcode.hetznercloudapi.Objects.Server.PostRebuild
 {
     public class Response
     {

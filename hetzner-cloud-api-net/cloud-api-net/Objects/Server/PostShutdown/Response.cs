@@ -1,4 +1,4 @@
-﻿namespace HetznerCloudNet.Objects.Server.PostShutdown
+﻿namespace lkcode.hetznercloudapi.Objects.Server.PostShutdown
 {
     public class Response
     {

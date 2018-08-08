@@ -1,4 +1,4 @@
-﻿namespace HetznerCloudNet.Objects.Server.ResetPassword
+﻿namespace lkcode.hetznercloudapi.Objects.Server.ResetPassword
 {
     public class Response
     {

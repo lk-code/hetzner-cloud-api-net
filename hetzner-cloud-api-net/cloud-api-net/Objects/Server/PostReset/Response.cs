@@ -1,4 +1,4 @@
-﻿namespace HetznerCloudNet.Objects.Server.PostReset
+﻿namespace lkcode.hetznercloudapi.Objects.Server.PostReset
 {
     public class Response
     {

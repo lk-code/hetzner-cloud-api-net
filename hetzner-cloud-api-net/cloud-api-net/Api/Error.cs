@@ -1,4 +1,4 @@
-﻿namespace HetznerCloudNet.Api
+﻿namespace lkcode.hetznercloudapi.Api
 {
     public class Error
     {

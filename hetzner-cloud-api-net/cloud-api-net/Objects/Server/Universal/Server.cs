@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HetznerCloudNet.Objects.Server.Universal
+namespace lkcode.hetznercloudapi.Objects.Server.Universal
 {
     public class Ipv4
     {
@@ -21,7 +21,7 @@ namespace HetznerCloudNet.Objects.Server.Universal
     {
         public Ipv4 ipv4 { get; set; }
         public Ipv6 ipv6 { get; set; }
-        public List<object> floating_ips { get; set; }
+        public List<int> floating_ips { get; set; }
     }
 
     public class PriceHourly

@@ -1,4 +1,4 @@
-﻿namespace HetznerCloudNet.Components
+﻿namespace lkcode.hetznercloudapi.Components
 {
     public static class ServerImageType
     {

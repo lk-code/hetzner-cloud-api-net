@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace HetznerCloudNet.Objects.Server.Get
+namespace lkcode.hetznercloudapi.Objects.Server.Get
 {
     public class Pagination
     {

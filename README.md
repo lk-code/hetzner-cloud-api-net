@@ -30,6 +30,15 @@ Server.GetAsync() is a static method and returns all server.
 List<CloudApiNet.Api.Server> serverList = await CloudApiNet.Api.Server.GetAsync();
 ```
 
+### get all server with filter
+
+Server.GetAsync() is a static method and returns all server.
+
+```
+string serverFilter = "servername";
+List<CloudApiNet.Api.Server> serverList = await CloudApiNet.Api.Server.GetAsync(serverFilter);
+```
+
 ### get one server
 
 Server.GetAsync(long id) is a static method and returns a specific server.

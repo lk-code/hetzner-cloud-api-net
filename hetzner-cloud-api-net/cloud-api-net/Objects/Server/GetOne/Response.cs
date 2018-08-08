@@ -1,4 +1,4 @@
-﻿namespace HetznerCloudNet.Objects.Server.GetOne
+﻿namespace lkcode.hetznercloudapi.Objects.Server.GetOne
 {
     public class Response
     {

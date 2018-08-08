@@ -1,12 +1,11 @@
-﻿using HetznerCloudNet.Core;
+﻿using lkcode.hetznercloudapi.Core;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace HetznerCloudNet.Api
+namespace lkcode.hetznercloudapi.Api
 {
     public class Server
     {
@@ -57,10 +56,38 @@ namespace HetznerCloudNet.Api
 
             return serverList;
         }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public static async Task<List<Server>> GetAsync(string filter)
+        {
+            if(string.IsNullOrEmpty(filter) || string.IsNullOrWhiteSpace(filter))
+            {
+                return await GetAsync();
+            }
+
+            List<Server> serverList = new List<Server>();
+
+            string responseContent = await ApiCore.SendRequest(string.Format("/servers?name={0}", filter));
+            Objects.Server.Get.Response response = JsonConvert.DeserializeObject<Objects.Server.Get.Response>(responseContent);
+
+            foreach (Objects.Server.Universal.Server responseServer in response.servers)
+            {
+                Server server = GetServerFromResponseData(responseServer);
+
+                serverList.Add(server);
+            }
+
+            return serverList;
+        }
 
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="id"></param>
         /// <returns></returns>
         public static async Task<Server> GetAsync(long id)
         {
@@ -164,6 +191,8 @@ namespace HetznerCloudNet.Api
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="description"></param>
+        /// <param name="type"></param>
         /// <returns></returns>
         public async Task<ServerActionResponse> CreateImage(string description, string type)
         {
@@ -204,6 +233,45 @@ namespace HetznerCloudNet.Api
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="image"></param>
+        /// <returns></returns>
+        public async Task<ServerActionResponse> RebuildImage(string image)
+        {
+            Dictionary<string, string> arguments = new Dictionary<string, string>();
+
+            if (!string.IsNullOrEmpty(image.Trim()) &&
+                !string.IsNullOrWhiteSpace(image.Trim()))
+            {
+                arguments.Add("image", image);
+            }
+
+            string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/rebuild", this.Id), arguments);
+            JObject responseObject = JObject.Parse(responseContent);
+
+            if (responseObject["error"] != null)
+            {
+                // error
+                Objects.Server.Universal.ErrorResponse error = JsonConvert.DeserializeObject<Objects.Server.Universal.ErrorResponse>(responseContent);
+                ServerActionResponse response = new ServerActionResponse();
+                response.Error = GetErrorFromResponseData(error);
+
+                return response;
+            }
+            else
+            {
+                // success
+                Objects.Server.PostRebuild.Response response = JsonConvert.DeserializeObject<Objects.Server.PostRebuild.Response>(responseContent);
+
+                ServerActionResponse actionResponse = GetServerActionFromResponseData(response.action);
+                //actionResponse.AdditionalActionContent = GetServerImageFromResponseData(response.image);
+
+                return actionResponse;
+            }
+        }
+
         #endregion
 
         #region # private methods for processing #
@@ -232,8 +300,10 @@ namespace HetznerCloudNet.Api
                 {
                     Ip = responseData.public_net.ipv6.ip,
                     Blocked = responseData.public_net.ipv6.blocked
-                }
+                },
+                FloatingIpIds = responseData.public_net.floating_ips
             };
+
             return server;
         }
 

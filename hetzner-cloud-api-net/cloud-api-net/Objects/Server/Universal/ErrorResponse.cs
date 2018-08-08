@@ -1,4 +1,4 @@
-﻿namespace HetznerCloudNet.Objects.Server.Universal
+﻿namespace lkcode.hetznercloudapi.Objects.Server.Universal
 {
     public class Error
     {
