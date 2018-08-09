@@ -3,6 +3,22 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>lkcode.hetznercloudapi</RootNamespace>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
+    <Version>1.0.1</Version>
+    <Authors>lk-code</Authors>
+    <Company />
+    <Product>hetznercloudapi</Product>
+    <PackageId>hetznercloudapi</PackageId>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/lk-code/hetzner-cloud-api-net/master/LICENSE</PackageLicenseUrl>
+    <PackageTags>BETA</PackageTags>
+    <PackageReleaseNotes>this is a beta version</PackageReleaseNotes>
+    <Description>a hetzner cloud api library for .NET Standard. documentation at: https://github.com/lk-code/hetzner-cloud-api-net/wiki</Description>
+    <PackageProjectUrl>https://github.com/lk-code/hetzner-cloud-api-net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/lk-code/hetzner-cloud-api-net</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>

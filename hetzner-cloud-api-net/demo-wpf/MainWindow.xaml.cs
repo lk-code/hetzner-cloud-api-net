@@ -4,6 +4,7 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Windows;
 
 namespace demo_wpf
@@ -336,8 +337,23 @@ namespace demo_wpf
                 this.AddLogMessage("load pricings");
 
                 lkcode.hetznercloudapi.Api.Pricing pricing = await lkcode.hetznercloudapi.Api.Pricing.GetAsync();
+                
+                // set values
+                this.PricingCurrencyTextBlock.Text = pricing.Currency;
+                this.PricingVatTextBlock.Text = Math.Round(Convert.ToDecimal(pricing.VatRate, CultureInfo.InvariantCulture.NumberFormat), 0) + " %";
 
-                //this.PricingDataGrid.ItemsSource = pricingList;
+                this.PricingImageNetTextBlock.Text = Math.Round(Convert.ToDecimal(pricing.Image.PricePerGbMonth.Net, CultureInfo.InvariantCulture.NumberFormat), 2) + " " + pricing.Currency;
+                this.PricingImageGrossTextBlock.Text = Math.Round(Convert.ToDecimal(pricing.Image.PricePerGbMonth.Gross, CultureInfo.InvariantCulture.NumberFormat), 2) + " " + pricing.Currency;
+
+                this.PricingFloatingIpNetTextBlock.Text = Math.Round(Convert.ToDecimal(pricing.FloatingIp.PriceMontly.Net, CultureInfo.InvariantCulture.NumberFormat), 2) + " " + pricing.Currency;
+                this.PricingFloatingIpGrossTextBlock.Text = Math.Round(Convert.ToDecimal(pricing.FloatingIp.PriceMontly.Gross, CultureInfo.InvariantCulture.NumberFormat), 2) + " " + pricing.Currency;
+
+                this.PricingTrafficNetTextBlock.Text = Math.Round(Convert.ToDecimal(pricing.Traffic.PricePerTb.Net, CultureInfo.InvariantCulture.NumberFormat), 2) + " " + pricing.Currency;
+                this.PricingTrafficGrossTextBlock.Text = Math.Round(Convert.ToDecimal(pricing.Traffic.PricePerTb.Gross, CultureInfo.InvariantCulture.NumberFormat), 2) + " " + pricing.Currency;
+                
+                this.PricingServerBackupPercentageTextBlock.Text = Math.Round(Convert.ToDecimal(pricing.ServerBackup.Percentage, CultureInfo.InvariantCulture.NumberFormat), 0) + " %";
+
+                this.ServerTypePricingDataGrid.ItemsSource = pricing.ServerTypes;
 
                 this.AddLogMessage(string.Format("loaded pricings"));
             }

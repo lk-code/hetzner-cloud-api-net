@@ -7,6 +7,8 @@
     xmlns:local="clr-namespace:demo_wpf"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="Hetzner Cloud API .NET Demo"
+    Width="1000"
+    Height="800"
     mc:Ignorable="d">
 
     <Grid>
@@ -40,19 +42,147 @@
 
                     </ScrollViewer>
 
-                    <DataGrid
-                        x:Name="PricingDataGrid"
-                        Grid.Row="0"
-                        Grid.Column="1"
-                        AutoGenerateColumns="False"
-                        CanUserAddRows="False">
+                    <Grid Grid.Row="0" Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="140" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
 
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
-                            <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
-                        </DataGrid.Columns>
+                        <StackPanel Grid.Row="0">
 
-                    </DataGrid>
+                            <StackPanel Orientation="Horizontal">
+
+                                <TextBlock FontWeight="Bold" Text="Currency: " />
+                                <TextBlock x:Name="PricingCurrencyTextBlock" Text="?" />
+
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal">
+
+                                <TextBlock FontWeight="Bold" Text="VAT: " />
+                                <TextBlock x:Name="PricingVatTextBlock" Text="0%" />
+
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal">
+
+                                <TextBlock FontWeight="Bold" Text="Server-Image: " />
+                                <TextBlock FontWeight="Bold" Text="Net: " />
+                                <TextBlock x:Name="PricingImageNetTextBlock" Text="0" />
+                                <TextBlock FontWeight="Bold" Text=" Gross: " />
+                                <TextBlock x:Name="PricingImageGrossTextBlock" Text="0" />
+
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal">
+
+                                <TextBlock FontWeight="Bold" Text="Floating IP: " />
+                                <TextBlock FontWeight="Bold" Text="Net: " />
+                                <TextBlock x:Name="PricingFloatingIpNetTextBlock" Text="0" />
+                                <TextBlock FontWeight="Bold" Text=" Gross: " />
+                                <TextBlock x:Name="PricingFloatingIpGrossTextBlock" Text="0" />
+
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal">
+
+                                <TextBlock FontWeight="Bold" Text="Traffic: " />
+                                <TextBlock FontWeight="Bold" Text="Net: " />
+                                <TextBlock x:Name="PricingTrafficNetTextBlock" Text="0" />
+                                <TextBlock FontWeight="Bold" Text=" Gross: " />
+                                <TextBlock x:Name="PricingTrafficGrossTextBlock" Text="0" />
+
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal">
+
+                                <TextBlock FontWeight="Bold" Text="Server-Backup: " />
+                                <TextBlock x:Name="PricingServerBackupPercentageTextBlock" Text="0%" />
+
+                            </StackPanel>
+
+                            <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+
+                                <TextBlock
+                                    Margin="0,0,5,0"
+                                    FontWeight="Bold"
+                                    Text="Notes: " />
+                                <TextBlock Text="H Net =&gt; Hourly Net - " />
+                                <TextBlock Text="H Gross =&gt; Hourly Gross - " />
+                                <TextBlock Text="M Net =&gt; Monthly Net - " />
+                                <TextBlock Text="M Gross =&gt; Monthly Gross" />
+
+                            </StackPanel>
+
+                        </StackPanel>
+
+                        <DataGrid
+                            x:Name="ServerTypePricingDataGrid"
+                            Grid.Row="1"
+                            AutoGenerateColumns="False"
+                            CanUserAddRows="False">
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
+                                <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+
+                                <DataGridTextColumn Binding="{Binding Prices[0].Location}" Header="Location" />
+                                <Controls:DataGridNumericUpDownColumn
+                                    Binding="{Binding Prices[0].PriceHourly.Net}"
+                                    Header="h net"
+                                    IsReadOnly="True" />
+                                <Controls:DataGridNumericUpDownColumn
+                                    Binding="{Binding Prices[0].PriceHourly.Gross}"
+                                    Header="h gross"
+                                    IsReadOnly="True" />
+                                <Controls:DataGridNumericUpDownColumn
+                                    Binding="{Binding Prices[0].PriceMontly.Net}"
+                                    Header="m net"
+                                    IsReadOnly="True" />
+                                <Controls:DataGridNumericUpDownColumn
+                                    Binding="{Binding Prices[0].PriceMontly.Gross}"
+                                    Header="m gross"
+                                    IsReadOnly="True" />
+
+                                <DataGridTextColumn Binding="{Binding Prices[1].Location}" Header="Location" />
+                                <Controls:DataGridNumericUpDownColumn
+                                    Binding="{Binding Prices[1].PriceHourly.Net}"
+                                    Header="h net"
+                                    IsReadOnly="True" />
+                                <Controls:DataGridNumericUpDownColumn
+                                    Binding="{Binding Prices[1].PriceHourly.Gross}"
+                                    Header="h gross"
+                                    IsReadOnly="True" />
+                                <Controls:DataGridNumericUpDownColumn
+                                    Binding="{Binding Prices[1].PriceMontly.Net}"
+                                    Header="m net"
+                                    IsReadOnly="True" />
+                                <Controls:DataGridNumericUpDownColumn
+                                    Binding="{Binding Prices[1].PriceMontly.Gross}"
+                                    Header="m gross"
+                                    IsReadOnly="True" />
+
+                                <DataGridTextColumn Binding="{Binding Prices[2].Location}" Header="Location" />
+                                <Controls:DataGridNumericUpDownColumn
+                                    Binding="{Binding Prices[2].PriceHourly.Net}"
+                                    Header="h net"
+                                    IsReadOnly="True" />
+                                <Controls:DataGridNumericUpDownColumn
+                                    Binding="{Binding Prices[2].PriceHourly.Gross}"
+                                    Header="h gross"
+                                    IsReadOnly="True" />
+                                <Controls:DataGridNumericUpDownColumn
+                                    Binding="{Binding Prices[2].PriceMontly.Net}"
+                                    Header="m net"
+                                    IsReadOnly="True" />
+                                <Controls:DataGridNumericUpDownColumn
+                                    Binding="{Binding Prices[2].PriceMontly.Gross}"
+                                    Header="m gross"
+                                    IsReadOnly="True" />
+                            </DataGrid.Columns>
+
+                        </DataGrid>
+                    </Grid>
 
                 </Grid>
 
