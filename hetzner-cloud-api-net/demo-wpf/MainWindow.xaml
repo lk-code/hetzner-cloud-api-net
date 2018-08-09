@@ -14,11 +14,34 @@
     <Grid>
 
         <Grid.RowDefinitions>
+            <RowDefinition Height="36" />
             <RowDefinition Height="*" />
             <RowDefinition Height="200" />
         </Grid.RowDefinitions>
 
-        <TabControl Grid.Row="0">
+        <StackPanel Orientation="Horizontal">
+
+            <TextBlock
+                Margin="5,5,5,5"
+                FontSize="16"
+                FontWeight="SemiBold"
+                Text="API-Token:" />
+
+            <TextBox
+                x:Name="ApiTokenTextBox"
+                Width="500"
+                Margin="5,5,5,5"
+                TextChanged="ApiTokenTextBox_TextChanged" />
+
+            <Button
+                x:Name="ApiTokenLoadButton"
+                Margin="5,5,5,5"
+                Click="ApiTokenLoadButton_Clicked"
+                Content="load" />
+
+        </StackPanel>
+
+        <TabControl x:Name="MainTabControl" Grid.Row="1">
 
             <TabItem Header="Pricing">
 
@@ -299,7 +322,7 @@
 
         <TextBox
             x:Name="Log"
-            Grid.Row="1"
+            Grid.Row="2"
             Margin="5,5,5,5"
             HorizontalScrollBarVisibility="Visible"
             IsReadOnly="True"

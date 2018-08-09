@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace demo_wpf
 {
@@ -20,8 +21,8 @@ namespace demo_wpf
         public MainWindow()
         {
             InitializeComponent();
+            this.MainTabControl.Visibility = Visibility.Collapsed;
 
-            lkcode.hetznercloudapi.Core.ApiCore.ApiToken = ApiConfig.API_TOKEN;
         }
 
         /// <summary>
@@ -31,6 +32,20 @@ namespace demo_wpf
         private void AddLogMessage(string message)
         {
             this.Log.Text += message + Environment.NewLine;
+        }
+
+        private void ApiTokenTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            this.MainTabControl.Visibility = Visibility.Collapsed;
+            this.ApiTokenLoadButton.IsEnabled = true;
+        }
+
+        private void ApiTokenLoadButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            this.MainTabControl.Visibility = Visibility.Visible;
+            this.ApiTokenLoadButton.IsEnabled = false;
+
+            lkcode.hetznercloudapi.Core.ApiCore.ApiToken = this.ApiTokenTextBox.Text;
         }
 
         private async void GetAllButton_Click(object sender, RoutedEventArgs e)
