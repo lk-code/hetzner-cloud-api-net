@@ -3,12 +3,12 @@
     public class PricingValue
     {
         /// <summary>
-        /// the net price-value
+        /// Price without VAT.
         /// </summary>
         public string Net { get; set; } = string.Empty;
 
         /// <summary>
-        /// the gross price-value
+        /// Price with VAT added.
         /// </summary>
         public string Gross { get; set; } = string.Empty;
     }

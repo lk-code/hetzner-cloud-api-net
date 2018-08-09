@@ -8,37 +8,37 @@ namespace lkcode.hetznercloudapi.Api
     public class Pricing
     {
         /// <summary>
-        /// 
+        /// Currency the returned prices are expressed in, coded according to ISO 4217.
         /// </summary>
         public string Currency { get; set; } = string.Empty;
 
         /// <summary>
-        /// 
+        /// The VAT rate used for calculating prices with VAT.
         /// </summary>
         public string VatRate { get; set; } = string.Empty;
 
         /// <summary>
-        /// 
+        /// The cost of one 1GB Image for the full month.
         /// </summary>
         public ImagePricing Image { get; set; } = null;
 
         /// <summary>
-        /// 
+        /// The cost of one floating IP per month.
         /// </summary>
         public FloatingIpPricing FloatingIp { get; set; } = null;
 
         /// <summary>
-        /// 
+        /// The cost of additional traffic per GB.
         /// </summary>
         public TrafficPricing Traffic { get; set; } = null;
 
         /// <summary>
-        /// 
+        /// Will increase base server costs by specific percentage.
         /// </summary>
         public ServerBackupPricing ServerBackup { get; set; } = null;
 
         /// <summary>
-        /// 
+        /// Costs of server types per location and type.
         /// </summary>
         public List<ServerTypePricing> ServerTypes { get; set; } = null;
 

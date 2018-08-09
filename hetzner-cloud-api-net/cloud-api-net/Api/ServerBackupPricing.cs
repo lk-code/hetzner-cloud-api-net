@@ -3,7 +3,7 @@
     public class ServerBackupPricing
     {
         /// <summary>
-        /// will increase base server costs by specific percentage.
+        /// Percentage by how much the base price will increase.
         /// </summary>
         public string Percentage { get; set; } = string.Empty;
     }
