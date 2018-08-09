@@ -37,7 +37,7 @@ namespace lkcode.hetznercloudapi.Api
         #region # static methods #
 
         /// <summary>
-        /// 
+        /// Returns all server in a list.
         /// </summary>
         /// <returns></returns>
         public static async Task<List<Server>> GetAsync()
@@ -56,9 +56,9 @@ namespace lkcode.hetznercloudapi.Api
 
             return serverList;
         }
-        
+
         /// <summary>
-        /// 
+        /// Returns all server filtered by the given filter-value.
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
@@ -85,7 +85,7 @@ namespace lkcode.hetznercloudapi.Api
         }
 
         /// <summary>
-        /// 
+        /// Returns a server by the given id.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -104,7 +104,7 @@ namespace lkcode.hetznercloudapi.Api
         #region # class methods #
 
         /// <summary>
-        /// 
+        /// Shuts down a server gracefully by sending an ACPI shutdown request. The server operating system must support ACPI and react to the request, otherwise the server will not shut down.
         /// </summary>
         /// <returns></returns>
         public async Task<ServerActionResponse> Shutdown()
@@ -118,21 +118,7 @@ namespace lkcode.hetznercloudapi.Api
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public async Task<ServerActionResponse> Reset()
-        {
-            string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/reset", this.Id));
-            Objects.Server.PostReset.Response response = JsonConvert.DeserializeObject<Objects.Server.PostReset.Response>(responseContent);
-
-            ServerActionResponse actionResponse = GetServerActionFromResponseData(response.action);
-
-            return actionResponse;
-        }
-
-        /// <summary>
-        /// 
+        /// Starts a server by turning its power on.
         /// </summary>
         /// <returns></returns>
         public async Task<ServerActionResponse> PowerOn()
@@ -146,13 +132,41 @@ namespace lkcode.hetznercloudapi.Api
         }
 
         /// <summary>
-        /// 
+        /// Cuts power to the server. This forcefully stops it without giving the server operating system time to gracefully stop. May lead to data loss, equivalent to pulling the power cord. Power off should only be used when shutdown does not work.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ServerActionResponse> PowerOff()
+        {
+            string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/poweroff", this.Id));
+            Objects.Server.PostPoweroff.Response response = JsonConvert.DeserializeObject<Objects.Server.PostPoweroff.Response>(responseContent);
+
+            ServerActionResponse actionResponse = GetServerActionFromResponseData(response.action);
+
+            return actionResponse;
+        }
+
+        /// <summary>
+        /// Reboots a server gracefully by sending an ACPI request. The server operating system must support ACPI and react to the request, otherwise the server will not reboot.
         /// </summary>
         /// <returns></returns>
         public async Task<ServerActionResponse> Reboot()
         {
             string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/reboot", this.Id));
             Objects.Server.PostReboot.Response response = JsonConvert.DeserializeObject<Objects.Server.PostReboot.Response>(responseContent);
+
+            ServerActionResponse actionResponse = GetServerActionFromResponseData(response.action);
+
+            return actionResponse;
+        }
+
+        /// <summary>
+        /// Cuts power to a server and starts it again. This forcefully stops it without giving the server operating system time to gracefully stop. This may lead to data loss, it’s equivalent to pulling the power cord and plugging it in again. Reset should only be used when reboot does not work.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ServerActionResponse> Reset()
+        {
+            string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/reset", this.Id));
+            Objects.Server.PostReset.Response response = JsonConvert.DeserializeObject<Objects.Server.PostReset.Response>(responseContent);
 
             ServerActionResponse actionResponse = GetServerActionFromResponseData(response.action);
 
@@ -170,20 +184,6 @@ namespace lkcode.hetznercloudapi.Api
 
             ServerActionResponse actionResponse = GetServerActionFromResponseData(response.action);
             actionResponse.AdditionalActionContent = response.root_password;
-
-            return actionResponse;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public async Task<ServerActionResponse> PowerOff()
-        {
-            string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/poweroff", this.Id));
-            Objects.Server.PostPoweroff.Response response = JsonConvert.DeserializeObject<Objects.Server.PostPoweroff.Response>(responseContent);
-
-            ServerActionResponse actionResponse = GetServerActionFromResponseData(response.action);
 
             return actionResponse;
         }

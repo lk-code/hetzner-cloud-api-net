@@ -1,6 +1,4 @@
-﻿using lkcode.hetznercloudapi.Api;
-using lkcode.hetznercloudapi.Components;
-using MahApps.Metro.Controls;
+﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
@@ -79,7 +77,7 @@ namespace demo_wpf
                 long id = Convert.ToInt64(serverId);
 
                 lkcode.hetznercloudapi.Api.Server server = await lkcode.hetznercloudapi.Api.Server.GetAsync(id);
-                List<Server> serverList = new List<Server>();
+                List<lkcode.hetznercloudapi.Api.Server> serverList = new List<lkcode.hetznercloudapi.Api.Server>();
                 serverList.Add(server);
 
                 this.ServerDataGrid.ItemsSource = serverList;
@@ -120,7 +118,7 @@ namespace demo_wpf
             {
                 this.AddLogMessage(string.Format("rebuild from image for server '{0}'", this.server.Name));
 
-                ServerActionResponse actionResponse = await this.server.RebuildImage("test-snapshot");
+                lkcode.hetznercloudapi.Api.ServerActionResponse actionResponse = await this.server.RebuildImage("test-snapshot");
 
                 if (actionResponse.Error != null)
                 {
@@ -179,13 +177,13 @@ namespace demo_wpf
 
         private async void ServerShutdownContextMenu_Click(object sender, RoutedEventArgs e)
         {
-            Server server = this.ServerDataGrid.SelectedItem as Server;
+            lkcode.hetznercloudapi.Api.Server server = this.ServerDataGrid.SelectedItem as lkcode.hetznercloudapi.Api.Server;
 
             try
             {
                 this.AddLogMessage(string.Format("shutdown server '{0}'", server.Name));
 
-                ServerActionResponse actionResponse = await server.Shutdown();
+                lkcode.hetznercloudapi.Api.ServerActionResponse actionResponse = await server.Shutdown();
 
                 this.AddLogMessage(string.Format("success: shutdown server '{0}' - actionId '{1}' - actionId '{2}'", server.Name, actionResponse.Id, actionResponse.Command));
             }
@@ -197,13 +195,13 @@ namespace demo_wpf
 
         private async void ServerRebootContextMenu_Click(object sender, RoutedEventArgs e)
         {
-            Server server = this.ServerDataGrid.SelectedItem as Server;
+            lkcode.hetznercloudapi.Api.Server server = this.ServerDataGrid.SelectedItem as lkcode.hetznercloudapi.Api.Server;
 
             try
             {
                 this.AddLogMessage(string.Format("reboot server '{0}'", server.Name));
 
-                ServerActionResponse actionResponse = await server.Reboot();
+                lkcode.hetznercloudapi.Api.ServerActionResponse actionResponse = await server.Reboot();
 
                 this.AddLogMessage(string.Format("success: reboot server '{0}' - actionId '{1}' - actionId '{2}'", server.Name, actionResponse.Id, actionResponse.Command));
             }
@@ -215,13 +213,13 @@ namespace demo_wpf
 
         private async void ServerPowerOnContextMenu_Click(object sender, RoutedEventArgs e)
         {
-            Server server = this.ServerDataGrid.SelectedItem as Server;
+            lkcode.hetznercloudapi.Api.Server server = this.ServerDataGrid.SelectedItem as lkcode.hetznercloudapi.Api.Server;
 
             try
             {
                 this.AddLogMessage(string.Format("poweron server '{0}'", server.Name));
 
-                ServerActionResponse actionResponse = await server.PowerOn();
+                lkcode.hetznercloudapi.Api.ServerActionResponse actionResponse = await server.PowerOn();
 
                 this.AddLogMessage(string.Format("success: poweron server '{0}' - actionId '{1}' - actionId '{2}'", server.Name, actionResponse.Id, actionResponse.Command));
             }
@@ -233,13 +231,13 @@ namespace demo_wpf
 
         private async void ServerPowerOffContextMenu_Click(object sender, RoutedEventArgs e)
         {
-            Server server = this.ServerDataGrid.SelectedItem as Server;
+            lkcode.hetznercloudapi.Api.Server server = this.ServerDataGrid.SelectedItem as lkcode.hetznercloudapi.Api.Server;
             
             try
             {
                 this.AddLogMessage(string.Format("poweroff server '{0}'", server.Name));
 
-                ServerActionResponse actionResponse = await server.PowerOff();
+                lkcode.hetznercloudapi.Api.ServerActionResponse actionResponse = await server.PowerOff();
 
                 this.AddLogMessage(string.Format("success: poweroff server '{0}' - actionId '{1}' - actionId '{2}'", server.Name, actionResponse.Id, actionResponse.Command));
             }
@@ -251,13 +249,13 @@ namespace demo_wpf
 
         private async void ServerResetContextMenu_Click(object sender, RoutedEventArgs e)
         {
-            Server server = this.ServerDataGrid.SelectedItem as Server;
+            lkcode.hetznercloudapi.Api.Server server = this.ServerDataGrid.SelectedItem as lkcode.hetznercloudapi.Api.Server;
 
             try
             {
                 this.AddLogMessage(string.Format("reset server '{0}'", server.Name));
 
-                ServerActionResponse actionResponse = await server.Reset();
+                lkcode.hetznercloudapi.Api.ServerActionResponse actionResponse = await server.Reset();
 
                 this.AddLogMessage(string.Format("success: reset server '{0}' - actionId '{1}' - actionId '{2}'", server.Name, actionResponse.Id, actionResponse.Command));
             }
@@ -269,13 +267,13 @@ namespace demo_wpf
 
         private async void ServerResetPasswordContextMenu_Click(object sender, RoutedEventArgs e)
         {
-            Server server = this.ServerDataGrid.SelectedItem as Server;
+            lkcode.hetznercloudapi.Api.Server server = this.ServerDataGrid.SelectedItem as lkcode.hetznercloudapi.Api.Server;
 
             try
             {
                 this.AddLogMessage(string.Format("reset password for server '{0}'", server.Name));
 
-                ServerActionResponse actionResponse = await server.ResetPassword();
+                lkcode.hetznercloudapi.Api.ServerActionResponse actionResponse = await server.ResetPassword();
 
                 string password = (string)actionResponse.AdditionalActionContent;
 
@@ -289,7 +287,7 @@ namespace demo_wpf
 
         private async void ServerCreateImageBackupContextMenu_Click(object sender, RoutedEventArgs e)
         {
-            Server server = this.ServerDataGrid.SelectedItem as Server;
+            lkcode.hetznercloudapi.Api.Server server = this.ServerDataGrid.SelectedItem as lkcode.hetznercloudapi.Api.Server;
 
             try
             {
@@ -299,7 +297,7 @@ namespace demo_wpf
                     "Image Name",
                     "enter the image-name");
 
-                ServerActionResponse actionResponse = await server.CreateImage(imageName, ServerImageType.BACKUP);
+                lkcode.hetznercloudapi.Api.ServerActionResponse actionResponse = await server.CreateImage(imageName, lkcode.hetznercloudapi.Components.ServerImageType.BACKUP);
 
                 if (actionResponse.Error != null)
                 {
@@ -318,7 +316,7 @@ namespace demo_wpf
 
         private async void ServerCreateImageSnapshotContextMenu_Click(object sender, RoutedEventArgs e)
         {
-            Server server = this.ServerDataGrid.SelectedItem as Server;
+            lkcode.hetznercloudapi.Api.Server server = this.ServerDataGrid.SelectedItem as lkcode.hetznercloudapi.Api.Server;
 
             try
             {
@@ -328,7 +326,7 @@ namespace demo_wpf
                     "Image Name",
                     "enter the image-name");
 
-                ServerActionResponse actionResponse = await server.CreateImage(imageName, ServerImageType.SNAPSHOT);
+                lkcode.hetznercloudapi.Api.ServerActionResponse actionResponse = await server.CreateImage(imageName, lkcode.hetznercloudapi.Components.ServerImageType.SNAPSHOT);
 
                 if (actionResponse.Error != null)
                 {
