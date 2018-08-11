@@ -12,9 +12,6 @@ namespace demo_wpf
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        lkcode.hetznercloudapi.Api.Server server = null;
-        lkcode.hetznercloudapi.Api.FloatingIp floatingIp = null;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -105,7 +102,8 @@ namespace demo_wpf
                 lkcode.hetznercloudapi.Api.Server server = await lkcode.hetznercloudapi.Api.Server.GetAsync(id);
                 List<lkcode.hetznercloudapi.Api.Server> serverList = new List<lkcode.hetznercloudapi.Api.Server>();
                 serverList.Add(server);
-
+                
+                this.ServerDataGrid.ItemsSource = null;
                 this.ServerDataGrid.ItemsSource = serverList;
 
                 this.AddLogMessage(string.Format("loaded server with id {0} and name '{1}'", server.Id, server.Name));
@@ -140,11 +138,13 @@ namespace demo_wpf
 
         private async void RebuildFromImageButton_Click(object sender, RoutedEventArgs e)
         {
+            lkcode.hetznercloudapi.Api.Server server = this.ServerDataGrid.SelectedItem as lkcode.hetznercloudapi.Api.Server;
+
             try
             {
-                this.AddLogMessage(string.Format("rebuild from image for server '{0}'", this.server.Name));
+                this.AddLogMessage(string.Format("rebuild from image for server '{0}'", server.Name));
 
-                lkcode.hetznercloudapi.Api.ServerActionResponse actionResponse = await this.server.RebuildImage("test-snapshot");
+                lkcode.hetznercloudapi.Api.ServerActionResponse actionResponse = await server.RebuildImage("test-snapshot");
 
                 if (actionResponse.Error != null)
                 {
@@ -152,7 +152,7 @@ namespace demo_wpf
                 }
                 else
                 {
-                    this.AddLogMessage(string.Format("success: rebuild image for server '{0}' - actionId '{1}' - actionId '{2}'", this.server.Name, actionResponse.Id, actionResponse.Command));
+                    this.AddLogMessage(string.Format("success: rebuild image for server '{0}' - actionId '{1}' - actionId '{2}'", server.Name, actionResponse.Id, actionResponse.Command));
                 }
             }
             catch (Exception err)
@@ -168,14 +168,17 @@ namespace demo_wpf
                 this.AddLogMessage("load floating ip");
 
                 string serverId = await this.ShowInputAsync(
-                    "Server-ID",
-                    "enter the server id");
+                    "FloatingIp-ID",
+                    "enter the floating-ip id");
 
                 long id = Convert.ToInt64(serverId);
 
                 lkcode.hetznercloudapi.Api.FloatingIp floatingIp = await lkcode.hetznercloudapi.Api.FloatingIp.GetAsync(id);
+                List<lkcode.hetznercloudapi.Api.FloatingIp> floatingIpList = new List<lkcode.hetznercloudapi.Api.FloatingIp>();
+                floatingIpList.Add(floatingIp);
 
-                this.floatingIp = floatingIp;
+                this.FloatingIpDataGrid.ItemsSource = null;
+                this.FloatingIpDataGrid.ItemsSource = floatingIpList;
 
                 this.AddLogMessage(string.Format("loaded floating ip with id {0}", floatingIp.Id));
             }
@@ -187,11 +190,13 @@ namespace demo_wpf
 
         private async void DeleteFloatingIpButton_Click(object sender, RoutedEventArgs e)
         {
+            lkcode.hetznercloudapi.Api.FloatingIp floatingIp = this.FloatingIpDataGrid.SelectedItem as lkcode.hetznercloudapi.Api.FloatingIp;
+
             try
             {
                 this.AddLogMessage("delete floating ip");
 
-                await this.floatingIp.DeleteAsync();
+                await floatingIp.DeleteAsync();
 
                 this.AddLogMessage(string.Format("deleted floating ip with id {0}", floatingIp.Id));
             }
@@ -445,6 +450,28 @@ namespace demo_wpf
             {
                 this.AddLogMessage(string.Format("error: {0}", err.Message));
             }
+        }
+
+        private void ServerDataGrid_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            RefreshFloatingIpDataGridBinding();
+        }
+
+        private void RefreshDataGridBindingButton_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshFloatingIpDataGridBinding();
+        }
+
+        private void RefreshFloatingIpDataGridBinding()
+        {
+            lkcode.hetznercloudapi.Api.Server server = (ServerDataGrid.SelectedItem as lkcode.hetznercloudapi.Api.Server);
+
+            if (server == null) {
+                return;
+            }
+
+            this.FloatingIpDataGrid.ItemsSource = null;
+            this.FloatingIpDataGrid.ItemsSource = server.Network.FloatingIps;
         }
     }
 }

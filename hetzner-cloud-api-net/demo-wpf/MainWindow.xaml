@@ -84,16 +84,6 @@
                                 Click="RebuildFromImageButton_Click"
                                 Content="RebuildFromImage" />
 
-                            <Button
-                                Margin="5,5,5,5"
-                                Click="GetOneFloatingIpButton_Click"
-                                Content="GetOneFloatingIp" />
-
-                            <Button
-                                Margin="5,5,5,5"
-                                Click="DeleteFloatingIpButton_Click"
-                                Content="DeleteFloatingIp" />
-
                         </StackPanel>
 
                     </ScrollViewer>
@@ -141,7 +131,9 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         AutoGenerateColumns="False"
-                        CanUserAddRows="False">
+                        CanUserAddRows="False"
+                        IsReadOnly="True"
+                        SelectionChanged="ServerDataGrid_SelectionChanged">
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
@@ -194,7 +186,62 @@
 
             </TabItem>
 
-            <TabItem Header="FloatingIp" />
+            <TabItem Header="FloatingIp">
+
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <ScrollViewer Grid.Column="0">
+
+                        <StackPanel Orientation="Vertical">
+
+                            <Button
+                                Margin="5,5,5,5"
+                                Click="GetOneFloatingIpButton_Click"
+                                Content="GetAsync" />
+
+                            <Button
+                                Margin="5,5,5,5"
+                                Click="DeleteFloatingIpButton_Click"
+                                Content="DeleteFloatingIp" />
+
+                            <!--  splitter  -->
+
+                            <Button
+                                Margin="5,15,5,5"
+                                Click="RefreshDataGridBindingButton_Click"
+                                Content="RefreshDataGridBinding" />
+
+                        </StackPanel>
+
+                    </ScrollViewer>
+
+                    <DataGrid
+                        x:Name="FloatingIpDataGrid"
+                        Grid.Column="1"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        IsReadOnly="True">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
+                            <DataGridTextColumn Binding="{Binding Description}" Header="Description" />
+                            <DataGridTextColumn Binding="{Binding Ip}" Header="Ip" />
+                            <DataGridTextColumn Binding="{Binding Type}" Header="Type" />
+                            <DataGridCheckBoxColumn Binding="{Binding Blocked}" Header="Blocked" />
+                            <DataGridCheckBoxColumn Binding="{Binding Protection.Delete}" Header="Delete" />
+                            <DataGridTextColumn Binding="{Binding HomeLocation.Description}" Header="HomeLocation" />
+                            <DataGridTextColumn Binding="{Binding HomeLocation.City}" Header="City" />
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+
+                </Grid>
+            </TabItem>
 
             <TabItem Header="Pricing">
 
@@ -437,7 +484,8 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         AutoGenerateColumns="False"
-                        CanUserAddRows="False">
+                        CanUserAddRows="False"
+                        IsReadOnly="True">
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
