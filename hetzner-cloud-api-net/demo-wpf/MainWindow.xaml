@@ -43,6 +43,159 @@
 
         <TabControl x:Name="MainTabControl" Grid.Row="1">
 
+            <TabItem Header="Server">
+
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <ScrollViewer
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="0">
+
+                        <StackPanel Orientation="Vertical">
+
+                            <Button
+                                Margin="5,5,5,5"
+                                Click="GetAllButton_Click"
+                                Content="GetAsync" />
+
+                            <Button
+                                Margin="5,5,5,5"
+                                Click="GetOneButton_Click"
+                                Content="GetAsync With Id" />
+
+                            <Button
+                                Margin="5,5,5,5"
+                                Click="GetAllServerWithFilter_Click"
+                                Content="GetAsync With Filter" />
+
+                            <Button
+                                Margin="5,5,5,5"
+                                Click="RebuildFromImageButton_Click"
+                                Content="RebuildFromImage" />
+
+                            <Button
+                                Margin="5,5,5,5"
+                                Click="GetOneFloatingIpButton_Click"
+                                Content="GetOneFloatingIp" />
+
+                            <Button
+                                Margin="5,5,5,5"
+                                Click="DeleteFloatingIpButton_Click"
+                                Content="DeleteFloatingIp" />
+
+                        </StackPanel>
+
+                    </ScrollViewer>
+
+                    <StackPanel
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Orientation="Horizontal">
+
+                        <Button
+                            x:Name="ServerDataGridLastPageButton"
+                            Margin="5,5,5,5"
+                            Click="ServerDataGridLastPageButton_Clicked"
+                            Content="&lt;"
+                            IsEnabled="False" />
+
+                        <TextBlock
+                            x:Name="ServerDataGridCurrentPageTextBlock"
+                            Margin="5,10,5,10"
+                            FontSize="16"
+                            Text="0" />
+
+                        <TextBlock
+                            Margin="5,10,5,10"
+                            FontSize="16"
+                            Text="/" />
+
+                        <TextBlock
+                            x:Name="ServerDataGridMaxPageTextBlock"
+                            Margin="5,10,5,10"
+                            FontSize="16"
+                            Text="0" />
+
+                        <Button
+                            x:Name="ServerDataGridNextPageButton"
+                            Margin="5,5,5,5"
+                            Click="ServerDataGridNextPageButton_Clicked"
+                            Content="&gt;"
+                            IsEnabled="False" />
+
+                    </StackPanel>
+
+                    <DataGrid
+                        x:Name="ServerDataGrid"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
+                            <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+                            <DataGridTextColumn Binding="{Binding Status}" Header="Status" />
+                        </DataGrid.Columns>
+
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem
+                                    Click="ServerShutdownContextMenu_Click"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
+                                    Header="Shutdown" />
+                                <MenuItem
+                                    Click="ServerPowerOnContextMenu_Click"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
+                                    Header="PowerOn" />
+                                <MenuItem
+                                    Click="ServerPowerOffContextMenu_Click"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
+                                    Header="PowerOff" />
+                                <MenuItem
+                                    Click="ServerRebootContextMenu_Click"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
+                                    Header="Reboot" />
+                                <MenuItem
+                                    Click="ServerResetContextMenu_Click"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
+                                    Header="Reset" />
+                                <Separator />
+                                <MenuItem
+                                    Click="ServerResetPasswordContextMenu_Click"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
+                                    Header="Reset Password" />
+                                <Separator />
+                                <MenuItem
+                                    Click="ServerCreateImageBackupContextMenu_Click"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
+                                    Header="Create Image Backup" />
+                                <MenuItem
+                                    Click="ServerCreateImageSnapshotContextMenu_Click"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
+                                    Header="Create Image Snapshot" />
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+
+                    </DataGrid>
+
+                </Grid>
+
+            </TabItem>
+
+            <TabItem Header="FloatingIp" />
+
             <TabItem Header="Pricing">
 
                 <Grid>
@@ -211,56 +364,77 @@
 
             </TabItem>
 
-            <TabItem Header="Server">
+            <TabItem Header="ISOs">
 
                 <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="250" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <ScrollViewer Grid.Column="0">
+                    <ScrollViewer
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="0">
 
                         <StackPanel Orientation="Vertical">
 
                             <Button
                                 Margin="5,5,5,5"
-                                Click="GetAllButton_Click"
+                                Click="GetAllIsoButton_Click"
                                 Content="GetAsync" />
-
-                            <Button
-                                Margin="5,5,5,5"
-                                Click="GetOneButton_Click"
-                                Content="GetAsync With Id" />
-
-                            <Button
-                                Margin="5,5,5,5"
-                                Click="GetAllServerWithFilter_Click"
-                                Content="GetAsync With Filter" />
-
-                            <Button
-                                Margin="5,5,5,5"
-                                Click="RebuildFromImageButton_Click"
-                                Content="RebuildFromImage" />
-
-                            <Button
-                                Margin="5,5,5,5"
-                                Click="GetOneFloatingIpButton_Click"
-                                Content="GetOneFloatingIp" />
-
-                            <Button
-                                Margin="5,5,5,5"
-                                Click="DeleteFloatingIpButton_Click"
-                                Content="DeleteFloatingIp" />
 
                         </StackPanel>
 
                     </ScrollViewer>
 
-                    <DataGrid
-                        x:Name="ServerDataGrid"
+                    <StackPanel
                         Grid.Row="0"
+                        Grid.Column="1"
+                        Orientation="Horizontal">
+
+                        <Button
+                            x:Name="IsoDataGridLastPageButton"
+                            Margin="5,5,5,5"
+                            Click="IsoDataGridLastPageButton_Clicked"
+                            Content="&lt;"
+                            IsEnabled="False" />
+
+                        <TextBlock
+                            x:Name="IsoDataGridCurrentPageTextBlock"
+                            Margin="5,10,5,10"
+                            FontSize="16"
+                            Text="0" />
+
+                        <TextBlock
+                            Margin="5,10,5,10"
+                            FontSize="16"
+                            Text="/" />
+
+                        <TextBlock
+                            x:Name="IsoDataGridMaxPageTextBlock"
+                            Margin="5,10,5,10"
+                            FontSize="16"
+                            Text="0" />
+
+                        <Button
+                            x:Name="IsoDataGridNextPageButton"
+                            Margin="5,5,5,5"
+                            Click="IsoDataGridNextPageButton_Clicked"
+                            Content="&gt;"
+                            IsEnabled="False" />
+
+                    </StackPanel>
+
+                    <DataGrid
+                        x:Name="IsoDataGrid"
+                        Grid.Row="1"
                         Grid.Column="1"
                         AutoGenerateColumns="False"
                         CanUserAddRows="False">
@@ -268,55 +442,14 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
                             <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
-                            <DataGridTextColumn Binding="{Binding Status}" Header="Status" />
+                            <DataGridTextColumn Binding="{Binding Description}" Header="Description" />
                         </DataGrid.Columns>
-
-                        <DataGrid.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem
-                                    Click="ServerShutdownContextMenu_Click"
-                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
-                                    Header="Shutdown" />
-                                <MenuItem
-                                    Click="ServerPowerOnContextMenu_Click"
-                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
-                                    Header="PowerOn" />
-                                <MenuItem
-                                    Click="ServerPowerOffContextMenu_Click"
-                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
-                                    Header="PowerOff" />
-                                <MenuItem
-                                    Click="ServerRebootContextMenu_Click"
-                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
-                                    Header="Reboot" />
-                                <MenuItem
-                                    Click="ServerResetContextMenu_Click"
-                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
-                                    Header="Reset" />
-                                <Separator />
-                                <MenuItem
-                                    Click="ServerResetPasswordContextMenu_Click"
-                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
-                                    Header="Reset Password" />
-                                <Separator />
-                                <MenuItem
-                                    Click="ServerCreateImageBackupContextMenu_Click"
-                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
-                                    Header="Create Image Backup" />
-                                <MenuItem
-                                    Click="ServerCreateImageSnapshotContextMenu_Click"
-                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
-                                    Header="Create Image Snapshot" />
-                            </ContextMenu>
-                        </DataGrid.ContextMenu>
 
                     </DataGrid>
 
                 </Grid>
 
             </TabItem>
-
-            <TabItem Header="FloatingIp" />
 
         </TabControl>
 

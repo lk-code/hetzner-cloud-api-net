@@ -1,4 +1,5 @@
 ﻿using lkcode.hetznercloudapi.Core;
+using lkcode.hetznercloudapi.Exceptions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -9,30 +10,64 @@ namespace lkcode.hetznercloudapi.Api
 {
     public class Server
     {
+        #region # static properties #
+
+        private static int _currentPage { get; set; }
+        public static int CurrentPage
+        {
+            get
+            {
+                return _currentPage;
+            }
+            set
+            {
+                _currentPage = value;
+            }
+        }
+
+        private static int _maxPages { get; set; }
+        public static int MaxPages
+        {
+            get
+            {
+                return _maxPages;
+            }
+            set
+            {
+                _maxPages = value;
+            }
+        }
+
+        #endregion
+
+        #region # public properties #
+
         /// <summary>
-        /// 
+        /// ID of server.
         /// </summary>
         public long Id { get; set; } = 0;
 
         /// <summary>
-        /// 
+        /// Name of the server (must be unique per project and a valid hostname as per RFC 1123).
         /// </summary>
         public string Name { get; set; } = string.Empty;
 
         /// <summary>
-        /// 
+        /// Status of the server.
         /// </summary>
         public string Status { get; set; } = string.Empty;
 
         /// <summary>
-        /// 
+        /// Point in time when the server was created (in ISO-8601 format) as a System.DateTimeOffset.
         /// </summary>
         public DateTimeOffset Created { get; set; }
 
         /// <summary>
-        /// 
+        /// Public network information. The servers ipv4 address can be found in `public_net->ipv4->ip`.
         /// </summary>
         public Network Network { get; set; }
+
+        #endregion
 
         #region # static methods #
 
@@ -40,12 +75,28 @@ namespace lkcode.hetznercloudapi.Api
         /// Returns all server in a list.
         /// </summary>
         /// <returns></returns>
-        public static async Task<List<Server>> GetAsync()
+        public static async Task<List<Server>> GetAsync(int page = 1)
         {
+            if ((_maxPages > 0 && (page <= 0 || page > _maxPages)))
+            {
+                throw new InvalidPageException("invalid page number (" + page + "). valid values between 1 and " + _maxPages + "");
+            }
+
             List<Server> serverList = new List<Server>();
 
-            string responseContent = await ApiCore.SendRequest("/servers");
+            string url = string.Format("/servers");
+            if (page > 1)
+            {
+                url += "?page=" + page.ToString();
+            }
+
+            string responseContent = await ApiCore.SendRequest(url);
             Objects.Server.Get.Response response = JsonConvert.DeserializeObject<Objects.Server.Get.Response>(responseContent);
+
+            // load meta
+            CurrentPage = response.meta.pagination.page;
+            float pagesDValue = ((float)response.meta.pagination.total_entries / (float)response.meta.pagination.per_page);
+            MaxPages = (int)Math.Ceiling(pagesDValue);
 
             foreach (Objects.Server.Universal.Server responseServer in response.servers)
             {
@@ -62,17 +113,33 @@ namespace lkcode.hetznercloudapi.Api
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public static async Task<List<Server>> GetAsync(string filter)
+        public static async Task<List<Server>> GetAsync(string filter, int page = 1)
         {
-            if(string.IsNullOrEmpty(filter) || string.IsNullOrWhiteSpace(filter))
+            if ((_maxPages > 0 && (page <= 0 || page > _maxPages)))
+            {
+                throw new InvalidPageException("invalid page number (" + page + "). valid values between 1 and " + _maxPages + "");
+            }
+
+            if (string.IsNullOrEmpty(filter) || string.IsNullOrWhiteSpace(filter))
             {
                 return await GetAsync();
             }
 
             List<Server> serverList = new List<Server>();
 
-            string responseContent = await ApiCore.SendRequest(string.Format("/servers?name={0}", filter));
+            string url = string.Format("/servers?name={0}", filter);
+            if (page > 1)
+            {
+                url += "&page=" + page.ToString();
+            }
+
+            string responseContent = await ApiCore.SendRequest(url);
             Objects.Server.Get.Response response = JsonConvert.DeserializeObject<Objects.Server.Get.Response>(responseContent);
+
+            // load meta
+            CurrentPage = response.meta.pagination.page;
+            float pagesDValue = ((float)response.meta.pagination.total_entries / (float)response.meta.pagination.per_page);
+            MaxPages = (int)Math.Ceiling(pagesDValue);
 
             foreach (Objects.Server.Universal.Server responseServer in response.servers)
             {

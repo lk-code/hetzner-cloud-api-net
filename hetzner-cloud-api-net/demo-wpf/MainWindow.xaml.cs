@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace demo_wpf
 {
@@ -46,15 +45,42 @@ namespace demo_wpf
             lkcode.hetznercloudapi.Core.ApiCore.ApiToken = this.ApiTokenTextBox.Text;
         }
 
-        private async void GetAllButton_Click(object sender, RoutedEventArgs e)
+        private void GetAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            LoadServerData(1);
+        }
+
+        private void ServerDataGridLastPageButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            LoadServerData((lkcode.hetznercloudapi.Api.Server.CurrentPage - 1));
+        }
+
+        private void ServerDataGridNextPageButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            LoadServerData((lkcode.hetznercloudapi.Api.Server.CurrentPage + 1));
+        }
+
+        private async void LoadServerData(int page)
         {
             try
             {
-                this.AddLogMessage("load servers");
+                this.AddLogMessage(string.Format("load servers in page {0}", page));
 
                 List<lkcode.hetznercloudapi.Api.Server> serverList = await lkcode.hetznercloudapi.Api.Server.GetAsync();
-
                 this.ServerDataGrid.ItemsSource = serverList;
+
+                this.ServerDataGridCurrentPageTextBlock.Text = lkcode.hetznercloudapi.Api.Server.CurrentPage.ToString();
+                this.ServerDataGridMaxPageTextBlock.Text = lkcode.hetznercloudapi.Api.Server.MaxPages.ToString();
+                this.ServerDataGridLastPageButton.IsEnabled = true;
+                this.ServerDataGridNextPageButton.IsEnabled = true;
+                if (lkcode.hetznercloudapi.Api.Server.CurrentPage == 1)
+                {
+                    this.ServerDataGridLastPageButton.IsEnabled = false;
+                }
+                if (lkcode.hetznercloudapi.Api.Server.CurrentPage == lkcode.hetznercloudapi.Api.Server.MaxPages)
+                {
+                    this.ServerDataGridNextPageButton.IsEnabled = false;
+                }
 
                 this.AddLogMessage(string.Format("loaded {0} servers", serverList.Count));
             }
@@ -369,6 +395,51 @@ namespace demo_wpf
                 this.ServerTypePricingDataGrid.ItemsSource = pricing.ServerTypes;
 
                 this.AddLogMessage(string.Format("loaded pricings"));
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
+
+        private void GetAllIsoButton_Click(object sender, RoutedEventArgs e)
+        {
+            LoadIsoData(1);
+        }
+
+        private void IsoDataGridLastPageButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            LoadIsoData((lkcode.hetznercloudapi.Api.IsoImage.CurrentPage - 1));
+        }
+
+        private void IsoDataGridNextPageButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            LoadIsoData((lkcode.hetznercloudapi.Api.IsoImage.CurrentPage + 1));
+        }
+
+        private async void LoadIsoData(int page)
+        {
+            try
+            {
+                this.AddLogMessage(string.Format("load iso images in page {0}", page));
+
+                List<lkcode.hetznercloudapi.Api.IsoImage> imagesList = await lkcode.hetznercloudapi.Api.IsoImage.GetAsync(page);
+                this.IsoDataGrid.ItemsSource = imagesList;
+
+                this.IsoDataGridCurrentPageTextBlock.Text = lkcode.hetznercloudapi.Api.IsoImage.CurrentPage.ToString();
+                this.IsoDataGridMaxPageTextBlock.Text = lkcode.hetznercloudapi.Api.IsoImage.MaxPages.ToString();
+                this.IsoDataGridLastPageButton.IsEnabled = true;
+                this.IsoDataGridNextPageButton.IsEnabled = true;
+                if (lkcode.hetznercloudapi.Api.IsoImage.CurrentPage == 1)
+                {
+                    this.IsoDataGridLastPageButton.IsEnabled = false;
+                }
+                if (lkcode.hetznercloudapi.Api.IsoImage.CurrentPage == lkcode.hetznercloudapi.Api.IsoImage.MaxPages)
+                {
+                    this.IsoDataGridNextPageButton.IsEnabled = false;
+                }
+
+                this.AddLogMessage(string.Format("loaded {0} iso images", imagesList.Count));
             }
             catch (Exception err)
             {
