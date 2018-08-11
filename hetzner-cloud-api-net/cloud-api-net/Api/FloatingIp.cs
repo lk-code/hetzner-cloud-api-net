@@ -9,7 +9,7 @@ namespace lkcode.hetznercloudapi.Api
     {
         private bool _isInitialized { get; set; }
         /// <summary>
-        /// 
+        /// If false, this floating-ip is not loaded (only the object from the server). access a field like floatingIp.Description and the object will load the data in the background.
         /// </summary>
         public bool IsInitialized
         {
