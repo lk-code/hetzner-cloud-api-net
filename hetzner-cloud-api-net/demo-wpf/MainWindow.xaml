@@ -499,6 +499,96 @@
 
             </TabItem>
 
+            <TabItem Header="Datacenter">
+
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <ScrollViewer
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="0">
+
+                        <StackPanel Orientation="Vertical">
+
+                            <Button
+                                Margin="5,5,5,5"
+                                Click="GetAllDatacenterButton_Click"
+                                Content="GetAsync" />
+
+                        </StackPanel>
+
+                    </ScrollViewer>
+
+                    <StackPanel
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Orientation="Horizontal">
+
+                        <Button
+                            x:Name="DatacenterDataGridLastPageButton"
+                            Margin="5,5,5,5"
+                            Click="DatacenterDataGridLastPageButton_Clicked"
+                            Content="&lt;"
+                            IsEnabled="False" />
+
+                        <TextBlock
+                            x:Name="DatacenterDataGridCurrentPageTextBlock"
+                            Margin="5,10,5,10"
+                            FontSize="16"
+                            Text="0" />
+
+                        <TextBlock
+                            Margin="5,10,5,10"
+                            FontSize="16"
+                            Text="/" />
+
+                        <TextBlock
+                            x:Name="DatacenterDataGridMaxPageTextBlock"
+                            Margin="5,10,5,10"
+                            FontSize="16"
+                            Text="0" />
+
+                        <Button
+                            x:Name="DatacenterDataGridNextPageButton"
+                            Margin="5,5,5,5"
+                            Click="DatacenterDataGridNextPageButton_Clicked"
+                            Content="&gt;"
+                            IsEnabled="False" />
+
+                    </StackPanel>
+
+                    <DataGrid
+                        x:Name="DatacenterDataGrid"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        IsReadOnly="True">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
+                            <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+                            <DataGridTextColumn Binding="{Binding Description}" Header="Description" />
+                            <DataGridTextColumn Binding="{Binding Location.Description}" Header="HomeLocation" />
+                            <DataGridTextColumn Binding="{Binding Location.City}" Header="City" />
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+
+                </Grid>
+
+            </TabItem>
+
         </TabControl>
 
         <TextBox

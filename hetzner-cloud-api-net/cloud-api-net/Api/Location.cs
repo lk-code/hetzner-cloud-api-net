@@ -1,7 +1,9 @@
 ﻿namespace lkcode.hetznercloudapi.Api
 {
-    public class FloatingIpHomeLocation
+    public class Location
     {
+        #region # public properties #
+
         /// <summary>
         /// ID of the location.
         /// </summary>
@@ -36,5 +38,7 @@
         /// Longitude of the city closest to the location.
         /// </summary>
         public double Longitude { get; set; }
+
+        #endregion
     }
 }

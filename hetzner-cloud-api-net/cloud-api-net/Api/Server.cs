@@ -63,7 +63,7 @@ namespace lkcode.hetznercloudapi.Api
         public DateTimeOffset Created { get; set; }
 
         /// <summary>
-        /// Public network information. The servers ipv4 address can be found in `public_net->ipv4->ip`.
+        /// Public network information.
         /// </summary>
         public Network Network { get; set; }
 

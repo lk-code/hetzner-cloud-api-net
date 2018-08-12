@@ -473,5 +473,50 @@ namespace demo_wpf
             this.FloatingIpDataGrid.ItemsSource = null;
             this.FloatingIpDataGrid.ItemsSource = server.Network.FloatingIps;
         }
+
+        private void GetAllDatacenterButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.LoadDatacenterData(1);
+        }
+
+        private async void LoadDatacenterData(int page)
+        {
+            try
+            {
+                this.AddLogMessage(string.Format("load datacenter in page {0}", page));
+
+                List<lkcode.hetznercloudapi.Api.Datacenter> datacenterList = await lkcode.hetznercloudapi.Api.Datacenter.GetAsync(page);
+                this.DatacenterDataGrid.ItemsSource = datacenterList;
+                
+                this.DatacenterDataGridCurrentPageTextBlock.Text = lkcode.hetznercloudapi.Api.Datacenter.CurrentPage.ToString();
+                this.DatacenterDataGridMaxPageTextBlock.Text = lkcode.hetznercloudapi.Api.Datacenter.MaxPages.ToString();
+                this.DatacenterDataGridLastPageButton.IsEnabled = true;
+                this.DatacenterDataGridNextPageButton.IsEnabled = true;
+                if (lkcode.hetznercloudapi.Api.Datacenter.CurrentPage == 1)
+                {
+                    this.DatacenterDataGridLastPageButton.IsEnabled = false;
+                }
+                if (lkcode.hetznercloudapi.Api.Datacenter.CurrentPage == lkcode.hetznercloudapi.Api.Datacenter.MaxPages)
+                {
+                    this.DatacenterDataGridNextPageButton.IsEnabled = false;
+                }
+
+                this.AddLogMessage(string.Format("loaded {0} datacenter", datacenterList.Count));
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
+
+        private void DatacenterDataGridNextPageButton_Clicked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DatacenterDataGridLastPageButton_Clicked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

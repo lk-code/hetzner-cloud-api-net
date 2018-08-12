@@ -139,11 +139,11 @@ namespace lkcode.hetznercloudapi.Api
             }
         }
 
-        private FloatingIpHomeLocation _homeLocation { get; set; }
+        private Location _homeLocation { get; set; }
         /// <summary>
         /// Location the Floating IP was created in. Routing is optimized for this location.
         /// </summary>
-        public FloatingIpHomeLocation HomeLocation
+        public Location HomeLocation
         {
             get
             {
@@ -259,7 +259,7 @@ namespace lkcode.hetznercloudapi.Api
                 Delete = responseData.protection.delete
             };
 
-            floatingIp.HomeLocation = new FloatingIpHomeLocation()
+            floatingIp.HomeLocation = new Location()
             {
                 Id = responseData.home_location.id,
                 Name = responseData.home_location.name,
