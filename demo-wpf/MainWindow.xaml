@@ -525,6 +525,11 @@
                                 Click="GetAllDatacenterButton_Click"
                                 Content="GetAsync" />
 
+                            <Button
+                                Margin="5,5,5,5"
+                                Click="GetOneDatacenterButton_Click"
+                                Content="GetAsync With Id" />
+
                         </StackPanel>
 
                     </ScrollViewer>

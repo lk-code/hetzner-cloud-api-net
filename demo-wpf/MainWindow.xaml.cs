@@ -518,5 +518,32 @@ namespace demo_wpf
         {
 
         }
+
+        private async void GetOneDatacenterButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.AddLogMessage("load datacenter");
+
+                string datacenterId = await this.ShowInputAsync(
+                    "Datacenter-ID",
+                    "enter the datacenter id");
+
+                long id = Convert.ToInt64(datacenterId);
+
+                lkcode.hetznercloudapi.Api.Datacenter datacenter = await lkcode.hetznercloudapi.Api.Datacenter.GetAsync(id);
+                List<lkcode.hetznercloudapi.Api.Datacenter> datacenterList = new List<lkcode.hetznercloudapi.Api.Datacenter>();
+                datacenterList.Add(datacenter);
+
+                this.DatacenterDataGrid.ItemsSource = null;
+                this.DatacenterDataGrid.ItemsSource = datacenterList;
+
+                this.AddLogMessage(string.Format("loaded datacenter with id {0} and name '{1}'", datacenter.Id, datacenter.Name));
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
     }
 }

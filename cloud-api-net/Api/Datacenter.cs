@@ -170,10 +170,28 @@ namespace lkcode.hetznercloudapi.Api
             return datacenterList;
         }
 
+        /// <summary>
+        /// Returns all datacenter with the given id.
+        /// </summary>
+        /// <returns></returns>
+        public static async Task<Datacenter> GetAsync(long id)
+        {
+            Datacenter datacenter = new Datacenter();
+
+            string url = string.Format("/datacenters/{0}", id);
+
+            string responseContent = await ApiCore.SendRequest(url);
+            Objects.Datacenter.GetOne.Response response = JsonConvert.DeserializeObject<Objects.Datacenter.GetOne.Response>(responseContent);
+
+            datacenter = GetDatacenterFromResponseData(response.datacenter);
+
+            return datacenter;
+        }
+
         #endregion
 
         #region # private methods for processing #
-        
+
         /// <summary>
         /// 
         /// </summary>
