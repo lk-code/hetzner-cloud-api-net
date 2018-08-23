@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace lkcode.hetznercloudapi.Objects.Server.Universal
+﻿namespace lkcode.hetznercloudapi.Objects.Universal
 {
     public class Pagination
     {

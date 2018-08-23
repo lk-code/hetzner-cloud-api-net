@@ -1,4 +1,4 @@
-﻿using lkcode.hetznercloudapi.Objects.Server.Universal;
+﻿using lkcode.hetznercloudapi.Objects.Universal;
 using System.Collections.Generic;
 
 namespace lkcode.hetznercloudapi.Objects.Datacenter.Get

@@ -509,14 +509,14 @@ namespace demo_wpf
             }
         }
 
-        private void DatacenterDataGridNextPageButton_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void DatacenterDataGridLastPageButton_Clicked(object sender, RoutedEventArgs e)
         {
+            LoadDatacenterData((lkcode.hetznercloudapi.Api.Datacenter.CurrentPage - 1));
+        }
 
+        private void DatacenterDataGridNextPageButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            LoadDatacenterData((lkcode.hetznercloudapi.Api.Datacenter.CurrentPage + 1));
         }
 
         private async void GetOneDatacenterButton_Click(object sender, RoutedEventArgs e)
@@ -539,6 +539,78 @@ namespace demo_wpf
                 this.DatacenterDataGrid.ItemsSource = datacenterList;
 
                 this.AddLogMessage(string.Format("loaded datacenter with id {0} and name '{1}'", datacenter.Id, datacenter.Name));
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
+
+        private void GetAllLocationsButton_Click(object sender, RoutedEventArgs e)
+        {
+            LoadLocationData(1);
+        }
+
+        private async void GetOneLocationButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.AddLogMessage("load location");
+
+                string locationId = await this.ShowInputAsync(
+                    "Location-ID",
+                    "enter the location id");
+
+                long id = Convert.ToInt64(locationId);
+
+                lkcode.hetznercloudapi.Api.Location location = await lkcode.hetznercloudapi.Api.Location.GetAsync(id);
+                List<lkcode.hetznercloudapi.Api.Location> locationList = new List<lkcode.hetznercloudapi.Api.Location>();
+                locationList.Add(location);
+
+                this.LocationsDataGrid.ItemsSource = null;
+                this.LocationsDataGrid.ItemsSource = locationList;
+
+                this.AddLogMessage(string.Format("loaded location with id {0} and name '{1}'", location.Id, location.Name));
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
+
+        private void LocationsDataGridLastPageButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            LoadLocationData((lkcode.hetznercloudapi.Api.Location.CurrentPage - 1));
+        }
+
+        private void LocationsDataGridNextPageButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            LoadLocationData((lkcode.hetznercloudapi.Api.Location.CurrentPage + 1));
+        }
+
+        private async void LoadLocationData(int page)
+        {
+            try
+            {
+                this.AddLogMessage(string.Format("load locations in page {0}", page));
+
+                List<lkcode.hetznercloudapi.Api.Location> locationsList = await lkcode.hetznercloudapi.Api.Location.GetAsync(page);
+                this.LocationsDataGrid.ItemsSource = locationsList;
+
+                this.LocationsDataGridCurrentPageTextBlock.Text = lkcode.hetznercloudapi.Api.Location.CurrentPage.ToString();
+                this.LocationsDataGridMaxPageTextBlock.Text = lkcode.hetznercloudapi.Api.Location.MaxPages.ToString();
+                this.LocationsDataGridLastPageButton.IsEnabled = true;
+                this.LocationsDataGridNextPageButton.IsEnabled = true;
+                if (lkcode.hetznercloudapi.Api.Location.CurrentPage == 1)
+                {
+                    this.LocationsDataGridLastPageButton.IsEnabled = false;
+                }
+                if (lkcode.hetznercloudapi.Api.Location.CurrentPage == lkcode.hetznercloudapi.Api.Location.MaxPages)
+                {
+                    this.LocationsDataGridNextPageButton.IsEnabled = false;
+                }
+
+                this.AddLogMessage(string.Format("loaded {0} locations", locationsList.Count));
             }
             catch (Exception err)
             {

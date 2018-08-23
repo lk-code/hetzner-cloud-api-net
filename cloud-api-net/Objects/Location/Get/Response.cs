@@ -1,12 +1,12 @@
 ﻿using lkcode.hetznercloudapi.Objects.Universal;
 using System.Collections.Generic;
 
-namespace lkcode.hetznercloudapi.Objects.Server.Get
+namespace lkcode.hetznercloudapi.Objects.Location.Get
 {
 
     public class Response
     {
-        public List<Server.Universal.Server> servers { get; set; }
+        public List<Universal.Location> locations { get; set; }
         public Meta meta { get; set; }
     }
 }

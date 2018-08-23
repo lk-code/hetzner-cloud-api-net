@@ -594,6 +594,101 @@
 
             </TabItem>
 
+            <TabItem Header="Locations">
+
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <ScrollViewer
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="0">
+
+                        <StackPanel Orientation="Vertical">
+
+                            <Button
+                                Margin="5,5,5,5"
+                                Click="GetAllLocationsButton_Click"
+                                Content="GetAsync" />
+
+                            <Button
+                                Margin="5,5,5,5"
+                                Click="GetOneLocationButton_Click"
+                                Content="GetAsync With Id" />
+
+                        </StackPanel>
+
+                    </ScrollViewer>
+
+                    <StackPanel
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Orientation="Horizontal">
+
+                        <Button
+                            x:Name="LocationsDataGridLastPageButton"
+                            Margin="5,5,5,5"
+                            Click="LocationsDataGridLastPageButton_Clicked"
+                            Content="&lt;"
+                            IsEnabled="False" />
+
+                        <TextBlock
+                            x:Name="LocationsDataGridCurrentPageTextBlock"
+                            Margin="5,10,5,10"
+                            FontSize="16"
+                            Text="0" />
+
+                        <TextBlock
+                            Margin="5,10,5,10"
+                            FontSize="16"
+                            Text="/" />
+
+                        <TextBlock
+                            x:Name="LocationsDataGridMaxPageTextBlock"
+                            Margin="5,10,5,10"
+                            FontSize="16"
+                            Text="0" />
+
+                        <Button
+                            x:Name="LocationsDataGridNextPageButton"
+                            Margin="5,5,5,5"
+                            Click="LocationsDataGridNextPageButton_Clicked"
+                            Content="&gt;"
+                            IsEnabled="False" />
+
+                    </StackPanel>
+
+                    <DataGrid
+                        x:Name="LocationsDataGrid"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        IsReadOnly="True">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
+                            <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+                            <DataGridTextColumn Binding="{Binding Description}" Header="Description" />
+                            <DataGridTextColumn Binding="{Binding Country}" Header="Country" />
+                            <DataGridTextColumn Binding="{Binding City}" Header="City" />
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+
+                </Grid>
+
+            </TabItem>
+
         </TabControl>
 
         <TextBox
