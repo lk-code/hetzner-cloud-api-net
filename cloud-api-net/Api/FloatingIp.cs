@@ -7,9 +7,11 @@ namespace lkcode.hetznercloudapi.Api
 {
     public class FloatingIp
     {
+        #region # public properties #
+
         private bool _isInitialized { get; set; }
         /// <summary>
-        /// If false, this floating-ip is not loaded (only the object from the server). access a field like floatingIp.Description and the object will load the data in the background.
+        /// If false, this floating-ip is not loaded (only the object with the id). access a field like floatingIp.Description and the object will load the data in the background.
         /// </summary>
         public bool IsInitialized
         {
@@ -175,6 +177,10 @@ namespace lkcode.hetznercloudapi.Api
             }
         }
 
+        #endregion
+
+        #region # public methods #
+
         /// <summary>
         /// 
         /// </summary>
@@ -184,8 +190,10 @@ namespace lkcode.hetznercloudapi.Api
             this._id = id;
         }
 
+        #endregion
+
         #region # public methods #
-        
+
         /// <summary>
         /// Returns a floating-id by the given id.
         /// </summary>
@@ -235,6 +243,7 @@ namespace lkcode.hetznercloudapi.Api
             this.Protection = floatingIp.Protection;
             this.DnsPointer = floatingIp.DnsPointer;
             this.HomeLocation = floatingIp.HomeLocation;
+
             this._isInitialized = true;
         }
 

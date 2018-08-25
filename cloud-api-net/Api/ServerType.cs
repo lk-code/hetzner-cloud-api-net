@@ -41,50 +41,173 @@ namespace lkcode.hetznercloudapi.Api
 
         #region # public properties #
 
+        private bool _isInitialized { get; set; }
+        /// <summary>
+        /// If false, this server-type is not loaded (only the object with the id). access a field like serverType.Description and the object will load the data in the background.
+        /// </summary>
+        public bool IsInitialized
+        {
+            get
+            {
+                return this._isInitialized;
+            }
+        }
+        
+        private long _id { get; set; }
         /// <summary>
         /// ID of the server type.
         /// </summary>
-        public int Id { get; set; }
+        public long Id
+        {
+            get
+            {
+                return this._id;
+            }
+        }
 
+        private string _name { get; set; }
         /// <summary>
         /// Unique identifier of the server type.
         /// </summary>
-        public string Name { get; set; }
+        public string Name
+        {
+            get
+            {
+                this.LoadData(); // load data if not initialized
 
+                return this._name;
+            }
+            set
+            {
+                this._name = value;
+            }
+        }
+
+        private string _description { get; set; }
         /// <summary>
         /// Description of the server type.
         /// </summary>
-        public string Description { get; set; }
+        public string Description
+        {
+            get
+            {
+                this.LoadData(); // load data if not initialized
 
+                return this._description;
+            }
+            set
+            {
+                this._description = value;
+            }
+        }
+
+        private int _cores { get; set; }
         /// <summary>
         /// Number of cpu cores a server of this type will have.
         /// </summary>
-        public int Cores { get; set; }
+        public int Cores
+        {
+            get
+            {
+                this.LoadData(); // load data if not initialized
 
+                return this._cores;
+            }
+            set
+            {
+                this._cores = value;
+            }
+        }
+
+        private double _memory { get; set; }
         /// <summary>
         /// Memory a server of this type will have in GB.
         /// </summary>
-        public double Memory { get; set; }
+        public double Memory
+        {
+            get
+            {
+                this.LoadData(); // load data if not initialized
 
+                return this._memory;
+            }
+            set
+            {
+                this._memory = value;
+            }
+        }
+
+        private int _disc { get; set; }
         /// <summary>
         /// Disk size a server of this type will have in GB.
         /// </summary>
-        public int Disc { get; set; }
+        public int Disc
+        {
+            get
+            {
+                this.LoadData(); // load data if not initialized
 
+                return this._disc;
+            }
+            set
+            {
+                this._disc = value;
+            }
+        }
+
+        private string _storageType { get; set; }
         /// <summary>
         /// Type of server boot drive. Local has higher speed. Network has better availability..
         /// </summary>
-        public string StorageType { get; set; }
+        public string StorageType
+        {
+            get
+            {
+                this.LoadData(); // load data if not initialized
 
+                return this._storageType;
+            }
+            set
+            {
+                this._storageType = value;
+            }
+        }
+
+        private string _cpuType { get; set; }
         /// <summary>
         /// Type of cpu.
         /// </summary>
-        public string CpuType { get; set; }
+        public string CpuType
+        {
+            get
+            {
+                this.LoadData(); // load data if not initialized
 
+                return this._cpuType;
+            }
+            set
+            {
+                this._cpuType = value;
+            }
+        }
+
+        private List<ServerTypePricingValue> _prices { get; set; }
         /// <summary>
         /// Prices in different ServerTypes.
         /// </summary>
-        public List<ServerTypePricingValue> Prices { get; set; }
+        public List<ServerTypePricingValue> Prices
+        {
+            get
+            {
+                this.LoadData(); // load data if not initialized
+
+                return this._prices;
+            }
+            set
+            {
+                this._prices = value;
+            }
+        }
 
         #endregion
 
@@ -202,12 +325,37 @@ namespace lkcode.hetznercloudapi.Api
 
         public ServerType(int id)
         {
-            this.Id = id;
+            this._id = id;
         }
 
         #endregion
 
         #region # private methods for processing #
+
+        /// <summary>
+        /// loads the data for this floating-ip.
+        /// </summary>
+        private async void LoadData()
+        {
+            if (this.IsInitialized)
+            {
+                return;
+            }
+
+            ServerType serverType = await GetAsync(this.Id);
+
+            serverType._id = serverType.Id;
+            serverType.Name = serverType.Name;
+            serverType.Description = serverType.Description;
+            serverType.Cores = serverType.Cores;
+            serverType.CpuType = serverType.CpuType;
+            serverType.Disc = serverType.Disc;
+            serverType.Memory = serverType.Memory;
+            serverType.StorageType = serverType.StorageType;
+            serverType.Prices = serverType.Prices;
+
+            this._isInitialized = true;
+        }
 
         /// <summary>
         /// 
@@ -218,7 +366,8 @@ namespace lkcode.hetznercloudapi.Api
         {
             ServerType serverType = new ServerType();
 
-            serverType.Id = responseData.id;
+            serverType._isInitialized = true;
+            serverType._id = responseData.id;
             serverType.Name = responseData.name;
             serverType.Description = responseData.description;
             serverType.Cores = responseData.cores;
