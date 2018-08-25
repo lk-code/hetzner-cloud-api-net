@@ -787,6 +787,98 @@
 
             </TabItem>
 
+            <TabItem Header="SSH-Keys">
+
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <ScrollViewer
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="0">
+
+                        <StackPanel Orientation="Vertical">
+
+                            <Button
+                                Margin="5,5,5,5"
+                                Click="GetAllSshKeysButton_Click"
+                                Content="GetAsync" />
+
+                            <Button
+                                Margin="5,5,5,5"
+                                Click="GetOneSshKeyButton_Click"
+                                Content="GetAsync With Id" />
+
+                        </StackPanel>
+
+                    </ScrollViewer>
+
+                    <StackPanel
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Orientation="Horizontal">
+
+                        <Button
+                            x:Name="SshKeysDataGridLastPageButton"
+                            Margin="5,5,5,5"
+                            Click="SshKeysDataGridLastPageButton_Clicked"
+                            Content="&lt;"
+                            IsEnabled="False" />
+
+                        <TextBlock
+                            x:Name="SshKeysDataGridCurrentPageTextBlock"
+                            Margin="5,10,5,10"
+                            FontSize="16"
+                            Text="0" />
+
+                        <TextBlock
+                            Margin="5,10,5,10"
+                            FontSize="16"
+                            Text="/" />
+
+                        <TextBlock
+                            x:Name="SshKeysDataGridMaxPageTextBlock"
+                            Margin="5,10,5,10"
+                            FontSize="16"
+                            Text="0" />
+
+                        <Button
+                            x:Name="SshKeysDataGridNextPageButton"
+                            Margin="5,5,5,5"
+                            Click="SshKeysDataGridNextPageButton_Clicked"
+                            Content="&gt;"
+                            IsEnabled="False" />
+
+                    </StackPanel>
+
+                    <DataGrid
+                        x:Name="SshKeysDataGrid"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        IsReadOnly="True">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
+                            <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+
+                </Grid>
+
+            </TabItem>
+
         </TabControl>
 
         <TextBox

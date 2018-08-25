@@ -689,5 +689,77 @@ namespace demo_wpf
                 this.AddLogMessage(string.Format("error: {0}", err.Message));
             }
         }
+
+        private void GetAllSshKeysButton_Click(object sender, RoutedEventArgs e)
+        {
+            LoadSshKeyData(1);
+        }
+
+        private async void GetOneSshKeyButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.AddLogMessage("load ssh-key");
+
+                string sshKeyId = await this.ShowInputAsync(
+                    "SSH-Key-ID",
+                    "enter the SSH-Key id");
+
+                long id = Convert.ToInt64(sshKeyId);
+
+                lkcode.hetznercloudapi.Api.SshKey sshKey = await lkcode.hetznercloudapi.Api.SshKey.GetAsync(id);
+                List<lkcode.hetznercloudapi.Api.SshKey> sshKeyList = new List<lkcode.hetznercloudapi.Api.SshKey>();
+                sshKeyList.Add(sshKey);
+
+                this.SshKeysDataGrid.ItemsSource = null;
+                this.SshKeysDataGrid.ItemsSource = sshKeyList;
+
+                this.AddLogMessage(string.Format("loaded ssh-key with id {0} and name '{1}'", sshKey.Id, sshKey.Name));
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
+
+        private void SshKeysDataGridLastPageButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            LoadSshKeyData((lkcode.hetznercloudapi.Api.SshKey.CurrentPage - 1));
+        }
+
+        private void SshKeysDataGridNextPageButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            LoadSshKeyData((lkcode.hetznercloudapi.Api.SshKey.CurrentPage + 1));
+        }
+
+        private async void LoadSshKeyData(int page)
+        {
+            try
+            {
+                this.AddLogMessage(string.Format("load ssh-keys in page {0}", page));
+
+                List<lkcode.hetznercloudapi.Api.SshKey> serverTypesList = await lkcode.hetznercloudapi.Api.SshKey.GetAsync(page);
+                this.SshKeysDataGrid.ItemsSource = serverTypesList;
+
+                this.SshKeysDataGridCurrentPageTextBlock.Text = lkcode.hetznercloudapi.Api.SshKey.CurrentPage.ToString();
+                this.SshKeysDataGridMaxPageTextBlock.Text = lkcode.hetznercloudapi.Api.SshKey.MaxPages.ToString();
+                this.SshKeysDataGridLastPageButton.IsEnabled = true;
+                this.SshKeysDataGridNextPageButton.IsEnabled = true;
+                if (lkcode.hetznercloudapi.Api.SshKey.CurrentPage == 1)
+                {
+                    this.SshKeysDataGridLastPageButton.IsEnabled = false;
+                }
+                if (lkcode.hetznercloudapi.Api.SshKey.CurrentPage == lkcode.hetznercloudapi.Api.SshKey.MaxPages)
+                {
+                    this.SshKeysDataGridNextPageButton.IsEnabled = false;
+                }
+
+                this.AddLogMessage(string.Format("loaded {0} ssh-keys", serverTypesList.Count));
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
     }
 }
