@@ -1,4 +1,6 @@
-﻿using MahApps.Metro.Controls;
+﻿using lkcode.hetznercloudapi.Api;
+using lkcode.hetznercloudapi.Helper;
+using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
@@ -102,7 +104,7 @@ namespace demo_wpf
                 lkcode.hetznercloudapi.Api.Server server = await lkcode.hetznercloudapi.Api.Server.GetAsync(id);
                 List<lkcode.hetznercloudapi.Api.Server> serverList = new List<lkcode.hetznercloudapi.Api.Server>();
                 serverList.Add(server);
-                
+
                 this.ServerDataGrid.ItemsSource = null;
                 this.ServerDataGrid.ItemsSource = serverList;
 
@@ -263,7 +265,7 @@ namespace demo_wpf
         private async void ServerPowerOffContextMenu_Click(object sender, RoutedEventArgs e)
         {
             lkcode.hetznercloudapi.Api.Server server = this.ServerDataGrid.SelectedItem as lkcode.hetznercloudapi.Api.Server;
-            
+
             try
             {
                 this.AddLogMessage(string.Format("poweroff server '{0}'", server.Name));
@@ -381,7 +383,7 @@ namespace demo_wpf
                 this.AddLogMessage("load pricings");
 
                 lkcode.hetznercloudapi.Api.Pricing pricing = await lkcode.hetznercloudapi.Api.Pricing.GetAsync();
-                
+
                 // set values
                 this.PricingCurrencyTextBlock.Text = pricing.Currency;
                 this.PricingVatTextBlock.Text = Math.Round(Convert.ToDecimal(pricing.VatRate, CultureInfo.InvariantCulture.NumberFormat), 0) + " %";
@@ -394,7 +396,7 @@ namespace demo_wpf
 
                 this.PricingTrafficNetTextBlock.Text = Math.Round(Convert.ToDecimal(pricing.Traffic.PricePerTb.Net, CultureInfo.InvariantCulture.NumberFormat), 2) + " " + pricing.Currency;
                 this.PricingTrafficGrossTextBlock.Text = Math.Round(Convert.ToDecimal(pricing.Traffic.PricePerTb.Gross, CultureInfo.InvariantCulture.NumberFormat), 2) + " " + pricing.Currency;
-                
+
                 this.PricingServerBackupPercentageTextBlock.Text = Math.Round(Convert.ToDecimal(pricing.ServerBackup.Percentage, CultureInfo.InvariantCulture.NumberFormat), 0) + " %";
 
                 this.ServerTypePricingDataGrid.ItemsSource = pricing.ServerTypes;
@@ -466,7 +468,8 @@ namespace demo_wpf
         {
             lkcode.hetznercloudapi.Api.Server server = (ServerDataGrid.SelectedItem as lkcode.hetznercloudapi.Api.Server);
 
-            if (server == null) {
+            if (server == null)
+            {
                 return;
             }
 
@@ -487,7 +490,7 @@ namespace demo_wpf
 
                 List<lkcode.hetznercloudapi.Api.Datacenter> datacenterList = await lkcode.hetznercloudapi.Api.Datacenter.GetAsync(page);
                 this.DatacenterDataGrid.ItemsSource = datacenterList;
-                
+
                 this.DatacenterDataGridCurrentPageTextBlock.Text = lkcode.hetznercloudapi.Api.Datacenter.CurrentPage.ToString();
                 this.DatacenterDataGridMaxPageTextBlock.Text = lkcode.hetznercloudapi.Api.Datacenter.MaxPages.ToString();
                 this.DatacenterDataGridLastPageButton.IsEnabled = true;
@@ -768,7 +771,7 @@ namespace demo_wpf
                 "Delete the Server",
                 "Are you sure you want to delete the server?");
 
-            if(msgResult == MessageDialogResult.Affirmative)
+            if (msgResult == MessageDialogResult.Affirmative)
             {
                 lkcode.hetznercloudapi.Api.Server server = this.ServerDataGrid.SelectedItem as lkcode.hetznercloudapi.Api.Server;
 
@@ -805,10 +808,30 @@ namespace demo_wpf
                     await server.ChangeName(newServerName);
 
                     this.AddLogMessage(string.Format("success: changed server name '{0}'", server.Name));
-                } else
+                }
+                else
                 {
                     this.AddLogMessage(string.Format("empty or invalid server name '{0}'", newServerName));
                 }
+
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
+
+        private async void ServerMetricsContextMenu_Click(object sender, RoutedEventArgs e)
+        {
+            lkcode.hetznercloudapi.Api.Server server = this.ServerDataGrid.SelectedItem as lkcode.hetznercloudapi.Api.Server;
+
+            try
+            {
+                this.AddLogMessage(string.Format("get metrics for server '{0}'", server.Name));
+
+                await server.GetMetrics(ServerMetricType.CPU, DateTimeFormatterHelper.GetAsIso8601String(DateTime.Now.AddDays(-30)), DateTimeFormatterHelper.GetAsIso8601String(DateTime.Now));
+
+                this.AddLogMessage(string.Format("success: get metrics for server '{0}'", server.Name));
 
             }
             catch (Exception err)

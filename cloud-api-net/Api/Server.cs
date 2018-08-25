@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace lkcode.hetznercloudapi.Api
@@ -374,6 +375,106 @@ namespace lkcode.hetznercloudapi.Api
             Server server = GetServerFromResponseData(response.server);
 
             this.Name = server.Name;
+        }
+
+        /// <summary>
+        /// Metrics are available for the last 30 days only.
+        /// If you do not provide the step argument we will automatically adjust it so that a maximum of 100 samples are returned.
+        /// We limit the number of samples returned to a maximum of 500 and will adjust the step parameter accordingly.
+        /// </summary>
+        /// <param name="type">Type of metrics to get (cpu, disk, network)</param>
+        /// <param name="start">Start of period to get Metrics for (in ISO-8601 format).</param>
+        /// <param name="end">End of period to get Metrics for (in ISO-8601 format).</param>
+        /// <returns></returns>
+        public async Task GetMetrics(string type, string start, string end)
+        {
+            await this.GetMetrics(type, start, end, -1);
+        }
+
+        /// <summary>
+        /// Metrics are available for the last 30 days only.
+        /// If you do not provide the step argument we will automatically adjust it so that a maximum of 100 samples are returned.
+        /// We limit the number of samples returned to a maximum of 500 and will adjust the step parameter accordingly.
+        /// </summary>
+        /// <param name="type">Type of metrics to get (cpu, disk, network)</param>
+        /// <param name="start">Start of period to get Metrics for (in ISO-8601 format).</param>
+        /// <param name="end">End of period to get Metrics for (in ISO-8601 format).</param>
+        /// <param name="step">Resolution of results in seconds</param>
+        /// <returns></returns>
+        public async Task GetMetrics(string type, string start, string end, int step)
+        {
+            Dictionary<string, string> arguments = new Dictionary<string, string>();
+
+            if (!string.IsNullOrEmpty(type.Trim()) &&
+                !string.IsNullOrWhiteSpace(type.Trim()))
+            {
+                arguments.Add("type", type);
+            } else
+            {
+                throw new InvalidArgumentException("missing required argument 'type'");
+            }
+
+            if (!string.IsNullOrEmpty(start.Trim()) &&
+                !string.IsNullOrWhiteSpace(start.Trim()))
+            {
+                arguments.Add("start", start);
+            }
+            else
+            {
+                throw new InvalidArgumentException("missing required argument 'start'");
+            }
+
+            if (!string.IsNullOrEmpty(end.Trim()) &&
+                !string.IsNullOrWhiteSpace(end.Trim()))
+            {
+                arguments.Add("end", end);
+            }
+            else
+            {
+                throw new InvalidArgumentException("missing required argument 'end'");
+            }
+
+            if (step > 0)
+            {
+                arguments.Add("step", step.ToString());
+            }
+
+            string url = string.Format("/servers/{0}/metrics", this.Id);
+
+            int i = 0;
+            foreach (KeyValuePair<string, string> argument in arguments)
+            {
+                if (i == 0)
+                {
+                    url += "?";
+                }
+                else
+                {
+                    url += "&";
+                }
+
+                url += string.Format("{0}={1}", argument.Key, argument.Value);
+                i++;
+            }
+
+            string responseContent = await ApiCore.SendRequest(url);
+            Objects.Server.GetMetrics.Response response = JsonConvert.DeserializeObject<Objects.Server.GetMetrics.Response>(responseContent);
+
+            /*
+            // load meta
+            CurrentPage = response.meta.pagination.page;
+            float pagesDValue = ((float)response.meta.pagination.total_entries / (float)response.meta.pagination.per_page);
+            MaxPages = (int)Math.Ceiling(pagesDValue);
+
+            foreach (Objects.Server.Universal.Server responseServer in response.servers)
+            {
+                Server server = GetServerFromResponseData(responseServer);
+
+                serverList.Add(server);
+            }
+
+            return serverList;
+            /* */
         }
 
         #endregion

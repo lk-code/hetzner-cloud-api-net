@@ -176,7 +176,6 @@
                                     Click="ServerChangeNameContextMenu_Click"
                                     CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
                                     Header="Change Name" />
-                                <Separator />
                                 <MenuItem
                                     Click="ServerCreateImageBackupContextMenu_Click"
                                     CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
@@ -185,6 +184,11 @@
                                     Click="ServerCreateImageSnapshotContextMenu_Click"
                                     CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
                                     Header="Create Image Snapshot" />
+                                <Separator />
+                                <MenuItem
+                                    Click="ServerMetricsContextMenu_Click"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
+                                    Header="Get Metrics" />
                             </ContextMenu>
                         </DataGrid.ContextMenu>
 
