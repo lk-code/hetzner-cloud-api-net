@@ -617,5 +617,77 @@ namespace demo_wpf
                 this.AddLogMessage(string.Format("error: {0}", err.Message));
             }
         }
+
+        private void GetAllServerTypesButton_Click(object sender, RoutedEventArgs e)
+        {
+            LoadServerTypesData(1);
+        }
+
+        private async void GetOneServerTypeButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.AddLogMessage("load server-type");
+
+                string serverTypeId = await this.ShowInputAsync(
+                    "ServerType-ID",
+                    "enter the serverType id");
+
+                long id = Convert.ToInt64(serverTypeId);
+
+                lkcode.hetznercloudapi.Api.ServerType serverType = await lkcode.hetznercloudapi.Api.ServerType.GetAsync(id);
+                List<lkcode.hetznercloudapi.Api.ServerType> serverTypeList = new List<lkcode.hetznercloudapi.Api.ServerType>();
+                serverTypeList.Add(serverType);
+
+                this.ServerTypesDataGrid.ItemsSource = null;
+                this.ServerTypesDataGrid.ItemsSource = serverTypeList;
+
+                this.AddLogMessage(string.Format("loaded server-type with id {0} and name '{1}'", serverType.Id, serverType.Name));
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
+
+        private void ServerTypesDataGridLastPageButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            LoadServerTypesData((lkcode.hetznercloudapi.Api.ServerType.CurrentPage - 1));
+        }
+
+        private void ServerTypesDataGridNextPageButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            LoadServerTypesData((lkcode.hetznercloudapi.Api.ServerType.CurrentPage + 1));
+        }
+
+        private async void LoadServerTypesData(int page)
+        {
+            try
+            {
+                this.AddLogMessage(string.Format("load server-types in page {0}", page));
+
+                List<lkcode.hetznercloudapi.Api.ServerType> serverTypesList = await lkcode.hetznercloudapi.Api.ServerType.GetAsync(page);
+                this.ServerTypesDataGrid.ItemsSource = serverTypesList;
+
+                this.ServerTypesDataGridCurrentPageTextBlock.Text = lkcode.hetznercloudapi.Api.ServerType.CurrentPage.ToString();
+                this.ServerTypesDataGridMaxPageTextBlock.Text = lkcode.hetznercloudapi.Api.ServerType.MaxPages.ToString();
+                this.ServerTypesDataGridLastPageButton.IsEnabled = true;
+                this.ServerTypesDataGridNextPageButton.IsEnabled = true;
+                if (lkcode.hetznercloudapi.Api.ServerType.CurrentPage == 1)
+                {
+                    this.ServerTypesDataGridLastPageButton.IsEnabled = false;
+                }
+                if (lkcode.hetznercloudapi.Api.ServerType.CurrentPage == lkcode.hetznercloudapi.Api.ServerType.MaxPages)
+                {
+                    this.ServerTypesDataGridNextPageButton.IsEnabled = false;
+                }
+
+                this.AddLogMessage(string.Format("loaded {0} server-types", serverTypesList.Count));
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
     }
 }

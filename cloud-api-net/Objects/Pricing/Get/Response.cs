@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using lkcode.hetznercloudapi.Objects.ServerType.Universal;
+using System.Collections.Generic;
 
 namespace lkcode.hetznercloudapi.Objects.Pricing.Get
 {
@@ -38,25 +39,6 @@ namespace lkcode.hetznercloudapi.Objects.Pricing.Get
     public class ServerBackup
     {
         public string percentage { get; set; }
-    }
-
-    public class PriceHourly
-    {
-        public string net { get; set; }
-        public string gross { get; set; }
-    }
-
-    public class PriceMonthly2
-    {
-        public string net { get; set; }
-        public string gross { get; set; }
-    }
-
-    public class Price
-    {
-        public string location { get; set; }
-        public PriceHourly price_hourly { get; set; }
-        public PriceMonthly2 price_monthly { get; set; }
     }
 
     public class ServerType

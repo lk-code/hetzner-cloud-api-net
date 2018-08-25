@@ -107,30 +107,7 @@ namespace lkcode.hetznercloudapi.Api
 
             foreach (var serverType in responseData.pricing.server_types)
             {
-                ServerTypePricing stp = new ServerTypePricing();
-
-                stp.Id = serverType.id;
-                stp.Name = serverType.name;
-                stp.Prices = new List<ServerTypePricingValue>();
-
-                foreach(var serverTypePrice in serverType.prices)
-                {
-                    ServerTypePricingValue stpv = new ServerTypePricingValue();
-
-                    stpv.Location = serverTypePrice.location;
-                    stpv.PriceHourly = new PricingValue()
-                    {
-                        Net = serverTypePrice.price_hourly.net,
-                        Gross = serverTypePrice.price_hourly.gross
-                    };
-                    stpv.PriceMontly = new PricingValue()
-                    {
-                        Net = serverTypePrice.price_monthly.net,
-                        Gross = serverTypePrice.price_monthly.gross
-                    };
-
-                    stp.Prices.Add(stpv);
-                }
+                ServerTypePricing stp = ServerType.GetServerTypePricingFromResponseData(serverType);
 
                 pricings.ServerTypes.Add(stp);
             }
