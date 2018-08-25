@@ -168,7 +168,7 @@ namespace lkcode.hetznercloudapi.Api
 
         #endregion
 
-        #region # class methods #
+        #region # public methods #
 
         /// <summary>
         /// Shuts down a server gracefully by sending an ACPI shutdown request. The server operating system must support ACPI and react to the request, otherwise the server will not shut down.
@@ -337,6 +337,43 @@ namespace lkcode.hetznercloudapi.Api
 
                 return actionResponse;
             }
+        }
+
+        /// <summary>
+        /// Deletes a server. This immediately removes the server from your account, and it is no longer accessible.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ServerActionResponse> Delete()
+        {
+            string responseContent = await ApiCore.SendDeleteRequest(string.Format("/servers/{0}", this.Id));
+            Objects.Server.Delete.Response response = JsonConvert.DeserializeObject<Objects.Server.Delete.Response>(responseContent);
+
+            ServerActionResponse actionResponse = GetServerActionFromResponseData(response.action);
+
+            return actionResponse;
+        }
+
+        /// <summary>
+        /// Changes the name of a server.
+        /// Please note that server names must be unique per project and valid hostnames as per RFC 1123 (i.e.may only contain letters, digits, periods, and dashes).
+        /// </summary>
+        /// <returns></returns>
+        public async Task ChangeName(string name)
+        {
+            Dictionary<string, string> arguments = new Dictionary<string, string>();
+
+            if (!string.IsNullOrEmpty(name.Trim()) &&
+                !string.IsNullOrWhiteSpace(name.Trim()))
+            {
+                arguments.Add("name", name);
+            }
+
+            string responseContent = await ApiCore.SendPutRequest(string.Format("/servers/{0}", this.Id), arguments);
+            Objects.Server.PutChangeName.Response response = JsonConvert.DeserializeObject<Objects.Server.PutChangeName.Response>(responseContent);
+
+            Server server = GetServerFromResponseData(response.server);
+
+            this.Name = server.Name;
         }
 
         #endregion

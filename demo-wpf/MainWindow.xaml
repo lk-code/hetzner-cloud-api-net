@@ -163,11 +163,19 @@
                                     Click="ServerResetContextMenu_Click"
                                     CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
                                     Header="Reset" />
-                                <Separator />
                                 <MenuItem
                                     Click="ServerResetPasswordContextMenu_Click"
                                     CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
                                     Header="Reset Password" />
+                                <MenuItem
+                                    Click="ServerResetPasswordContextMenu_Click"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
+                                    Header="Reset Password" />
+                                <Separator />
+                                <MenuItem
+                                    Click="ServerChangeNameContextMenu_Click"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
+                                    Header="Change Name" />
                                 <Separator />
                                 <MenuItem
                                     Click="ServerCreateImageBackupContextMenu_Click"

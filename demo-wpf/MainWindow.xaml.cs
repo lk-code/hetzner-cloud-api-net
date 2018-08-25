@@ -761,5 +761,60 @@ namespace demo_wpf
                 this.AddLogMessage(string.Format("error: {0}", err.Message));
             }
         }
+
+        private async void ServerDeleteContextMenu_Click(object sender, RoutedEventArgs e)
+        {
+            MessageDialogResult msgResult = await this.ShowMessageAsync(
+                "Delete the Server",
+                "Are you sure you want to delete the server?");
+
+            if(msgResult == MessageDialogResult.Affirmative)
+            {
+                lkcode.hetznercloudapi.Api.Server server = this.ServerDataGrid.SelectedItem as lkcode.hetznercloudapi.Api.Server;
+
+                try
+                {
+                    this.AddLogMessage(string.Format("delete server '{0}'", server.Name));
+
+                    lkcode.hetznercloudapi.Api.ServerActionResponse actionResponse = await server.Delete();
+
+                    this.AddLogMessage(string.Format("success: deleted server '{0}' - actionId '{1}' - actionId '{2}'", server.Name, actionResponse.Id, actionResponse.Command));
+                }
+                catch (Exception err)
+                {
+                    this.AddLogMessage(string.Format("error: {0}", err.Message));
+                }
+            }
+        }
+
+        private async void ServerChangeNameContextMenu_Click(object sender, RoutedEventArgs e)
+        {
+            lkcode.hetznercloudapi.Api.Server server = this.ServerDataGrid.SelectedItem as lkcode.hetznercloudapi.Api.Server;
+
+            try
+            {
+                string newServerName = await this.ShowInputAsync(
+                    "New Server-Name",
+                    "enter the new server-name");
+
+                if (!string.IsNullOrEmpty(newServerName.Trim()) &&
+                    !string.IsNullOrWhiteSpace(newServerName.Trim()))
+                {
+                    this.AddLogMessage(string.Format("change server name '{0}'", server.Name));
+
+                    await server.ChangeName(newServerName);
+
+                    this.AddLogMessage(string.Format("success: changed server name '{0}'", server.Name));
+                } else
+                {
+                    this.AddLogMessage(string.Format("empty or invalid server name '{0}'", newServerName));
+                }
+
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
     }
 }
