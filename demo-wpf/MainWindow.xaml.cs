@@ -1,4 +1,5 @@
-﻿using lkcode.hetznercloudapi.Api;
+﻿using demo_wpf.Views;
+using lkcode.hetznercloudapi.Api;
 using lkcode.hetznercloudapi.Helper;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
@@ -825,11 +826,13 @@ namespace demo_wpf
         {
             lkcode.hetznercloudapi.Api.Server server = this.ServerDataGrid.SelectedItem as lkcode.hetznercloudapi.Api.Server;
 
+            ServerMetric serverMetric = null;
+
             try
             {
                 this.AddLogMessage(string.Format("get metrics for server '{0}'", server.Name));
 
-                await server.GetMetrics(ServerMetricType.CPU, DateTimeFormatterHelper.GetAsIso8601String(DateTime.Now.AddDays(-30)), DateTimeFormatterHelper.GetAsIso8601String(DateTime.Now));
+                serverMetric = await server.GetMetrics(ServerMetricType.CPU, DateTimeHelper.GetAsIso8601String(DateTime.Now.AddDays(-30)), DateTimeHelper.GetAsIso8601String(DateTime.Now));
 
                 this.AddLogMessage(string.Format("success: get metrics for server '{0}'", server.Name));
 
@@ -838,6 +841,10 @@ namespace demo_wpf
             {
                 this.AddLogMessage(string.Format("error: {0}", err.Message));
             }
+
+            ServerMetricCpuValuesWindow win = new ServerMetricCpuValuesWindow(serverMetric);
+
+            win.Show();
         }
     }
 }

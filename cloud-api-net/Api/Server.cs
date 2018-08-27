@@ -1,5 +1,6 @@
 ﻿using lkcode.hetznercloudapi.Core;
 using lkcode.hetznercloudapi.Exceptions;
+using lkcode.hetznercloudapi.Helper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -386,9 +387,9 @@ namespace lkcode.hetznercloudapi.Api
         /// <param name="start">Start of period to get Metrics for (in ISO-8601 format).</param>
         /// <param name="end">End of period to get Metrics for (in ISO-8601 format).</param>
         /// <returns></returns>
-        public async Task GetMetrics(string type, string start, string end)
+        public async Task<ServerMetric> GetMetrics(string type, string start, string end)
         {
-            await this.GetMetrics(type, start, end, -1);
+            return await this.GetMetrics(type, start, end, -1);
         }
 
         /// <summary>
@@ -401,7 +402,7 @@ namespace lkcode.hetznercloudapi.Api
         /// <param name="end">End of period to get Metrics for (in ISO-8601 format).</param>
         /// <param name="step">Resolution of results in seconds</param>
         /// <returns></returns>
-        public async Task GetMetrics(string type, string start, string end, int step)
+        public async Task<ServerMetric> GetMetrics(string type, string start, string end, int step)
         {
             Dictionary<string, string> arguments = new Dictionary<string, string>();
 
@@ -460,26 +461,64 @@ namespace lkcode.hetznercloudapi.Api
             string responseContent = await ApiCore.SendRequest(url);
             Objects.Server.GetMetrics.Response response = JsonConvert.DeserializeObject<Objects.Server.GetMetrics.Response>(responseContent);
 
-            /*
-            // load meta
-            CurrentPage = response.meta.pagination.page;
-            float pagesDValue = ((float)response.meta.pagination.total_entries / (float)response.meta.pagination.per_page);
-            MaxPages = (int)Math.Ceiling(pagesDValue);
-
-            foreach (Objects.Server.Universal.Server responseServer in response.servers)
-            {
-                Server server = GetServerFromResponseData(responseServer);
-
-                serverList.Add(server);
-            }
-
-            return serverList;
-            /* */
+            ServerMetric serverMetric = GetServerMetricFromResponseData(response.metrics, type);
+            
+            return serverMetric;
         }
 
         #endregion
 
         #region # private methods for processing #
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="responseMetric"></param>
+        /// <param name="serverMetricType"></param>
+        /// <returns></returns>
+        private static ServerMetric GetServerMetricFromResponseData(Objects.Server.GetMetrics.Metrics responseMetric, string serverMetricType)
+        {
+            ServerMetric serverMetric = new ServerMetric();
+            serverMetric.Start = responseMetric.start;
+            serverMetric.End = responseMetric.end;
+            serverMetric.Step = responseMetric.step;
+            serverMetric.Type = serverMetricType;
+
+            serverMetric.TimeSeries = GetServerMetricTimeSeriesFromResponseData(responseMetric.time_series);
+
+            return serverMetric;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="responseData"></param>
+        /// <returns></returns>
+        private static ServerMetricTimeSeries GetServerMetricTimeSeriesFromResponseData(Objects.Server.GetMetrics.TimeSeries responseTimeSeries)
+        {
+            ServerMetricTimeSeries serverMetricTimeSeries = new ServerMetricTimeSeries();
+
+            if (responseTimeSeries.cpu != null)
+            {
+                // process the cpu-values
+                serverMetricTimeSeries.CpuValues = new List<ServerMetricCpuValue>();
+
+                foreach (var cpuValue in responseTimeSeries.cpu.values)
+                {
+                    long timestamp = Convert.ToInt64(cpuValue[0]);
+                    double value = Math.Round(Convert.ToDouble((cpuValue[1] as string).Replace('.', ',')), 5);
+
+                    serverMetricTimeSeries.CpuValues.Add(new ServerMetricCpuValue()
+                    {
+                        Timestamp = DateTimeHelper.GetFromUnixTimestamp(timestamp),
+                        TimestampValue = timestamp,
+                        Value = value,
+                    });
+                }
+            }
+
+            return serverMetricTimeSeries;
+        }
 
         /// <summary>
         /// 
