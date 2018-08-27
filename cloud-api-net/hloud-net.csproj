@@ -6,7 +6,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <AssemblyVersion>1.0.3.0</AssemblyVersion>
     <FileVersion>1.0.3.0</FileVersion>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <Authors>lk-code</Authors>
     <Company />
     <Product>hetznercloudapi</Product>
