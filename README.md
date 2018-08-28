@@ -18,6 +18,10 @@ the project is a .NET Standard 2.0 Library and can be used in the most projects 
 
 [![License](https://img.shields.io/github/license/lk-code/hetzner-cloud-api-net.svg?style=flat-square)](https://github.com/lk-code/hetzner-cloud-api-net/blob/master/LICENSE)
 
+### demo
+
+see the demo projects here https://github.com/lk-code/hetzner-cloud-api-net-demo
+
 ### documentation
 
 see the documentation on https://github.com/lk-code/hetzner-cloud-api-net/wiki
