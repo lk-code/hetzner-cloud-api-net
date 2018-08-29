@@ -20,7 +20,7 @@ the project is a .NET Standard 2.0 Library and can be used in the most projects 
 
 ### demo
 
-download the repository and open the visual studio project solution. you will find different projects for WPF, UWP, etc.
+see the demo projects here https://github.com/lk-code/hetzner-cloud-api-net-demo
 
 ### documentation
 
