@@ -22,11 +22,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>C:\Repos\hetzner-cloud-api-net\cloud-api-net\hloud-net.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>C:\Repos\hetzner-cloud-api-net\cloud-api-net\hloud-net.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

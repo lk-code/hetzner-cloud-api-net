@@ -5,16 +5,21 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace lkcode.hetznercloudapi.Api
 {
+    /// <summary>
+    /// Servers are virtual machines that can be provisioned.
+    /// </summary>
     public class Server
     {
         #region # static properties #
 
         private static int _currentPage { get; set; }
+        /// <summary>
+        /// The current selected page.
+        /// </summary>
         public static int CurrentPage
         {
             get
@@ -28,6 +33,9 @@ namespace lkcode.hetznercloudapi.Api
         }
 
         private static int _maxPages { get; set; }
+        /// <summary>
+        /// The number of pages with server.
+        /// </summary>
         public static int MaxPages
         {
             get
@@ -72,11 +80,12 @@ namespace lkcode.hetznercloudapi.Api
         #endregion
 
         #region # static methods #
-
+        
         /// <summary>
         /// Returns all server in a list.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="page">optional parameter to get a specific page. default is page 1.</param>
+        /// <returns>a list with the sevrer-objects.</returns>
         public static async Task<List<Server>> GetAsync(int page = 1)
         {
             if ((_maxPages > 0 && (page <= 0 || page > _maxPages)))
@@ -96,9 +105,7 @@ namespace lkcode.hetznercloudapi.Api
             Objects.Server.Get.Response response = JsonConvert.DeserializeObject<Objects.Server.Get.Response>(responseContent);
 
             // load meta
-            CurrentPage = response.meta.pagination.page;
-            float pagesDValue = ((float)response.meta.pagination.total_entries / (float)response.meta.pagination.per_page);
-            MaxPages = (int)Math.Ceiling(pagesDValue);
+            SaveResponseMetaData(response);
 
             foreach (Objects.Server.Universal.Server responseServer in response.servers)
             {
@@ -113,8 +120,9 @@ namespace lkcode.hetznercloudapi.Api
         /// <summary>
         /// Returns all server filtered by the given filter-value.
         /// </summary>
-        /// <param name="filter"></param>
-        /// <returns></returns>
+        /// <param name="filter">Can be used to filter servers by their name. The response will only contain the server matching the specified name.</param>
+        /// <param name="page"></param>
+        /// <returns>Returns a list with the server-objects.</returns>
         public static async Task<List<Server>> GetAsync(string filter, int page = 1)
         {
             if ((_maxPages > 0 && (page <= 0 || page > _maxPages)))
@@ -139,9 +147,7 @@ namespace lkcode.hetznercloudapi.Api
             Objects.Server.Get.Response response = JsonConvert.DeserializeObject<Objects.Server.Get.Response>(responseContent);
 
             // load meta
-            CurrentPage = response.meta.pagination.page;
-            float pagesDValue = ((float)response.meta.pagination.total_entries / (float)response.meta.pagination.per_page);
-            MaxPages = (int)Math.Ceiling(pagesDValue);
+            SaveResponseMetaData(response);
 
             foreach (Objects.Server.Universal.Server responseServer in response.servers)
             {
@@ -156,14 +162,39 @@ namespace lkcode.hetznercloudapi.Api
         /// <summary>
         /// Returns a server by the given id.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">Returns a specific server object. The server must exist inside the project.</param>
+        /// <returns>the returned server object</returns>
         public static async Task<Server> GetAsync(long id)
         {
             string responseContent = await ApiCore.SendRequest(string.Format("/servers/{0}", id.ToString()));
             Objects.Server.GetOne.Response response = JsonConvert.DeserializeObject<Objects.Server.GetOne.Response>(responseContent);
 
             Server server = GetServerFromResponseData(response.server);
+
+            return server;
+        }
+
+        /// <summary>
+        /// Returns a server by the given id.
+        /// </summary>
+        /// <param name="id">Returns a specific server object. The server must exist inside the project.</param>
+        /// <returns>the returned server object</returns>
+        public static async Task<Server> GetByIdAsync(int id)
+        {
+            long lid = (long)id;
+            Server server = await GetAsync(lid);
+
+            return server;
+        }
+
+        /// <summary>
+        /// Returns a server by the given id.
+        /// </summary>
+        /// <param name="id">Returns a specific server object. The server must exist inside the project.</param>
+        /// <returns>the returned server object</returns>
+        public static async Task<Server> GetByIdAsync(long id)
+        {
+            Server server = await GetAsync(id);
 
             return server;
         }
@@ -175,7 +206,7 @@ namespace lkcode.hetznercloudapi.Api
         /// <summary>
         /// Shuts down a server gracefully by sending an ACPI shutdown request. The server operating system must support ACPI and react to the request, otherwise the server will not shut down.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>the serialized ServerActionResponse</returns>
         public async Task<ServerActionResponse> Shutdown()
         {
             string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/shutdown", this.Id));
@@ -189,7 +220,7 @@ namespace lkcode.hetznercloudapi.Api
         /// <summary>
         /// Starts a server by turning its power on.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>the serialized ServerActionResponse</returns>
         public async Task<ServerActionResponse> PowerOn()
         {
             string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/poweron", this.Id));
@@ -203,7 +234,7 @@ namespace lkcode.hetznercloudapi.Api
         /// <summary>
         /// Cuts power to the server. This forcefully stops it without giving the server operating system time to gracefully stop. May lead to data loss, equivalent to pulling the power cord. Power off should only be used when shutdown does not work.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>the serialized ServerActionResponse</returns>
         public async Task<ServerActionResponse> PowerOff()
         {
             string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/poweroff", this.Id));
@@ -217,7 +248,7 @@ namespace lkcode.hetznercloudapi.Api
         /// <summary>
         /// Reboots a server gracefully by sending an ACPI request. The server operating system must support ACPI and react to the request, otherwise the server will not reboot.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>the serialized ServerActionResponse</returns>
         public async Task<ServerActionResponse> Reboot()
         {
             string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/reboot", this.Id));
@@ -231,7 +262,7 @@ namespace lkcode.hetznercloudapi.Api
         /// <summary>
         /// Cuts power to a server and starts it again. This forcefully stops it without giving the server operating system time to gracefully stop. This may lead to data loss, it’s equivalent to pulling the power cord and plugging it in again. Reset should only be used when reboot does not work.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>the serialized ServerActionResponse</returns>
         public async Task<ServerActionResponse> Reset()
         {
             string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/reset", this.Id));
@@ -243,9 +274,11 @@ namespace lkcode.hetznercloudapi.Api
         }
 
         /// <summary>
-        /// 
+        /// Resets the root password. Only works for Linux systems that are running the qemu guest agent. Server must be powered on (state on) in order for this operation to succeed.
+        /// This will generate a new password for this server and return it.
+        /// If this does not succeed you can use the rescue system to netboot the server and manually change your server password by hand.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>the serialized ServerActionResponse</returns>
         public async Task<ServerActionResponse> ResetPassword()
         {
             string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/reset_password", this.Id));
@@ -258,11 +291,13 @@ namespace lkcode.hetznercloudapi.Api
         }
 
         /// <summary>
-        /// 
+        /// Creates an image (snapshot) from a server by copying the contents of its disks. This creates a snapshot of the current state of the disk and copies it into an image. If the server is currently running you must make sure that its disk content is consistent. Otherwise, the created image may not be readable.
+        /// To make sure disk content is consistent, we recommend to shut down the server prior to creating an image.
+        /// You can either create a backup image that is bound to the server and therefore will be deleted when the server is deleted, or you can create an snapshot image which is completely independent of the server it was created from and will survive server deletion. Backup images are only available when the backup option is enabled for the Server. Snapshot images are billed on a per GB basis.
         /// </summary>
-        /// <param name="description"></param>
-        /// <param name="type"></param>
-        /// <returns></returns>
+        /// <param name="description">Description of the image. If you do not set this we auto-generate one for you.</param>
+        /// <param name="type">Type of image to create (default: snapshot) Choices: snapshot, backup (Use lkcode.hetznercloudapi.Components.ServerImageType)</param>
+        /// <returns>the serialized ServerActionResponse</returns>
         public async Task<ServerActionResponse> CreateImage(string description, string type)
         {
             Dictionary<string, string> arguments = new Dictionary<string, string>();
@@ -303,10 +338,12 @@ namespace lkcode.hetznercloudapi.Api
         }
 
         /// <summary>
-        /// 
+        /// Rebuilds a server overwriting its disk with the content of an image, thereby destroying all data on the target server
+        /// The image can either be one you have created earlier(backup or snapshot image) or it can be a completely fresh system image provided by us.You can get a list of all available images with GET /images.
+        /// Your server will automatically be powered off before the rebuild command executes.
         /// </summary>
-        /// <param name="image"></param>
-        /// <returns></returns>
+        /// <param name="image">ID or name of image to rebuilt from.</param>
+        /// <returns>the serialized ServerActionResponse</returns>
         public async Task<ServerActionResponse> RebuildImage(string image)
         {
             Dictionary<string, string> arguments = new Dictionary<string, string>();
@@ -344,7 +381,7 @@ namespace lkcode.hetznercloudapi.Api
         /// <summary>
         /// Deletes a server. This immediately removes the server from your account, and it is no longer accessible.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>the serialized ServerActionResponse</returns>
         public async Task<ServerActionResponse> Delete()
         {
             string responseContent = await ApiCore.SendDeleteRequest(string.Format("/servers/{0}", this.Id));
@@ -469,6 +506,17 @@ namespace lkcode.hetznercloudapi.Api
         #endregion
 
         #region # private methods for processing #
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="response"></param>
+        private static void SaveResponseMetaData(Objects.Server.Get.Response response)
+        {
+            CurrentPage = response.meta.pagination.page;
+            float pagesDValue = ((float)response.meta.pagination.total_entries / (float)response.meta.pagination.per_page);
+            MaxPages = (int)Math.Ceiling(pagesDValue);
+        }
 
         /// <summary>
         /// 
