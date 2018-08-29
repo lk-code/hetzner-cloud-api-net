@@ -546,7 +546,9 @@
         </member>
         <member name="M:lkcode.hetznercloudapi.Api.Server.RequestConsole">
             <summary>
-            Requests credentials for remote access via vnc over websocket to keyboard, monitor, and mouse for a server. The provided url is valid for 1 minute, after this period a new url needs to be created to connect to the server. How long the connection is open after the initial connect is not subject to this timeout.
+            Requests credentials for remote access via vnc over websocket to keyboard, monitor, and mouse for a server.
+            The provided url is valid for 1 minute, after this period a new url needs to be created to connect to the server.
+            How long the connection is open after the initial connect is not subject to this timeout.
             </summary>
             <returns>the serialized ServerActionResponse</returns>
         </member>
