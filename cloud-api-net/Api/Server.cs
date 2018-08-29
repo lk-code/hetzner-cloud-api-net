@@ -503,6 +503,27 @@ namespace lkcode.hetznercloudapi.Api
             return serverMetric;
         }
 
+        /// <summary>
+        /// Requests credentials for remote access via vnc over websocket to keyboard, monitor, and mouse for a server.
+        /// The provided url is valid for 1 minute, after this period a new url needs to be created to connect to the server.
+        /// How long the connection is open after the initial connect is not subject to this timeout.
+        /// </summary>
+        /// <returns>the serialized ServerActionResponse</returns>
+        public async Task<ServerActionResponse> RequestConsole()
+        {
+            string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/request_console", this.Id));
+            Objects.Server.GetRequestConsole.Response response = JsonConvert.DeserializeObject<Objects.Server.GetRequestConsole.Response>(responseContent);
+
+            ServerActionResponse actionResponse = GetServerActionFromResponseData(response.action);
+            actionResponse.AdditionalActionContent = new ServerConsoleData()
+            {
+                Url = response.wss_url,
+                Password = response.password
+            };
+
+            return actionResponse;
+        }
+        
         #endregion
 
         #region # private methods for processing #

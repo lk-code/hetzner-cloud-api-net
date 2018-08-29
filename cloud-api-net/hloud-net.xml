@@ -1,0 +1,942 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>hloud-net</name>
+    </assembly>
+    <members>
+        <member name="P:lkcode.hetznercloudapi.Api.Datacenter.Id">
+            <summary>
+            ID of the datacenter.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Datacenter.Name">
+            <summary>
+            Unique identifier of the datacenter.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Datacenter.Description">
+            <summary>
+            Description of the datacenter.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Datacenter.Location">
+            <summary>
+            Location where the datacenter resides in.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Datacenter.SupportedServerTypeIds">
+            <summary>
+            IDs of server types that are supported in the datacenter.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Datacenter.SupportedServerTypes">
+            <summary>
+            server types that are supported in the datacenter.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Datacenter.AvailableServerTypeIds">
+            <summary>
+            IDs of server types that are available in the datacenter.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Datacenter.AvailableServerTypes">
+            <summary>
+            server types that are available in the datacenter.
+            </summary>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Datacenter.GetAsync(System.Int32)">
+            <summary>
+            Returns all datacenter in a list.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Datacenter.GetAsync(System.Int64)">
+            <summary>
+            Returns all datacenter with the given id.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Datacenter.GetDatacenterFromResponseData(lkcode.hetznercloudapi.Objects.Datacenter.Universal.Datacenter)">
+            <summary>
+            
+            </summary>
+            <param name="responseData"></param>
+            <returns></returns>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.FloatingIp.IsInitialized">
+            <summary>
+            If false, this floating-ip is not loaded (only the object with the id). access a field like floatingIp.Description and the object will load the data in the background.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.FloatingIp.Id">
+            <summary>
+            ID of the Floating IP.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.FloatingIp.Description">
+            <summary>
+            Description of the Floating IP.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.FloatingIp.Ip">
+            <summary>
+            IP address of the Floating IP.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.FloatingIp.Type">
+            <summary>
+            Type of the Floating IP.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.FloatingIp.ServerId">
+            <summary>
+            Id of the Server the Floating IP is assigned to, null if it is not assigned at all.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.FloatingIp.Blocked">
+            <summary>
+            Whether the IP is blocked.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.FloatingIp.Protection">
+            <summary>
+            Protection configuration for the Floating IP.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.FloatingIp.HomeLocation">
+            <summary>
+            Location the Floating IP was created in. Routing is optimized for this location.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.FloatingIp.DnsPointer">
+            <summary>
+            Array of reverse DNS entries.
+            </summary>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.FloatingIp.#ctor(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.FloatingIp.GetAsync(System.Int64)">
+            <summary>
+            Returns a floating-id by the given id.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.FloatingIp.DeleteAsync">
+            <summary>
+            Deletes the current floating-ip.
+            </summary>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.FloatingIp.LoadData">
+            <summary>
+            loads the data for this floating-ip.
+            </summary>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.FloatingIp.GetFloatingIpFromResponseData(lkcode.hetznercloudapi.Objects.FloatingIp.GetOne.FloatingIp)">
+            <summary>
+            returns a FloatingIp-Object for the given data
+            </summary>
+            <param name="responseData"></param>
+            <returns></returns>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.FloatingIpPricing.PriceMontly">
+            <summary>
+            The cost of one floating IP per month.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ImagePricing.PricePerGbMonth">
+            <summary>
+            the cost of one 1GB Image for the full month.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.IsoImage.Id">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.IsoImage.Name">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.IsoImage.Description">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.IsoImage.Type">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.IsoImage.Deprecated">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.IsoImage.GetAsync(System.Int32)">
+            <summary>
+            Returns all server in a list.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.IsoImage.GetAsync(System.Int64)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.IsoImage.GetIsoImageFromResponseData(lkcode.hetznercloudapi.Objects.Isos.Get.Iso)">
+            <summary>
+            
+            </summary>
+            <param name="isoImage"></param>
+            <returns></returns>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Location.Id">
+            <summary>
+            ID of the location.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Location.Name">
+            <summary>
+            Unique identifier of the location.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Location.Description">
+            <summary>
+            Description of the location.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Location.Country">
+            <summary>
+            ISO 3166-1 alpha-2 code of the country the location resides in.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Location.City">
+            <summary>
+            City the location is closest to.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Location.Latitude">
+            <summary>
+            Latitude of the city closest to the location.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Location.Longitude">
+            <summary>
+            Longitude of the city closest to the location.
+            </summary>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Location.GetAsync(System.Int32)">
+            <summary>
+            Returns all datacenter in a list.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Location.GetAsync(System.Int64)">
+            <summary>
+            Returns all datacenter with the given id.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Location.GetLocationFromResponseData(lkcode.hetznercloudapi.Objects.Location.Universal.Location)">
+            <summary>
+            
+            </summary>
+            <param name="responseData"></param>
+            <returns></returns>
+        </member>
+        <member name="T:lkcode.hetznercloudapi.Api.Network">
+            <summary>
+            Public network information.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Network.Ipv4">
+            <summary>
+            IP address (v4) and its reverse dns entry of this server.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Network.Ipv6">
+            <summary>
+            IPv6 network assigned to this server and its reverse dns entry.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Network.FloatingIpIds">
+            <summary>
+            IDs of floating IPs assigned to this server.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Network.FloatingIps">
+            <summary>
+            List of floating IPs assigned to this server.
+            </summary>
+        </member>
+        <member name="T:lkcode.hetznercloudapi.Api.AddressIpv4">
+            <summary>
+            IP address (v4) and its reverse dns entry of this server.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.AddressIpv4.Ip">
+            <summary>
+            IP address (v4) of this server.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.AddressIpv4.Blocked">
+            <summary>
+            If the IP is blocked by our anti abuse dept.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.AddressIpv4.DnsPointer">
+            <summary>
+            Reverse DNS PTR entry for the IPv4 addresses of this server.
+            </summary>
+        </member>
+        <member name="T:lkcode.hetznercloudapi.Api.AddressIpv6">
+            <summary>
+            IPv6 network assigned to this server and its reverse dns entry.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.AddressIpv6.Ip">
+            <summary>
+            IP address (v6) of this server.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.AddressIpv6.Blocked">
+            <summary>
+            If the IP is blocked by our anti abuse dept.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.AddressIpv6.DnsPointer">
+            <summary>
+            Reverse DNS PTR entries for the IPv6 addresses of this server, `null` by default.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Pricing.Currency">
+            <summary>
+            Currency the returned prices are expressed in, coded according to ISO 4217.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Pricing.VatRate">
+            <summary>
+            The VAT rate used for calculating prices with VAT.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Pricing.Image">
+            <summary>
+            The cost of one 1GB Image for the full month.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Pricing.FloatingIp">
+            <summary>
+            The cost of one floating IP per month.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Pricing.Traffic">
+            <summary>
+            The cost of additional traffic per GB.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Pricing.ServerBackup">
+            <summary>
+            Will increase base server costs by specific percentage.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Pricing.ServerTypes">
+            <summary>
+            Costs of server types per location and type.
+            </summary>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Pricing.GetAsync">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Pricing.GetPricingsFromResponseData(lkcode.hetznercloudapi.Objects.Pricing.Get.Response)">
+            <summary>
+            
+            </summary>
+            <param name="responseData"></param>
+            <returns></returns>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.PricingValue.Net">
+            <summary>
+            Price without VAT.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.PricingValue.Gross">
+            <summary>
+            Price with VAT added.
+            </summary>
+        </member>
+        <member name="T:lkcode.hetznercloudapi.Api.Server">
+            <summary>
+            Servers are virtual machines that can be provisioned.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Server.CurrentPage">
+            <summary>
+            The current selected page.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Server.MaxPages">
+            <summary>
+            The number of pages with server.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Server.Id">
+            <summary>
+            ID of server.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Server.Name">
+            <summary>
+            Name of the server (must be unique per project and a valid hostname as per RFC 1123).
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Server.Status">
+            <summary>
+            Status of the server.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Server.Created">
+            <summary>
+            Point in time when the server was created (in ISO-8601 format) as a System.DateTimeOffset.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Server.Network">
+            <summary>
+            Public network information.
+            </summary>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.GetAsync(System.Int32)">
+            <summary>
+            Returns all server in a list.
+            </summary>
+            <param name="page">optional parameter to get a specific page. default is page 1.</param>
+            <returns>a list with the sevrer-objects.</returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.GetAsync(System.String,System.Int32)">
+            <summary>
+            Returns all server filtered by the given filter-value.
+            </summary>
+            <param name="filter">Can be used to filter servers by their name. The response will only contain the server matching the specified name.</param>
+            <param name="page"></param>
+            <returns>Returns a list with the server-objects.</returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.GetAsync(System.Int64)">
+            <summary>
+            Returns a server by the given id.
+            </summary>
+            <param name="id">Returns a specific server object. The server must exist inside the project.</param>
+            <returns>the returned server object</returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.GetByIdAsync(System.Int32)">
+            <summary>
+            Returns a server by the given id.
+            </summary>
+            <param name="id">Returns a specific server object. The server must exist inside the project.</param>
+            <returns>the returned server object</returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.GetByIdAsync(System.Int64)">
+            <summary>
+            Returns a server by the given id.
+            </summary>
+            <param name="id">Returns a specific server object. The server must exist inside the project.</param>
+            <returns>the returned server object</returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.Shutdown">
+            <summary>
+            Shuts down a server gracefully by sending an ACPI shutdown request. The server operating system must support ACPI and react to the request, otherwise the server will not shut down.
+            </summary>
+            <returns>the serialized ServerActionResponse</returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.PowerOn">
+            <summary>
+            Starts a server by turning its power on.
+            </summary>
+            <returns>the serialized ServerActionResponse</returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.PowerOff">
+            <summary>
+            Cuts power to the server. This forcefully stops it without giving the server operating system time to gracefully stop. May lead to data loss, equivalent to pulling the power cord. Power off should only be used when shutdown does not work.
+            </summary>
+            <returns>the serialized ServerActionResponse</returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.Reboot">
+            <summary>
+            Reboots a server gracefully by sending an ACPI request. The server operating system must support ACPI and react to the request, otherwise the server will not reboot.
+            </summary>
+            <returns>the serialized ServerActionResponse</returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.Reset">
+            <summary>
+            Cuts power to a server and starts it again. This forcefully stops it without giving the server operating system time to gracefully stop. This may lead to data loss, it’s equivalent to pulling the power cord and plugging it in again. Reset should only be used when reboot does not work.
+            </summary>
+            <returns>the serialized ServerActionResponse</returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.ResetPassword">
+            <summary>
+            Resets the root password. Only works for Linux systems that are running the qemu guest agent. Server must be powered on (state on) in order for this operation to succeed.
+            This will generate a new password for this server and return it.
+            If this does not succeed you can use the rescue system to netboot the server and manually change your server password by hand.
+            </summary>
+            <returns>the serialized ServerActionResponse</returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.CreateImage(System.String,System.String)">
+            <summary>
+            Creates an image (snapshot) from a server by copying the contents of its disks. This creates a snapshot of the current state of the disk and copies it into an image. If the server is currently running you must make sure that its disk content is consistent. Otherwise, the created image may not be readable.
+            To make sure disk content is consistent, we recommend to shut down the server prior to creating an image.
+            You can either create a backup image that is bound to the server and therefore will be deleted when the server is deleted, or you can create an snapshot image which is completely independent of the server it was created from and will survive server deletion. Backup images are only available when the backup option is enabled for the Server. Snapshot images are billed on a per GB basis.
+            </summary>
+            <param name="description">Description of the image. If you do not set this we auto-generate one for you.</param>
+            <param name="type">Type of image to create (default: snapshot) Choices: snapshot, backup (Use lkcode.hetznercloudapi.Components.ServerImageType)</param>
+            <returns>the serialized ServerActionResponse</returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.RebuildImage(System.String)">
+            <summary>
+            Rebuilds a server overwriting its disk with the content of an image, thereby destroying all data on the target server
+            The image can either be one you have created earlier(backup or snapshot image) or it can be a completely fresh system image provided by us.You can get a list of all available images with GET /images.
+            Your server will automatically be powered off before the rebuild command executes.
+            </summary>
+            <param name="image">ID or name of image to rebuilt from.</param>
+            <returns>the serialized ServerActionResponse</returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.Delete">
+            <summary>
+            Deletes a server. This immediately removes the server from your account, and it is no longer accessible.
+            </summary>
+            <returns>the serialized ServerActionResponse</returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.ChangeName(System.String)">
+            <summary>
+            Changes the name of a server.
+            Please note that server names must be unique per project and valid hostnames as per RFC 1123 (i.e.may only contain letters, digits, periods, and dashes).
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.GetMetrics(System.String,System.String,System.String)">
+            <summary>
+            Metrics are available for the last 30 days only.
+            If you do not provide the step argument we will automatically adjust it so that a maximum of 100 samples are returned.
+            We limit the number of samples returned to a maximum of 500 and will adjust the step parameter accordingly.
+            </summary>
+            <param name="type">Type of metrics to get (cpu, disk, network)</param>
+            <param name="start">Start of period to get Metrics for (in ISO-8601 format).</param>
+            <param name="end">End of period to get Metrics for (in ISO-8601 format).</param>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.GetMetrics(System.String,System.String,System.String,System.Int32)">
+            <summary>
+            Metrics are available for the last 30 days only.
+            If you do not provide the step argument we will automatically adjust it so that a maximum of 100 samples are returned.
+            We limit the number of samples returned to a maximum of 500 and will adjust the step parameter accordingly.
+            </summary>
+            <param name="type">Type of metrics to get (cpu, disk, network)</param>
+            <param name="start">Start of period to get Metrics for (in ISO-8601 format).</param>
+            <param name="end">End of period to get Metrics for (in ISO-8601 format).</param>
+            <param name="step">Resolution of results in seconds</param>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.RequestConsole">
+            <summary>
+            Requests credentials for remote access via vnc over websocket to keyboard, monitor, and mouse for a server. The provided url is valid for 1 minute, after this period a new url needs to be created to connect to the server. How long the connection is open after the initial connect is not subject to this timeout.
+            </summary>
+            <returns>the serialized ServerActionResponse</returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.SaveResponseMetaData(lkcode.hetznercloudapi.Objects.Server.Get.Response)">
+            <summary>
+            
+            </summary>
+            <param name="response"></param>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.GetServerMetricFromResponseData(lkcode.hetznercloudapi.Objects.Server.GetMetrics.Metrics,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="responseMetric"></param>
+            <param name="serverMetricType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.GetServerMetricTimeSeriesFromResponseData(lkcode.hetznercloudapi.Objects.Server.GetMetrics.TimeSeries)">
+            <summary>
+            
+            </summary>
+            <param name="responseData"></param>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.GetServerFromResponseData(lkcode.hetznercloudapi.Objects.Server.Universal.Server)">
+            <summary>
+            
+            </summary>
+            <param name="responseServer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.GetServerActionFromResponseData(lkcode.hetznercloudapi.Objects.Server.Universal.ServerAction)">
+            <summary>
+            
+            </summary>
+            <param name="responseData"></param>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.GetServerImageFromResponseData(lkcode.hetznercloudapi.Objects.Server.PostCreateImage.Image)">
+            <summary>
+            
+            </summary>
+            <param name="responseData"></param>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.GetErrorFromResponseData(lkcode.hetznercloudapi.Objects.Server.Universal.ErrorResponse)">
+            <summary>
+            
+            </summary>
+            <param name="errorResponse"></param>
+            <returns></returns>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerActionResponse.Id">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerActionResponse.Command">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerActionResponse.Status">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerActionResponse.Progress">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerActionResponse.Started">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerActionResponse.AdditionalActionContent">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerActionResponse.Error">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerBackupPricing.Percentage">
+            <summary>
+            Percentage by how much the base price will increase.
+            </summary>
+        </member>
+        <member name="T:lkcode.hetznercloudapi.Api.ServerConsoleData">
+            <summary>
+            The Data for the requested server console.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerConsoleData.Url">
+            <summary>
+            URL of websocket proxy to use. This includes a token which is valid for a limited time only.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerConsoleData.Password">
+            <summary>
+            VNC password to use for this connection. This password only works in combination with a wss_url with valid token.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerMetric.Start">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerMetric.End">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerMetric.Step">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerMetric.TimeSeries">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerMetric.Type">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerMetricTimeSeries.CpuValues">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerMetricCpuValue.Timestamp">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerMetricCpuValue.TimestampValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerMetricCpuValue.Value">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerType.IsInitialized">
+            <summary>
+            If false, this server-type is not loaded (only the object with the id). access a field like serverType.Description and the object will load the data in the background.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerType.Id">
+            <summary>
+            ID of the server type.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerType.Name">
+            <summary>
+            Unique identifier of the server type.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerType.Description">
+            <summary>
+            Description of the server type.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerType.Cores">
+            <summary>
+            Number of cpu cores a server of this type will have.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerType.Memory">
+            <summary>
+            Memory a server of this type will have in GB.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerType.Disc">
+            <summary>
+            Disk size a server of this type will have in GB.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerType.StorageType">
+            <summary>
+            Type of server boot drive. Local has higher speed. Network has better availability..
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerType.CpuType">
+            <summary>
+            Type of cpu.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerType.Prices">
+            <summary>
+            Prices in different ServerTypes.
+            </summary>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.ServerType.GetAsync(System.Int32)">
+            <summary>
+            Returns all datacenter in a list.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.ServerType.GetAsync(System.Int64)">
+            <summary>
+            Returns all datacenter with the given id.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.ServerType.GetServerTypePricingFromResponseData(lkcode.hetznercloudapi.Objects.Pricing.Get.ServerType)">
+            <summary>
+            
+            </summary>
+            <param name="serverType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.ServerType.GetServerTypePricingValueFromResponseData(lkcode.hetznercloudapi.Objects.ServerType.Universal.Price)">
+            <summary>
+            
+            </summary>
+            <param name="serverTypePrice"></param>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.ServerType.LoadData">
+            <summary>
+            loads the data for this floating-ip.
+            </summary>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.ServerType.GetServerTypeFromResponseData(lkcode.hetznercloudapi.Objects.ServerType.Universal.ServerType)">
+            <summary>
+            
+            </summary>
+            <param name="responseData"></param>
+            <returns></returns>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerTypePricing.Id">
+            <summary>
+            ID of the server type the price is for.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerTypePricing.Name">
+            <summary>
+            Name of the server type the price is for.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerTypePricing.Prices">
+            <summary>
+            Server type costs per location.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerTypePricingValue.Location">
+            <summary>
+            Name of the location the price is for.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerTypePricingValue.PriceHourly">
+            <summary>
+            Hourly costs for a server type in this location.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerTypePricingValue.PriceMontly">
+            <summary>
+            Monthly costs for a server type in this location.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.SshKey.Id">
+            <summary>
+            ID of the SSH key.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.SshKey.Name">
+            <summary>
+            Name of the SSH key (must be unique per project).
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.SshKey.Fingerprint">
+            <summary>
+            Fingerprint of public key.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.SshKey.PublicKey">
+            <summary>
+            Public key.
+            </summary>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.SshKey.GetAsync(System.Int32)">
+            <summary>
+            Returns all ssh-keys in a list.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.SshKey.GetAsync(System.Int64)">
+            <summary>
+            Return a ssh-key by the given id.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.SshKey.GetSshKeyFromResponseData(lkcode.hetznercloudapi.Objects.SshKey.Universal.SshKey)">
+            <summary>
+            
+            </summary>
+            <param name="responseData"></param>
+            <returns></returns>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.TrafficPricing.PricePerTb">
+            <summary>
+            The cost of additional traffic per GB.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Core.ApiCore._apiToken">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Core.ApiCore.ApiToken">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Core.ApiCore._clientUserAgent">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Core.ApiCore.ClientUserAgent">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:lkcode.hetznercloudapi.Core.ApiCore.ApiServer">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Core.ApiCore.SendRequest(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Core.ApiCore.SendPostRequest(System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            
+            </summary>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Core.ApiCore.SendDeleteRequest(System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            
+            </summary>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Core.ApiCore.SendPutRequest(System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            
+            </summary>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Core.ApiCore.checkApiToken">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Core.ApiCore.checkResponseContent(System.String)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Helper.DateTimeHelper.GetAsIso8601String(System.DateTime)">
+            <summary>
+            
+            </summary>
+            <param name="dateTime"></param>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Helper.DateTimeHelper.GetFromUnixTimestamp(System.Int64)">
+            <summary>
+            
+            </summary>
+            <param name="timestamp"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
