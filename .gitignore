@@ -328,9 +328,3 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
-
-hetzner-cloud-api-net/demo-wpf/ApiConfig\.cs
-
-hetzner-cloud-api-net/tests-net-standard/ApiConfig\.cs
-
-wpf-demo/
