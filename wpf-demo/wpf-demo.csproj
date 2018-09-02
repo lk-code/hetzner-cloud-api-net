@@ -73,8 +73,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Views\MetricBaseWindow.cs" />
     <Compile Include="Views\ServerMetricCpuValuesWindow.xaml.cs">
       <DependentUpon>ServerMetricCpuValuesWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ServerMetricDiskValuesWindow.xaml.cs">
+      <DependentUpon>ServerMetricDiskValuesWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ServerMetricNetworkValuesWindow.xaml.cs">
+      <DependentUpon>ServerMetricNetworkValuesWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -89,6 +96,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\ServerMetricCpuValuesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ServerMetricDiskValuesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ServerMetricNetworkValuesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

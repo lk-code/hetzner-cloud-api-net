@@ -558,7 +558,7 @@
             </summary>
             <param name="response"></param>
         </member>
-        <member name="M:lkcode.hetznercloudapi.Api.Server.GetServerMetricFromResponseData(lkcode.hetznercloudapi.Objects.Server.GetMetrics.Metrics,System.String)">
+        <member name="M:lkcode.hetznercloudapi.Api.Server.GetServerMetricFromResponse(System.String,System.String)">
             <summary>
             
             </summary>
@@ -566,11 +566,35 @@
             <param name="serverMetricType"></param>
             <returns></returns>
         </member>
-        <member name="M:lkcode.hetznercloudapi.Api.Server.GetServerMetricTimeSeriesFromResponseData(lkcode.hetznercloudapi.Objects.Server.GetMetrics.TimeSeries)">
+        <member name="M:lkcode.hetznercloudapi.Api.Server.GetNetworkMetricFromResponseData(System.Object,lkcode.hetznercloudapi.Api.ServerMetric)">
             <summary>
             
             </summary>
-            <param name="responseData"></param>
+            <param name="data"></param>
+            <param name="serverMetric"></param>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.GetDiskMetricFromResponseData(System.Object,lkcode.hetznercloudapi.Api.ServerMetric)">
+            <summary>
+            
+            </summary>
+            <param name="data"></param>
+            <param name="serverMetric"></param>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.GetConvertedServerMetricValue(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.GetServerMetricValue(System.Int64,System.Double)">
+            <summary>
+            
+            </summary>
+            <param name="timestamp"></param>
+            <param name="value"></param>
             <returns></returns>
         </member>
         <member name="M:lkcode.hetznercloudapi.Api.Server.GetServerFromResponseData(lkcode.hetznercloudapi.Objects.Server.Universal.Server)">
@@ -656,6 +680,11 @@
             VNC password to use for this connection. This password only works in combination with a wss_url with valid token.
             </summary>
         </member>
+        <member name="T:lkcode.hetznercloudapi.Api.ServerMetric">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="P:lkcode.hetznercloudapi.Api.ServerMetric.Start">
             <summary>
             
@@ -681,22 +710,92 @@
             
             </summary>
         </member>
+        <member name="T:lkcode.hetznercloudapi.Api.ServerMetricTimeSeries">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="P:lkcode.hetznercloudapi.Api.ServerMetricTimeSeries.CpuValues">
             <summary>
             
             </summary>
         </member>
-        <member name="P:lkcode.hetznercloudapi.Api.ServerMetricCpuValue.Timestamp">
+        <member name="P:lkcode.hetznercloudapi.Api.ServerMetricTimeSeries.DiskValues">
             <summary>
             
             </summary>
         </member>
-        <member name="P:lkcode.hetznercloudapi.Api.ServerMetricCpuValue.TimestampValue">
+        <member name="P:lkcode.hetznercloudapi.Api.ServerMetricTimeSeries.NetworkValues">
             <summary>
             
             </summary>
         </member>
-        <member name="P:lkcode.hetznercloudapi.Api.ServerMetricCpuValue.Value">
+        <member name="T:lkcode.hetznercloudapi.Api.ServerMetricNetworkValues">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerMetricNetworkValues.PPSIn">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerMetricNetworkValues.PPSOut">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerMetricNetworkValues.BandwithIn">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerMetricNetworkValues.BandwithOut">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:lkcode.hetznercloudapi.Api.ServerMetricDiskValues">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerMetricDiskValues.IOPSRead">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerMetricDiskValues.IOPSWrite">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerMetricDiskValues.BandwithRead">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerMetricDiskValues.BandwithWrite">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:lkcode.hetznercloudapi.Api.ServerMetricValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerMetricValue.Timestamp">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerMetricValue.TimestampValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ServerMetricValue.Value">
             <summary>
             
             </summary>
@@ -925,6 +1024,29 @@
             <summary>
             
             </summary>
+        </member>
+        <member name="T:lkcode.hetznercloudapi.Exceptions.InvalidArgumentException">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Exceptions.InvalidArgumentException.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Exceptions.InvalidArgumentException.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Exceptions.InvalidArgumentException.#ctor(System.String,System.Exception)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+            <param name="inner"></param>
         </member>
         <member name="M:lkcode.hetznercloudapi.Helper.DateTimeHelper.GetAsIso8601String(System.DateTime)">
             <summary>

@@ -822,7 +822,7 @@ namespace wpf_demo
             }
         }
 
-        private async void ServerMetricsContextMenu_Click(object sender, RoutedEventArgs e)
+        private async void ServerCpuMetricsContextMenu_Click(object sender, RoutedEventArgs e)
         {
             lkcode.hetznercloudapi.Api.Server server = this.ServerDataGrid.SelectedItem as lkcode.hetznercloudapi.Api.Server;
 
@@ -830,11 +830,11 @@ namespace wpf_demo
 
             try
             {
-                this.AddLogMessage(string.Format("get metrics for server '{0}'", server.Name));
+                this.AddLogMessage(string.Format("get cpu metrics for server '{0}'", server.Name));
 
                 serverMetric = await server.GetMetrics(ServerMetricType.CPU, DateTimeHelper.GetAsIso8601String(DateTime.Now.AddDays(-30)), DateTimeHelper.GetAsIso8601String(DateTime.Now));
 
-                this.AddLogMessage(string.Format("success: get metrics for server '{0}'", server.Name));
+                this.AddLogMessage(string.Format("success: get cpu metrics for server '{0}'", server.Name));
 
             }
             catch (Exception err)
@@ -843,6 +843,56 @@ namespace wpf_demo
             }
 
             ServerMetricCpuValuesWindow win = new ServerMetricCpuValuesWindow(serverMetric);
+
+            win.Show();
+        }
+
+        private async void ServerDiskMetricsContextMenu_Click(object sender, RoutedEventArgs e)
+        {
+            lkcode.hetznercloudapi.Api.Server server = this.ServerDataGrid.SelectedItem as lkcode.hetznercloudapi.Api.Server;
+
+            ServerMetric serverMetric = null;
+
+            try
+            {
+                this.AddLogMessage(string.Format("get disk metrics for server '{0}'", server.Name));
+
+                serverMetric = await server.GetMetrics(ServerMetricType.DISK, DateTimeHelper.GetAsIso8601String(DateTime.Now.AddDays(-30)), DateTimeHelper.GetAsIso8601String(DateTime.Now));
+
+                this.AddLogMessage(string.Format("success: get disk metrics for server '{0}'", server.Name));
+
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+            
+            ServerMetricDiskValuesWindow win = new ServerMetricDiskValuesWindow(serverMetric);
+
+            win.Show();
+        }
+
+        private async void ServerNetworkMetricsContextMenu_Click(object sender, RoutedEventArgs e)
+        {
+            lkcode.hetznercloudapi.Api.Server server = this.ServerDataGrid.SelectedItem as lkcode.hetznercloudapi.Api.Server;
+
+            ServerMetric serverMetric = null;
+
+            try
+            {
+                this.AddLogMessage(string.Format("get network metrics for server '{0}'", server.Name));
+
+                serverMetric = await server.GetMetrics(ServerMetricType.NETWORK, DateTimeHelper.GetAsIso8601String(DateTime.Now.AddDays(-30)), DateTimeHelper.GetAsIso8601String(DateTime.Now));
+
+                this.AddLogMessage(string.Format("success: get network metrics for server '{0}'", server.Name));
+
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+
+            ServerMetricNetworkValuesWindow win = new ServerMetricNetworkValuesWindow(serverMetric);
 
             win.Show();
         }

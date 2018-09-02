@@ -186,9 +186,18 @@
                                     Header="Create Image Snapshot" />
                                 <Separator />
                                 <MenuItem
-                                    Click="ServerMetricsContextMenu_Click"
+                                    Click="ServerCpuMetricsContextMenu_Click"
                                     CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
-                                    Header="Get Metrics" />
+                                    Header="Get CPU Metrics" />
+                                <MenuItem
+                                    Click="ServerDiskMetricsContextMenu_Click"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
+                                    Header="Get Disk Metrics" />
+                                <MenuItem
+                                    Click="ServerNetworkMetricsContextMenu_Click"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"
+                                    Header="Get Network Metrics" />
+                                <Separator />
                                 <MenuItem
                                     Click="ServerConsoleContextMenu_Click"
                                     CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"

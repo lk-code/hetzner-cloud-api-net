@@ -496,9 +496,8 @@ namespace lkcode.hetznercloudapi.Api
             }
 
             string responseContent = await ApiCore.SendRequest(url);
-            Objects.Server.GetMetrics.Response response = JsonConvert.DeserializeObject<Objects.Server.GetMetrics.Response>(responseContent);
 
-            ServerMetric serverMetric = GetServerMetricFromResponseData(response.metrics, type);
+            ServerMetric serverMetric = GetServerMetricFromResponse(responseContent, type);
             
             return serverMetric;
         }
@@ -545,15 +544,50 @@ namespace lkcode.hetznercloudapi.Api
         /// <param name="responseMetric"></param>
         /// <param name="serverMetricType"></param>
         /// <returns></returns>
-        private static ServerMetric GetServerMetricFromResponseData(Objects.Server.GetMetrics.Metrics responseMetric, string serverMetricType)
+        private static ServerMetric GetServerMetricFromResponse(string responseMetric, string serverMetricType)
         {
+            dynamic data = JObject.Parse(responseMetric);
+
             ServerMetric serverMetric = new ServerMetric();
-            serverMetric.Start = responseMetric.start;
-            serverMetric.End = responseMetric.end;
-            serverMetric.Step = responseMetric.step;
+            serverMetric.Start = data.metrics.start;
+            serverMetric.End = data.metrics.end;
+            serverMetric.Step = data.metrics.step;
             serverMetric.Type = serverMetricType;
 
-            serverMetric.TimeSeries = GetServerMetricTimeSeriesFromResponseData(responseMetric.time_series);
+            serverMetric.TimeSeries = new ServerMetricTimeSeries();
+            switch(serverMetricType)
+            {
+                case ServerMetricType.CPU:
+                    {
+                        // process the cpu-values
+                        serverMetric.TimeSeries.CpuValues = new List<ServerMetricValue>();
+
+                        foreach (var cpuValue in data.metrics.time_series.cpu.values)
+                        {
+                            long timestamp = Convert.ToInt64(cpuValue[0]);
+                            double value = Math.Round(Convert.ToDouble(Convert.ToString(cpuValue[1]).Replace('.', ',')), 5);
+
+                            serverMetric.TimeSeries.CpuValues.Add(GetServerMetricValue(timestamp, value));
+                        }
+                    }
+                    break;
+                case ServerMetricType.DISK:
+                    {
+                        // process the disk-values
+                        serverMetric.TimeSeries.DiskValues = GetDiskMetricFromResponseData(data, serverMetric);
+                    }
+                    break;
+                case ServerMetricType.NETWORK:
+                    {
+                        // process the network-values
+                        serverMetric.TimeSeries.NetworkValues = GetNetworkMetricFromResponseData(data, serverMetric);
+                    }
+                    break;
+                default:
+                    {
+                        throw new InvalidArgumentException(string.Format("unknown value for argument '{0}' => '{1}'. only use the lkcode.hetznercloudapi.Api.ServerMetricType values", "ServerMetricType", serverMetricType));
+                    }
+            }
 
             return serverMetric;
         }
@@ -561,32 +595,229 @@ namespace lkcode.hetznercloudapi.Api
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="responseData"></param>
+        /// <param name="data"></param>
+        /// <param name="serverMetric"></param>
         /// <returns></returns>
-        private static ServerMetricTimeSeries GetServerMetricTimeSeriesFromResponseData(Objects.Server.GetMetrics.TimeSeries responseTimeSeries)
+        private static List<ServerMetricNetworkValues> GetNetworkMetricFromResponseData(dynamic data, ServerMetric serverMetric)
         {
-            ServerMetricTimeSeries serverMetricTimeSeries = new ServerMetricTimeSeries();
+            List<ServerMetricNetworkValues> networkValues = new List<ServerMetricNetworkValues>();
+            bool hasNext = true;
+            int pos = 0;
 
-            if (responseTimeSeries.cpu != null)
+            while (hasNext)
             {
-                // process the cpu-values
-                serverMetricTimeSeries.CpuValues = new List<ServerMetricCpuValue>();
+                ServerMetricNetworkValues networkMetricValues = new ServerMetricNetworkValues();
 
-                foreach (var cpuValue in responseTimeSeries.cpu.values)
+                string networkPpsInKey = string.Format("network.{0}.pps.in", pos);
+                string networkPpsOutKey = string.Format("network.{0}.pps.out", pos);
+                string networkBandwidthInKey = string.Format("network.{0}.bandwidth.in", pos);
+                string networkBandwidthOutKey = string.Format("network.{0}.bandwidth.out", pos);
+
+                var networkPpsInValues = data.metrics.time_series[networkPpsInKey];
+                var networkPpsOutValues = data.metrics.time_series[networkPpsOutKey];
+                var networkBandwidthInValues = data.metrics.time_series[networkBandwidthInKey];
+                var networkBandwidthOutValues = data.metrics.time_series[networkBandwidthOutKey];
+
+                if (networkPpsInValues == null &&
+                    networkPpsOutValues == null &&
+                    networkBandwidthInValues == null &&
+                    networkBandwidthOutValues == null)
                 {
-                    long timestamp = Convert.ToInt64(cpuValue[0]);
-                    double value = Math.Round(Convert.ToDouble((cpuValue[1] as string).Replace('.', ',')), 5);
-
-                    serverMetricTimeSeries.CpuValues.Add(new ServerMetricCpuValue()
-                    {
-                        Timestamp = DateTimeHelper.GetFromUnixTimestamp(timestamp),
-                        TimestampValue = timestamp,
-                        Value = value,
-                    });
+                    hasNext = false;
+                    continue;
                 }
+                else
+                {
+                    if (networkPpsInValues != null)
+                    {
+                        networkMetricValues.PPSIn = new List<ServerMetricValue>();
+
+                        foreach (var diskValue in networkPpsInValues.values)
+                        {
+                            long timestamp = Convert.ToInt64(diskValue[0]);
+                            double value = GetConvertedServerMetricValue(diskValue[1]);
+
+                            networkMetricValues.PPSIn.Add(GetServerMetricValue(timestamp, value));
+                        }
+                    }
+
+                    if (networkPpsOutValues != null)
+                    {
+                        networkMetricValues.PPSOut = new List<ServerMetricValue>();
+
+                        foreach (var diskValue in networkPpsOutValues.values)
+                        {
+                            long timestamp = Convert.ToInt64(diskValue[0]);
+                            double value = GetConvertedServerMetricValue(diskValue[1]);
+
+                            networkMetricValues.PPSOut.Add(GetServerMetricValue(timestamp, value));
+                        }
+                    }
+
+                    if (networkBandwidthInValues != null)
+                    {
+                        networkMetricValues.BandwithIn = new List<ServerMetricValue>();
+
+                        foreach (var diskValue in networkBandwidthInValues.values)
+                        {
+                            long timestamp = Convert.ToInt64(diskValue[0]);
+                            double value = GetConvertedServerMetricValue(diskValue[1]);
+
+                            networkMetricValues.BandwithIn.Add(GetServerMetricValue(timestamp, value));
+                        }
+                    }
+
+                    if (networkBandwidthOutValues != null)
+                    {
+                        networkMetricValues.BandwithOut = new List<ServerMetricValue>();
+
+                        foreach (var diskValue in networkBandwidthOutValues.values)
+                        {
+                            long timestamp = Convert.ToInt64(diskValue[0]);
+                            double value = GetConvertedServerMetricValue(diskValue[1]);
+
+                            networkMetricValues.BandwithOut.Add(GetServerMetricValue(timestamp, value));
+                        }
+                    }
+                }
+
+                networkValues.Add(networkMetricValues);
+                pos++;
             }
 
-            return serverMetricTimeSeries;
+            return networkValues;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="serverMetric"></param>
+        /// <returns></returns>
+        private static List<ServerMetricDiskValues> GetDiskMetricFromResponseData(dynamic data, ServerMetric serverMetric)
+        {
+            List<ServerMetricDiskValues> diskValues = new List<ServerMetricDiskValues>();
+            bool hasNext = true;
+            int pos = 0;
+
+            while (hasNext)
+            {
+                ServerMetricDiskValues diskMetricValues = new ServerMetricDiskValues();
+
+                string diskIopsReadKey = string.Format("disk.{0}.iops.read", pos);
+                string diskIopsWriteKey = string.Format("disk.{0}.iops.write", pos);
+                string diskBandwidthReadKey = string.Format("disk.{0}.bandwidth.read", pos);
+                string diskBandwidthWriteKey = string.Format("disk.{0}.bandwidth.write", pos);
+
+                var diskIopsReadValues = data.metrics.time_series[diskIopsReadKey];
+                var diskIopsWriteValues = data.metrics.time_series[diskIopsWriteKey];
+                var diskBandwidthReadValues = data.metrics.time_series[diskBandwidthReadKey];
+                var diskBandwidthWriteValues = data.metrics.time_series[diskBandwidthWriteKey];
+
+                if (diskIopsReadValues == null &&
+                    diskIopsWriteValues == null &&
+                    diskBandwidthReadValues == null &&
+                    diskBandwidthWriteValues == null)
+                {
+                    hasNext = false;
+                    continue;
+                }
+                else
+                {
+                    if (diskIopsReadValues != null)
+                    {
+                        diskMetricValues.IOPSRead = new List<ServerMetricValue>();
+
+                        foreach (var diskValue in diskIopsReadValues.values)
+                        {
+                            long timestamp = Convert.ToInt64(diskValue[0]);
+                            double value = GetConvertedServerMetricValue(diskValue[1]);
+
+                            diskMetricValues.IOPSRead.Add(GetServerMetricValue(timestamp, value));
+                        }
+                    }
+
+                    if (diskIopsWriteValues != null)
+                    {
+                        diskMetricValues.IOPSWrite = new List<ServerMetricValue>();
+
+                        foreach (var diskValue in diskIopsWriteValues.values)
+                        {
+                            long timestamp = Convert.ToInt64(diskValue[0]);
+                            double value = GetConvertedServerMetricValue(diskValue[1]);
+
+                            diskMetricValues.IOPSWrite.Add(GetServerMetricValue(timestamp, value));
+                        }
+                    }
+
+                    if (diskBandwidthReadValues != null)
+                    {
+                        diskMetricValues.BandwithRead = new List<ServerMetricValue>();
+
+                        foreach (var diskValue in diskBandwidthReadValues.values)
+                        {
+                            long timestamp = Convert.ToInt64(diskValue[0]);
+                            double value = GetConvertedServerMetricValue(diskValue[1]);
+
+                            diskMetricValues.BandwithRead.Add(GetServerMetricValue(timestamp, value));
+                        }
+                    }
+
+                    if (diskBandwidthWriteValues != null)
+                    {
+                        diskMetricValues.BandwithWrite = new List<ServerMetricValue>();
+
+                        foreach (var diskValue in diskBandwidthWriteValues.values)
+                        {
+                            long timestamp = Convert.ToInt64(diskValue[0]);
+                            double value = GetConvertedServerMetricValue(diskValue[1]);
+
+                            diskMetricValues.BandwithWrite.Add(GetServerMetricValue(timestamp, value));
+                        }
+                    }
+                }
+
+                diskValues.Add(diskMetricValues);
+                pos++;
+            }
+
+            return diskValues;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private static double GetConvertedServerMetricValue(dynamic value)
+        {
+            double convertedValue = 0;
+
+            string stringValue = Convert.ToString(value);
+            stringValue = stringValue.Replace('.', ',');
+
+            double doubleValue = Convert.ToDouble(stringValue);
+            convertedValue = Math.Round(doubleValue, 5);
+
+            return convertedValue;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="timestamp"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private static ServerMetricValue GetServerMetricValue(long timestamp, double value)
+        {
+            ServerMetricValue serverMetricValue = new ServerMetricValue()
+            {
+                Timestamp = DateTimeHelper.GetFromUnixTimestamp(timestamp),
+                TimestampValue = timestamp,
+                Value = value,
+            };
+
+            return serverMetricValue;
         }
 
         /// <summary>

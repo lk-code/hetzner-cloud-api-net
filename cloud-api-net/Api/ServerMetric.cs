@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace lkcode.hetznercloudapi.Api
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ServerMetric
     {
         /// <summary>
@@ -27,15 +30,75 @@ namespace lkcode.hetznercloudapi.Api
         public string Type { get; set; }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class ServerMetricTimeSeries
     {
         /// <summary>
         /// 
         /// </summary>
-        public List<ServerMetricCpuValue> CpuValues { get; set; }
+        public List<ServerMetricValue> CpuValues { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<ServerMetricDiskValues> DiskValues { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<ServerMetricNetworkValues> NetworkValues { get; set; }
     }
 
-    public class ServerMetricCpuValue
+    /// <summary>
+    /// 
+    /// </summary>
+    public class ServerMetricNetworkValues
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<ServerMetricValue> PPSIn { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<ServerMetricValue> PPSOut { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<ServerMetricValue> BandwithIn { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<ServerMetricValue> BandwithOut { get; set; }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class ServerMetricDiskValues
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<ServerMetricValue> IOPSRead { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<ServerMetricValue> IOPSWrite { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<ServerMetricValue> BandwithRead { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<ServerMetricValue> BandwithWrite { get; set; }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class ServerMetricValue
     {
         /// <summary>
         /// 

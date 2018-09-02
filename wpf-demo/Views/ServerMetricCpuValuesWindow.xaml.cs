@@ -2,13 +2,14 @@
 using LiveCharts.Wpf;
 using lkcode.hetznercloudapi.Api;
 using MahApps.Metro.Controls;
+using System.Collections.Generic;
 
 namespace wpf_demo.Views
 {
     /// <summary>
     /// Interaktionslogik für ServerMetricCpuValuesWindow.xaml
     /// </summary>
-    public partial class ServerMetricCpuValuesWindow : MetroWindow
+    public partial class ServerMetricCpuValuesWindow : MetricBaseWindow
     {
         public ServerMetric ServerMetric { get; set; }
 
@@ -20,19 +21,12 @@ namespace wpf_demo.Views
 
             this.ServerMetric = serverMetric;
 
-            ChartValues<double> cpuValues = new ChartValues<double>();
-
-            foreach (ServerMetricCpuValue cpuValue in ServerMetric.TimeSeries.CpuValues)
-            {
-                cpuValues.Add(cpuValue.Value);
-            }
-
             SeriesCollection = new SeriesCollection
             {
                 new LineSeries
                 {
                     Title = "CPU-Values",
-                    Values = cpuValues
+                    Values = this.GetChartValues(this.ServerMetric.TimeSeries.CpuValues)
                 }
             };
 
