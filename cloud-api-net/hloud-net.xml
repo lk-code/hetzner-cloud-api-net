@@ -4,6 +4,80 @@
         <name>hloud-net</name>
     </assembly>
     <members>
+        <member name="P:lkcode.hetznercloudapi.Api.Action.Id">
+            <summary>
+            ID of the action.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Action.Command">
+            <summary>
+            Command executed in the action.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Action.Status">
+            <summary>
+            Status of the action.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Action.Progress">
+            <summary>
+            Progress of action in percent.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Action.Started">
+            <summary>
+            Progress of action in percent.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Action.Finished">
+            <summary>
+            Progress of action in percent.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Action.Resources">
+            <summary>
+            Resources the action relates to.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Action.Error">
+            <summary>
+            Error message for the action if error occured, otherwise null.
+            </summary>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Action.GetAsync(System.Int32)">
+            <summary>
+            Returns all ssh-keys in a list.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Action.GetAsync(System.Int64)">
+            <summary>
+            Return a ssh-key by the given id.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Action.GetActionFromResponseData(lkcode.hetznercloudapi.Objects.Action.Universal.Action)">
+            <summary>
+            
+            </summary>
+            <param name="responseData"></param>
+            <returns></returns>
+        </member>
+        <member name="T:lkcode.hetznercloudapi.Api.ActionResource">
+            <summary>
+            Resources the action relates to.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ActionResource.Id">
+            <summary>
+            ID of resource referenced.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.ActionResource.Type">
+            <summary>
+            Type of resource referenced.
+            </summary>
+        </member>
         <member name="P:lkcode.hetznercloudapi.Api.Datacenter.Id">
             <summary>
             ID of the datacenter.
@@ -999,6 +1073,7 @@
             
             </summary>
             <param name="action"></param>
+            <param name="arguments"></param>
             <returns></returns>
         </member>
         <member name="M:lkcode.hetznercloudapi.Core.ApiCore.SendDeleteRequest(System.String,System.Collections.Generic.Dictionary{System.String,System.String})">

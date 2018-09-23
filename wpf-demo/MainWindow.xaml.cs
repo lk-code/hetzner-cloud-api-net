@@ -866,7 +866,7 @@ namespace wpf_demo
             {
                 this.AddLogMessage(string.Format("error: {0}", err.Message));
             }
-            
+
             ServerMetricDiskValuesWindow win = new ServerMetricDiskValuesWindow(serverMetric);
 
             win.Show();
@@ -922,6 +922,78 @@ namespace wpf_demo
             {
                 this.AddLogMessage(string.Format("error: {0}", err.Message));
             }
+        }
+
+        private void GetAllActionsButton_Click(object sender, RoutedEventArgs e)
+        {
+            LoadActionData(1);
+        }
+
+        private async void GetOneActionButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.AddLogMessage("load action");
+
+                string actionId = await this.ShowInputAsync(
+                    "Action-ID",
+                    "enter the Action id");
+
+                long id = Convert.ToInt64(actionId);
+
+                lkcode.hetznercloudapi.Api.Action action = await lkcode.hetznercloudapi.Api.Action.GetAsync(id);
+                List<lkcode.hetznercloudapi.Api.Action> actionList = new List<lkcode.hetznercloudapi.Api.Action>();
+                actionList.Add(action);
+
+                this.ActionsDataGrid.ItemsSource = null;
+                this.ActionsDataGrid.ItemsSource = actionList;
+
+                this.AddLogMessage(string.Format("loaded action with id {0} ", action.Id));
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
+
+        private async void LoadActionData(int page)
+        {
+            try
+            {
+                this.AddLogMessage(string.Format("load actions in page {0}", page));
+
+                List<lkcode.hetznercloudapi.Api.Action> serverTypesList = await lkcode.hetznercloudapi.Api.Action.GetAsync(page);
+                this.ActionsDataGrid.ItemsSource = serverTypesList;
+
+                this.ActionsDataGridCurrentPageTextBlock.Text = lkcode.hetznercloudapi.Api.Action.CurrentPage.ToString();
+                this.ActionsDataGridMaxPageTextBlock.Text = lkcode.hetznercloudapi.Api.Action.MaxPages.ToString();
+                this.ActionsDataGridLastPageButton.IsEnabled = true;
+                this.ActionsDataGridNextPageButton.IsEnabled = true;
+                if (lkcode.hetznercloudapi.Api.Action.CurrentPage == 1)
+                {
+                    this.ActionsDataGridLastPageButton.IsEnabled = false;
+                }
+                if (lkcode.hetznercloudapi.Api.Action.CurrentPage == lkcode.hetznercloudapi.Api.Action.MaxPages)
+                {
+                    this.ActionsDataGridNextPageButton.IsEnabled = false;
+                }
+
+                this.AddLogMessage(string.Format("loaded {0} actions", serverTypesList.Count));
+            }
+            catch (Exception err)
+            {
+                this.AddLogMessage(string.Format("error: {0}", err.Message));
+            }
+        }
+
+        private void ActionDataGridLastPageButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            LoadActionData((lkcode.hetznercloudapi.Api.Action.CurrentPage - 1));
+        }
+
+        private void ActionsDataGridNextPageButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            LoadActionData((lkcode.hetznercloudapi.Api.Action.CurrentPage + 1));
         }
     }
 }
