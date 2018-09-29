@@ -84,7 +84,7 @@ namespace lkcode.hetznercloudapi.Core
         /// <param name="action"></param>
         /// <param name="arguments"></param>
         /// <returns></returns>
-        public static async Task<string> SendPostRequest(string action, Dictionary<string, string> arguments = null)
+        public static async Task<string> SendPostRequest(string action, Dictionary<string, object> arguments = null)
         {
             checkApiToken();
 

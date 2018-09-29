@@ -4,7 +4,7 @@ namespace lkcode.hetznercloudapi.Objects.Datacenter.Universal
 {
     public class Location
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public string name { get; set; }
         public string description { get; set; }
         public string country { get; set; }
@@ -21,7 +21,7 @@ namespace lkcode.hetznercloudapi.Objects.Datacenter.Universal
 
     public class Datacenter
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public string name { get; set; }
         public string description { get; set; }
         public Location location { get; set; }

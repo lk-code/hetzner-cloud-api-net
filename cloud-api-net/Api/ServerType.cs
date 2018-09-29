@@ -63,6 +63,10 @@ namespace lkcode.hetznercloudapi.Api
             {
                 return this._id;
             }
+            set
+            {
+                this._id = value;
+            }
         }
 
         private string _name { get; set; }

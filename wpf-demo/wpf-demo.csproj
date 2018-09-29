@@ -74,6 +74,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Views\MetricBaseWindow.cs" />
+    <Compile Include="Views\ServerCreateWindow.xaml.cs">
+      <DependentUpon>ServerCreateWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ServerMetricCpuValuesWindow.xaml.cs">
       <DependentUpon>ServerMetricCpuValuesWindow.xaml</DependentUpon>
     </Compile>
@@ -95,6 +98,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ServerCreateWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ServerMetricCpuValuesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

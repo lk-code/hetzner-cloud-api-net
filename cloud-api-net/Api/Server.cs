@@ -67,20 +67,37 @@ namespace lkcode.hetznercloudapi.Api
         /// </summary>
         public string Status { get; set; } = string.Empty;
 
+        private DateTimeOffset _created { get; set; }
         /// <summary>
         /// Point in time when the server was created (in ISO-8601 format) as a System.DateTimeOffset.
         /// </summary>
-        public DateTimeOffset Created { get; set; }
+        public DateTimeOffset Created
+        {
+            get
+            {
+                return _created;
+            }
+        }
 
         /// <summary>
         /// Public network information.
         /// </summary>
         public Network Network { get; set; }
 
+        /// <summary>
+        /// The ServerType of this Server.
+        /// </summary>
+        public ServerType ServerType { get; set; }
+
+        /// <summary>
+        /// The ServerImage of this Server.
+        /// </summary>
+        public ServerImage ServerImage { get; set; }
+
         #endregion
 
         #region # static methods #
-        
+
         /// <summary>
         /// Returns all server in a list.
         /// </summary>
@@ -199,6 +216,72 @@ namespace lkcode.hetznercloudapi.Api
             return server;
         }
 
+        /// <summary>
+        /// saves the server-model
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ServerActionResponse> SaveAsync(IsoImage isoImage, bool startAfterCreate = true, string[] sshKeys = null, string userData = "", long locationId = -1, long datacenterId = -1)
+        {
+            this.validateRequiredServerDataForSave(isoImage);
+            this.validateOptionalServerDataForSave();
+
+            Dictionary<string, object> arguments = new Dictionary<string, object>();
+            // required fields
+            arguments.Add("name", this.Name);
+            arguments.Add("server_type", this.ServerType.Id.ToString());
+            //arguments.Add("image", isoImage.Description);
+            arguments.Add("image", "ubuntu-16.04");
+
+            // optional fields
+            arguments.Add("start_after_create", startAfterCreate.ToString());
+            // optional field: ssh-key
+            if (sshKeys != null && sshKeys.Length > 0)
+            {
+                arguments.Add("ssh_keys", JsonConvert.SerializeObject(sshKeys));
+            }
+            // optional field: user-data
+            if (!string.IsNullOrEmpty(userData) && !string.IsNullOrWhiteSpace(userData))
+            {
+                arguments.Add("user_data", userData);
+            }
+            // optional field: location
+            if (locationId > 0)
+            {
+                arguments.Add("location", locationId.ToString());
+            }
+            // optional field: datacenter
+            if (datacenterId > 0)
+            {
+                arguments.Add("datacenter", datacenterId.ToString());
+            }
+
+            string responseContent = await ApiCore.SendPostRequest(string.Format("/servers"), arguments);
+            JObject responseObject = JObject.Parse(responseContent);
+
+            if (responseObject["error"] != null)
+            {
+                // error
+                Objects.Server.Universal.ErrorResponse error = JsonConvert.DeserializeObject<Objects.Server.Universal.ErrorResponse>(responseContent);
+                ServerActionResponse response = new ServerActionResponse();
+                response.Error = GetErrorFromResponseData(error);
+
+                return response;
+            }
+            else
+            {
+                // success
+                Objects.Server.Create.Response response = JsonConvert.DeserializeObject<Objects.Server.Create.Response>(responseContent);
+
+                Server server = GetServerFromResponseData(response.server);
+                this.setCreatedServer(server);
+
+                ServerActionResponse actionResponse = GetServerActionFromResponseData(response.action);
+                actionResponse.AdditionalActionContent = response.root_password;
+
+                return actionResponse;
+            }
+        }
+
         #endregion
 
         #region # public methods #
@@ -300,7 +383,7 @@ namespace lkcode.hetznercloudapi.Api
         /// <returns>the serialized ServerActionResponse</returns>
         public async Task<ServerActionResponse> CreateImage(string description, string type)
         {
-            Dictionary<string, string> arguments = new Dictionary<string, string>();
+            Dictionary<string, object> arguments = new Dictionary<string, object>();
 
             if (!string.IsNullOrEmpty(description.Trim()) &&
                 !string.IsNullOrWhiteSpace(description.Trim()))
@@ -346,7 +429,7 @@ namespace lkcode.hetznercloudapi.Api
         /// <returns>the serialized ServerActionResponse</returns>
         public async Task<ServerActionResponse> RebuildImage(string image)
         {
-            Dictionary<string, string> arguments = new Dictionary<string, string>();
+            Dictionary<string, object> arguments = new Dictionary<string, object>();
 
             if (!string.IsNullOrEmpty(image.Trim()) &&
                 !string.IsNullOrWhiteSpace(image.Trim()))
@@ -522,10 +605,76 @@ namespace lkcode.hetznercloudapi.Api
 
             return actionResponse;
         }
-        
+
         #endregion
 
         #region # private methods for processing #
+
+        /// <summary>
+        /// set the data of the created server into the current object.
+        /// </summary>
+        /// <param name="server">the created server object</param>
+        private void setCreatedServer(Server server)
+        {
+            this.Id = server.Id;
+            this.Name = server.Name;
+            this.Network = server.Network;
+            this.ServerImage = server.ServerImage;
+            this.ServerType = server.ServerType;
+            this.Status = server.Status;
+            this._created = server.Created;
+        }
+
+        /// <summary>
+        /// validates the required server-data
+        /// </summary>
+        /// <returns></returns>
+        private void validateRequiredServerDataForSave(IsoImage isoImage)
+        {
+            // validates the server-name
+            if (string.IsNullOrEmpty(this.Name) || string.IsNullOrWhiteSpace(this.Name))
+            {
+                throw new ServerDataInvalidException("the server-name is empty or invalid.");
+            }
+            
+            // validates the server-type data
+            if (this.ServerType == null || this.ServerType.Id <= 0)
+            {
+                throw new ServerDataInvalidException("the server-type is empty or invalid.");
+            }
+
+            // validates the iso-image data
+            if (isoImage == null || isoImage.Id <= 0)
+            {
+                throw new ServerDataInvalidException("the iso-image is empty or invalid.");
+            }
+        }
+
+        /// <summary>
+        /// validates the optional server-data
+        /// </summary>
+        /// <returns></returns>
+        private void validateOptionalServerDataForSave()
+        {
+            /*
+            // validates the server-name
+            if (string.IsNullOrEmpty(this.Name) || string.IsNullOrWhiteSpace(this.Name))
+            {
+                throw new ServerDataInvalidException("the server-name is empty or invalid.");
+            }
+
+            // validates the server-type data
+            if (this.ServerType == null || this.ServerType.Id <= 0)
+            {
+                throw new ServerDataInvalidException("the server-type is empty or invalid.");
+            }
+
+            if (this.ServerImage == null || this.ServerImage.Id <= 0)
+            {
+                throw new ServerDataInvalidException("the server-image is empty or invalid.");
+            }
+            /* */
+        }
 
         /// <summary>
         /// 
@@ -823,7 +972,7 @@ namespace lkcode.hetznercloudapi.Api
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="responseServer"></param>
+        /// <param name="responseData"></param>
         /// <returns></returns>
         private static Server GetServerFromResponseData(Objects.Server.Universal.Server responseData)
         {
@@ -832,7 +981,7 @@ namespace lkcode.hetznercloudapi.Api
             server.Id = responseData.id;
             server.Name = responseData.name;
             server.Status = responseData.status;
-            server.Created = responseData.created;
+            server._created = responseData.created;
             server.Network = new Network()
             {
                 Ipv4 = new AddressIpv4()

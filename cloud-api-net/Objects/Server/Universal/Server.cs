@@ -45,12 +45,12 @@ namespace lkcode.hetznercloudapi.Objects.Server.Universal
 
     public class ServerType
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public string name { get; set; }
         public string description { get; set; }
         public int cores { get; set; }
         public double memory { get; set; }
-        public int disk { get; set; }
+        public long disk { get; set; }
         public List<Price> prices { get; set; }
         public string storage_type { get; set; }
         public string cpu_type { get; set; }
@@ -58,7 +58,7 @@ namespace lkcode.hetznercloudapi.Objects.Server.Universal
 
     public class Location
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public string name { get; set; }
         public string description { get; set; }
         public string country { get; set; }
@@ -69,13 +69,13 @@ namespace lkcode.hetznercloudapi.Objects.Server.Universal
 
     public class ServerTypes
     {
-        public List<int> supported { get; set; }
-        public List<int> available { get; set; }
+        public List<long> supported { get; set; }
+        public List<long> available { get; set; }
     }
 
     public class Datacenter
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public string name { get; set; }
         public string description { get; set; }
         public Location location { get; set; }
@@ -89,13 +89,13 @@ namespace lkcode.hetznercloudapi.Objects.Server.Universal
 
     public class Image
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public string type { get; set; }
         public string status { get; set; }
         public string name { get; set; }
         public string description { get; set; }
         public object image_size { get; set; }
-        public int disk_size { get; set; }
+        public long disk_size { get; set; }
         public DateTime created { get; set; }
         public object created_from { get; set; }
         public object bound_to { get; set; }
@@ -114,7 +114,7 @@ namespace lkcode.hetznercloudapi.Objects.Server.Universal
 
     public class Server
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public string name { get; set; }
         public string status { get; set; }
         public DateTime created { get; set; }
@@ -126,8 +126,8 @@ namespace lkcode.hetznercloudapi.Objects.Server.Universal
         public bool rescue_enabled { get; set; }
         public bool locked { get; set; }
         public object backup_window { get; set; }
-        public int outgoing_traffic { get; set; }
-        public int ingoing_traffic { get; set; }
+        public long outgoing_traffic { get; set; }
+        public long ingoing_traffic { get; set; }
         public long included_traffic { get; set; }
         public Protection2 protection { get; set; }
     }

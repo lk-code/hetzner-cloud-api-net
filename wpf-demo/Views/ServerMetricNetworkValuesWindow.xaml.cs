@@ -1,19 +1,8 @@
 ﻿using LiveCharts;
 using LiveCharts.Wpf;
 using lkcode.hetznercloudapi.Api;
-using System;
-using System.Collections.Generic;
+using MahApps.Metro.Controls.Dialogs;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace wpf_demo.Views
 {
@@ -35,41 +24,47 @@ namespace wpf_demo.Views
 
             this.ServerMetric = serverMetric;
 
-            PpsInSeriesCollection = new SeriesCollection
+            if (this.ServerMetric.TimeSeries.NetworkValues.Count() > 0)
             {
-                new LineSeries
+                PpsInSeriesCollection = new SeriesCollection
                 {
-                    Title = "PPS In",
-                    Values = this.GetChartValues(this.ServerMetric.TimeSeries.NetworkValues[0].PPSIn)
-                }
-            };
+                    new LineSeries
+                    {
+                        Title = "PPS In",
+                        Values = this.GetChartValues(this.ServerMetric.TimeSeries.NetworkValues[0].PPSIn)
+                    }
+                };
 
-            PpsOutSeriesCollection = new SeriesCollection
-            {
-                new LineSeries
+                PpsOutSeriesCollection = new SeriesCollection
                 {
-                    Title = "PPS Out",
-                    Values = this.GetChartValues(this.ServerMetric.TimeSeries.NetworkValues[0].PPSOut)
-                }
-            };
+                    new LineSeries
+                    {
+                        Title = "PPS Out",
+                        Values = this.GetChartValues(this.ServerMetric.TimeSeries.NetworkValues[0].PPSOut)
+                    }
+                };
 
-            BandwidthInSeriesCollection = new SeriesCollection
-            {
-                new LineSeries
+                BandwidthInSeriesCollection = new SeriesCollection
                 {
-                    Title = "Bandwidth In",
-                    Values = this.GetChartValues(this.ServerMetric.TimeSeries.NetworkValues[0].BandwithIn)
-                }
-            };
+                    new LineSeries
+                    {
+                        Title = "Bandwidth In",
+                        Values = this.GetChartValues(this.ServerMetric.TimeSeries.NetworkValues[0].BandwithIn)
+                    }
+                };
 
-            BandwidthOutSeriesCollection = new SeriesCollection
-            {
-                new LineSeries
+                BandwidthOutSeriesCollection = new SeriesCollection
                 {
-                    Title = "Bandwidth Out",
-                    Values = this.GetChartValues(this.ServerMetric.TimeSeries.NetworkValues[0].BandwithOut)
-                }
-            };
+                    new LineSeries
+                    {
+                        Title = "Bandwidth Out",
+                        Values = this.GetChartValues(this.ServerMetric.TimeSeries.NetworkValues[0].BandwithOut)
+                    }
+                };
+            } else
+            {
+                this.ShowMessageAsync("note", "no entries available");
+            }
 
             DataContext = this;
         }

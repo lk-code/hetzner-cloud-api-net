@@ -2,7 +2,7 @@
 {
     public class Location
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public string name { get; set; }
         public string description { get; set; }
         public string country { get; set; }

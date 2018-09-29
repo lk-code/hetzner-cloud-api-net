@@ -995,5 +995,11 @@ namespace wpf_demo
         {
             LoadActionData((lkcode.hetznercloudapi.Api.Action.CurrentPage + 1));
         }
+
+        private async void SaveAsyncButton_Click(object sender, RoutedEventArgs e)
+        {
+            ServerCreateWindow scw = new ServerCreateWindow();
+            scw.ShowDialog();
+        }
     }
 }

@@ -84,6 +84,11 @@
                                 Click="RebuildFromImageButton_Click"
                                 Content="RebuildFromImage" />
 
+                            <Button
+                                Margin="5,5,5,5"
+                                Click="SaveAsyncButton_Click"
+                                Content="SaveAsync" />
+
                         </StackPanel>
 
                     </ScrollViewer>
@@ -614,6 +619,7 @@
                             <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
                             <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
                             <DataGridTextColumn Binding="{Binding Description}" Header="Description" />
+                            <DataGridTextColumn Binding="{Binding Type}" Header="Type" />
                         </DataGrid.Columns>
 
                     </DataGrid>

@@ -44,7 +44,7 @@ namespace lkcode.hetznercloudapi.Api
         /// <summary>
         /// ID of the location.
         /// </summary>
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// Unique identifier of the location.
