@@ -4,9 +4,9 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>lkcode.hetznercloudapi</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AssemblyVersion>1.0.26.0</AssemblyVersion>
-    <FileVersion>1.0.26.0</FileVersion>
-    <Version>1.0.26</Version>
+    <AssemblyVersion>1.0.27.0</AssemblyVersion>
+    <FileVersion>1.0.7.0</FileVersion>
+    <Version>1.0.27</Version>
     <Authors>lk-code</Authors>
     <Company />
     <Product>hetznercloudapi</Product>
