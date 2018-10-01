@@ -61,9 +61,9 @@
 
                         <StackPanel Grid.Row="2" Orientation="Vertical">
 
-                            <TextBlock Margin="5" Text="Server-Image" />
+                            <TextBlock Margin="5" Text="Image" />
                             <DataGrid
-                                x:Name="IsoImageDataGrid"
+                                x:Name="ImageDataGrid"
                                 Grid.Row="1"
                                 Grid.Column="1"
                                 AutoGenerateColumns="False"

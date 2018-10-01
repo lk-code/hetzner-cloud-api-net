@@ -24,8 +24,8 @@ namespace wpf_demo.Views
             List<ServerType> serverTypesList = await ServerType.GetAsync(1);
             this.ServerTypesDataGrid.ItemsSource = serverTypesList;
 
-            List<IsoImage> imagesList = await IsoImage.GetAsync(1);
-            this.IsoImageDataGrid.ItemsSource = imagesList;
+            List<Server> imagesList = await Server.GetImagesAsync(1);
+            this.ImageDataGrid.ItemsSource = imagesList;
         }
 
         private async void CreateServerButton_Clicked(object sender, RoutedEventArgs e)
@@ -67,9 +67,9 @@ namespace wpf_demo.Views
                 }
 
                 // server-type
-                if (this.IsoImageDataGrid.SelectedItem != null)
+                if (this.ImageDataGrid.SelectedItem != null)
                 {
-                    createIsoImage = (this.IsoImageDataGrid.SelectedItem as IsoImage);
+                    createIsoImage = (this.ImageDataGrid.SelectedItem as IsoImage);
                 }
                 else
                 {

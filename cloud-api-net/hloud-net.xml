@@ -504,7 +504,7 @@
             Returns all server in a list.
             </summary>
             <param name="page">optional parameter to get a specific page. default is page 1.</param>
-            <returns>a list with the sevrer-objects.</returns>
+            <returns>a list with the server-objects.</returns>
         </member>
         <member name="M:lkcode.hetznercloudapi.Api.Server.GetAsync(System.String,System.Int32)">
             <summary>
@@ -540,6 +540,13 @@
             saves the server-model
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Server.GetImagesAsync(System.Int32)">
+            <summary>
+            Returns all images.
+            </summary>
+            <param name="page">optional parameter to get a specific page. default is page 1.</param>
+            <returns>a list with the image-objects.</returns>
         </member>
         <member name="M:lkcode.hetznercloudapi.Api.Server.Shutdown">
             <summary>

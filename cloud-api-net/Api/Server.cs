@@ -102,7 +102,7 @@ namespace lkcode.hetznercloudapi.Api
         /// Returns all server in a list.
         /// </summary>
         /// <param name="page">optional parameter to get a specific page. default is page 1.</param>
-        /// <returns>a list with the sevrer-objects.</returns>
+        /// <returns>a list with the server-objects.</returns>
         public static async Task<List<Server>> GetAsync(int page = 1)
         {
             if ((_maxPages > 0 && (page <= 0 || page > _maxPages)))
