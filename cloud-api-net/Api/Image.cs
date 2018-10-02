@@ -3,11 +3,13 @@ using lkcode.hetznercloudapi.Exceptions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace lkcode.hetznercloudapi.Api
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Image
     {
         #region # static properties #
@@ -52,6 +54,73 @@ namespace lkcode.hetznercloudapi.Api
         /// ID of image.
         /// </summary>
         public long Id { get; set; } = 0;
+
+        /// <summary>
+        /// Type of the image. Choices: system, snapshot, backup.
+        /// </summary>
+        public string Type { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Whether the image can be used or if it’s still being created. Choices: available, creating.
+        /// </summary>
+        public string Status { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Unique identifier of the image. This value is only set for system images.
+        /// </summary>
+        public string Name { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Size of the image file in our storage in GB. For snapshot images this is the value relevant for calculating costs for the image.
+        /// </summary>
+        public string Description { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Description of the image.
+        /// </summary>
+        public double? ImageSize { get; set; } = 0;
+
+        /// <summary>
+        /// Size of the disk contained in the image in GB.
+        /// </summary>
+        public double? DiskSize { get; set; } = 0;
+
+        private DateTimeOffset _created { get; set; }
+        /// <summary>
+        /// Point in time when the image was created (in ISO-8601 format) as a System.DateTimeOffset.
+        /// </summary>
+        public DateTimeOffset Created
+        {
+            get
+            {
+                return _created;
+            }
+        }
+
+        /// <summary>
+        /// Information about the server the image was created from.
+        /// </summary>
+        public Server CreatedFrom { get; set; } = null;
+
+        /// <summary>
+        /// ID of server the image is bound to. Only set for images of type backup.
+        /// </summary>
+        public Server BoundTo { get; set; } = null;
+
+        /// <summary>
+        /// Flavor of operating system contained in the image Choices: ubuntu, centos, debian, fedora, unknown.
+        /// </summary>
+        public string OsFlavor { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Operating system version.
+        /// </summary>
+        public string OsVersion { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Indicates that rapid deploy of the image is available.
+        /// </summary>
+        public bool RapidDeploy { get; set; } = false;
 
         #endregion
 
@@ -110,28 +179,29 @@ namespace lkcode.hetznercloudapi.Api
         /// <returns></returns>
         private static Image GetImageFromResponseData(Objects.Image.Universal.Image responseData)
         {
-            Image server = new Image();
+            Image image = new Image();
 
-            server.Id = responseData.id;
-            server.Name = responseData.name;
-            server.Status = responseData.status;
-            server._created = responseData.created;
-            server.Network = new Network()
+            image.Id = responseData.id;
+            image.Type = responseData.type;
+            image.Status = responseData.status;
+            image.Name = responseData.name;
+            image.Description = responseData.description;
+            image.ImageSize = responseData.image_size;
+            image.DiskSize = responseData.disk_size;
+            image._created = responseData.created;
+            image.OsFlavor = responseData.os_flavor;
+            image.OsVersion = responseData.os_version;
+            image.RapidDeploy = responseData.rapid_deploy;
+
+            if(responseData.bound_to.HasValue)
             {
-                Ipv4 = new AddressIpv4()
+                image.BoundTo = new Server()
                 {
-                    Ip = responseData.public_net.ipv4.ip,
-                    Blocked = responseData.public_net.ipv4.blocked
-                },
-                Ipv6 = new AddressIpv6()
-                {
-                    Ip = responseData.public_net.ipv6.ip,
-                    Blocked = responseData.public_net.ipv6.blocked
-                },
-                FloatingIpIds = responseData.public_net.floating_ips
-            };
+                    Id = responseData.bound_to.Value
+                };
+            }
 
-            return server;
+            return image;
         }
 
         /// <summary>

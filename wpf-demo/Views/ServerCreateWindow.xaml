@@ -70,8 +70,10 @@
                                 CanUserAddRows="False"
                                 IsReadOnly="True">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
                                     <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+                                    <DataGridTextColumn Binding="{Binding OsFlavor}" Header="OsFlavor" />
+                                    <DataGridTextColumn Binding="{Binding OsVersion}" Header="OsVersion" />
+                                    <DataGridCheckBoxColumn Binding="{Binding RapidDeploy}" Header="RapidDeploy" />
                                 </DataGrid.Columns>
                             </DataGrid>
 

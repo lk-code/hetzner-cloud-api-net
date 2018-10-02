@@ -220,17 +220,16 @@ namespace lkcode.hetznercloudapi.Api
         /// saves the server-model
         /// </summary>
         /// <returns></returns>
-        public async Task<ServerActionResponse> SaveAsync(IsoImage isoImage, bool startAfterCreate = true, string[] sshKeys = null, string userData = "", long locationId = -1, long datacenterId = -1)
+        public async Task<ServerActionResponse> SaveAsync(Image image, bool startAfterCreate = true, string[] sshKeys = null, string userData = "", long locationId = -1, long datacenterId = -1)
         {
-            this.validateRequiredServerDataForSave(isoImage);
+            this.validateRequiredServerDataForSave(image);
             this.validateOptionalServerDataForSave();
 
             Dictionary<string, object> arguments = new Dictionary<string, object>();
             // required fields
             arguments.Add("name", this.Name);
             arguments.Add("server_type", this.ServerType.Id.ToString());
-            //arguments.Add("image", isoImage.Description);
-            arguments.Add("image", "ubuntu-16.04");
+            arguments.Add("image", image.Id);
 
             // optional fields
             arguments.Add("start_after_create", startAfterCreate.ToString());
@@ -629,7 +628,7 @@ namespace lkcode.hetznercloudapi.Api
         /// validates the required server-data
         /// </summary>
         /// <returns></returns>
-        private void validateRequiredServerDataForSave(IsoImage isoImage)
+        private void validateRequiredServerDataForSave(Image image)
         {
             // validates the server-name
             if (string.IsNullOrEmpty(this.Name) || string.IsNullOrWhiteSpace(this.Name))
@@ -643,10 +642,10 @@ namespace lkcode.hetznercloudapi.Api
                 throw new ServerDataInvalidException("the server-type is empty or invalid.");
             }
 
-            // validates the iso-image data
-            if (isoImage == null || isoImage.Id <= 0)
+            // validates the image data
+            if (image == null || image.Id <= 0)
             {
-                throw new ServerDataInvalidException("the iso-image is empty or invalid.");
+                throw new ServerDataInvalidException("the image is empty or invalid.");
             }
         }
 

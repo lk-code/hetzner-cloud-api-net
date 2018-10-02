@@ -222,6 +222,106 @@
             The cost of one floating IP per month.
             </summary>
         </member>
+        <member name="T:lkcode.hetznercloudapi.Api.Image">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Image.CurrentPage">
+            <summary>
+            The current selected page.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Image.MaxPages">
+            <summary>
+            The number of pages with server.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Image.Id">
+            <summary>
+            ID of image.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Image.Type">
+            <summary>
+            Type of the image. Choices: system, snapshot, backup.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Image.Status">
+            <summary>
+            Whether the image can be used or if it’s still being created. Choices: available, creating.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Image.Name">
+            <summary>
+            Unique identifier of the image. This value is only set for system images.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Image.Description">
+            <summary>
+            Size of the image file in our storage in GB. For snapshot images this is the value relevant for calculating costs for the image.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Image.ImageSize">
+            <summary>
+            Description of the image.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Image.DiskSize">
+            <summary>
+            Size of the disk contained in the image in GB.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Image.Created">
+            <summary>
+            Point in time when the image was created (in ISO-8601 format) as a System.DateTimeOffset.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Image.CreatedFrom">
+            <summary>
+            Information about the server the image was created from.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Image.BoundTo">
+            <summary>
+            ID of server the image is bound to. Only set for images of type backup.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Image.OsFlavor">
+            <summary>
+            Flavor of operating system contained in the image Choices: ubuntu, centos, debian, fedora, unknown.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Image.OsVersion">
+            <summary>
+            Operating system version.
+            </summary>
+        </member>
+        <member name="P:lkcode.hetznercloudapi.Api.Image.RapidDeploy">
+            <summary>
+            Indicates that rapid deploy of the image is available.
+            </summary>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Image.GetAsync(System.Int32)">
+            <summary>
+            Returns all images.
+            </summary>
+            <param name="page">optional parameter to get a specific page. default is page 1.</param>
+            <returns>a list with the image-objects.</returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Image.GetImageFromResponseData(lkcode.hetznercloudapi.Objects.Image.Universal.Image)">
+            <summary>
+            
+            </summary>
+            <param name="responseData"></param>
+            <returns></returns>
+        </member>
+        <member name="M:lkcode.hetznercloudapi.Api.Image.SaveResponseMetaData(lkcode.hetznercloudapi.Objects.Image.Get.Response)">
+            <summary>
+            
+            </summary>
+            <param name="response"></param>
+        </member>
         <member name="P:lkcode.hetznercloudapi.Api.ImagePricing.PricePerGbMonth">
             <summary>
             the cost of one 1GB Image for the full month.
@@ -535,18 +635,11 @@
             <param name="id">Returns a specific server object. The server must exist inside the project.</param>
             <returns>the returned server object</returns>
         </member>
-        <member name="M:lkcode.hetznercloudapi.Api.Server.SaveAsync(lkcode.hetznercloudapi.Api.IsoImage,System.Boolean,System.String[],System.String,System.Int64,System.Int64)">
+        <member name="M:lkcode.hetznercloudapi.Api.Server.SaveAsync(lkcode.hetznercloudapi.Api.Image,System.Boolean,System.String[],System.String,System.Int64,System.Int64)">
             <summary>
             saves the server-model
             </summary>
             <returns></returns>
-        </member>
-        <member name="M:lkcode.hetznercloudapi.Api.Server.GetImagesAsync(System.Int32)">
-            <summary>
-            Returns all images.
-            </summary>
-            <param name="page">optional parameter to get a specific page. default is page 1.</param>
-            <returns>a list with the image-objects.</returns>
         </member>
         <member name="M:lkcode.hetznercloudapi.Api.Server.Shutdown">
             <summary>
@@ -655,7 +748,7 @@
             </summary>
             <param name="server">the created server object</param>
         </member>
-        <member name="M:lkcode.hetznercloudapi.Api.Server.validateRequiredServerDataForSave(lkcode.hetznercloudapi.Api.IsoImage)">
+        <member name="M:lkcode.hetznercloudapi.Api.Server.validateRequiredServerDataForSave(lkcode.hetznercloudapi.Api.Image)">
             <summary>
             validates the required server-data
             </summary>
