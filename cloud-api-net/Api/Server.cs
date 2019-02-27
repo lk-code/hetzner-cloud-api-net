@@ -133,6 +133,27 @@ namespace lkcode.hetznercloudapi.Api
 
             return serverList;
         }
+           
+        
+        
+        /// <summary>
+        /// Returns all servers on all pages.
+        /// </summary>
+        /// <returns>Returns a list with the server-objects.</returns>
+           public static async Task<List<Server>> GetAllAsync()
+        {
+             List<Server> serverList = new List<Server>();
+
+
+            serverList.AddRange(await GetAsync(1));
+           while(_currentPage < _maxPages)
+            {
+                serverList.AddRange(await GetAsync(_currentPage + 1));
+            }
+
+          
+            return serverList;
+        }
 
         /// <summary>
         /// Returns all server filtered by the given filter-value.
