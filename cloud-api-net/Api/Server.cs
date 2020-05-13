@@ -257,7 +257,7 @@ namespace lkcode.hetznercloudapi.Api
             // optional field: ssh-key
             if (sshKeys != null && sshKeys.Length > 0)
             {
-                arguments.Add("ssh_keys", JsonConvert.SerializeObject(sshKeys));
+                arguments.Add("ssh_keys", sshKeys);
             }
             // optional field: user-data
             if (!string.IsNullOrEmpty(userData) && !string.IsNullOrWhiteSpace(userData))
