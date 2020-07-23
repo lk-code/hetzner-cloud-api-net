@@ -126,9 +126,9 @@ namespace lkcode.hetznercloudapi.Objects.Server.Universal
         public bool rescue_enabled { get; set; }
         public bool locked { get; set; }
         public object backup_window { get; set; }
-        public long outgoing_traffic { get; set; }
-        public long ingoing_traffic { get; set; }
-        public long included_traffic { get; set; }
+        public long? outgoing_traffic { get; set; }
+        public long? ingoing_traffic { get; set; }
+        public long? included_traffic { get; set; }
         public Protection2 protection { get; set; }
     }
 }
