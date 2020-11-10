@@ -500,13 +500,11 @@ namespace lkcode.hetznercloudapi.Api
         /// Please note that server names must be unique per project and valid hostnames as per RFC 1123 (i.e.may only contain letters, digits, periods, and dashes).
         /// </summary>
         /// <returns></returns>
-        public async Task ChangeName(string name)
-        {
+        public async Task ChangeName(string name) {
             Dictionary<string, string> arguments = new Dictionary<string, string>();
 
             if (!string.IsNullOrEmpty(name.Trim()) &&
-                !string.IsNullOrWhiteSpace(name.Trim()))
-            {
+                !string.IsNullOrWhiteSpace(name.Trim())) {
                 arguments.Add("name", name);
             }
 
@@ -516,6 +514,29 @@ namespace lkcode.hetznercloudapi.Api
             Server server = GetServerFromResponseData(response.server);
 
             this.Name = server.Name;
+        }
+        /// <summary>
+        /// Change reverse DNS entry for this Server
+        /// Changes the hostname that will appear when getting the hostname belonging to the primary IPs (IPv4 and IPv6) of this Server.
+        /// Floating IPs assigned to the Server are not affected by this.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ServerActionResponse> ChangeRDNS(string ip, string dns_ptr) {
+            Dictionary<string, object> arguments = new Dictionary<string, object>();
+            ip = ip.Trim();
+            dns_ptr = dns_ptr.Trim();
+            if (string.IsNullOrEmpty(ip) || !string.IsNullOrEmpty(dns_ptr)) {
+
+            }
+
+            arguments.Add("ip", ip);
+            arguments.Add("dns_ptr", dns_ptr);
+            string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/change_dns_ptr", this.Id), arguments);
+            Objects.Server.PutChangeRDNS.Response response = JsonConvert.DeserializeObject<Objects.Server.PutChangeRDNS.Response>(responseContent);
+
+            ServerActionResponse actionResponse = GetServerActionFromResponseData(response.action);
+
+            return actionResponse;
         }
 
         /// <summary>
