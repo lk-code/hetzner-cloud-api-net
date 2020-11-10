@@ -522,7 +522,7 @@ namespace lkcode.hetznercloudapi.Api
         /// </summary>
         /// <returns></returns>
         public async Task<ServerActionResponse> ChangeRDNS(string ip, string dns_ptr) {
-            Dictionary<string, string> arguments = new Dictionary<string, string>();
+            Dictionary<string, object> arguments = new Dictionary<string, object>();
             ip = ip.Trim();
             dns_ptr = dns_ptr.Trim();
             if (string.IsNullOrEmpty(ip) || !string.IsNullOrEmpty(dns_ptr)) {
@@ -531,7 +531,7 @@ namespace lkcode.hetznercloudapi.Api
 
             arguments.Add("ip", ip);
             arguments.Add("dns_ptr", dns_ptr);
-            string responseContent = await ApiCore.SendPutRequest(string.Format("/servers/{0}", this.Id), arguments);
+            string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/change_dns_ptr", this.Id), arguments);
             Objects.Server.PutChangeRDNS.Response response = JsonConvert.DeserializeObject<Objects.Server.PutChangeRDNS.Response>(responseContent);
 
             ServerActionResponse actionResponse = GetServerActionFromResponseData(response.action);
