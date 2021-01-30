@@ -4,21 +4,23 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>lkcode.hetznercloudapi</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AssemblyVersion>1.0.28.0</AssemblyVersion>
-    <FileVersion>1.0.28.0</FileVersion>
-    <Version>1.0.28</Version>
+    <AssemblyVersion>1.0.30.0</AssemblyVersion>
+    <FileVersion>1.0.30.0</FileVersion>
+    <Version>1.0.30</Version>
     <Authors>lk-code</Authors>
     <Company />
     <Product>hetznercloudapi</Product>
     <PackageId>hetznercloudapi</PackageId>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageLicenseUrl>https://github.com/lk-code/hetzner-cloud-api-net/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageTags>BETA</PackageTags>
-    <PackageReleaseNotes>this is a beta version</PackageReleaseNotes>
+    <PackageLicenseUrl></PackageLicenseUrl>
+    <PackageTags></PackageTags>
+    <PackageReleaseNotes></PackageReleaseNotes>
     <Description>a hetzner cloud api library for .NET Standard. documentation at: https://github.com/lk-code/hetzner-cloud-api-net/wiki</Description>
     <PackageProjectUrl>https://github.com/lk-code/hetzner-cloud-api-net/wiki</PackageProjectUrl>
     <RepositoryUrl>https://github.com/lk-code/hetzner-cloud-api-net</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <PackageLicenseFile></PackageLicenseFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
