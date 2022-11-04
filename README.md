@@ -2,6 +2,7 @@
 
 ![Hetzner Cloud API for .NET](https://raw.githubusercontent.com/lk-code/hetzner-cloud-api-net/main/icon_128.png)
 
+[![.NET Version](https://img.shields.io/badge/dotnet%20version-net6.0-blue?style=flat-square)](http://www.nuget.org/packages/hetznercloudapi/)
 [![License](https://img.shields.io/github/license/lk-code/hetzner-cloud-api-net.svg?style=flat-square)](https://github.com/lk-code/hetzner-cloud-api-net/blob/master/LICENSE)
 [![Build](https://github.com/lk-code/hetzner-cloud-api-net/actions/workflows/dotnet.yml/badge.svg)](https://github.com/lk-code/hetzner-cloud-api-net/actions/workflows/dotnet.yml)
 [![Downloads](https://img.shields.io/nuget/dt/hetznercloudapi.svg?style=flat-square)](http://www.nuget.org/packages/hetznercloudapi/)
