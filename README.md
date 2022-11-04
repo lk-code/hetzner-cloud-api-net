@@ -10,13 +10,7 @@
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=lk-code_hetzner-cloud-api-net&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=lk-code_hetzner-cloud-api-net)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=lk-code_hetzner-cloud-api-net&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=lk-code_hetzner-cloud-api-net)
 
-the project is a .NET Standard 2.0 Library and can be used in the most projects like:
-
-- Universal Windows Platform (UWP) (minimum target version is the fall creators update - https://blogs.msdn.microsoft.com/dotnet/2017/10/10/announcing-uwp-support-for-net-standard-2-0/)
-- Xamarin and Xamarin.Forms (only .NET Standard)
-- Windows Presentation Foundation (WPF)
-- Console Application
-- ASP.NET
+In version 2 the project was updated to .NET 6 and optimized. The library now runs with .NET MAUI, WinUI 3, Blazor and of course with all .NET 6 applications.
 
 ## installation
 
