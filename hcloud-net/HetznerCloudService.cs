@@ -2,11 +2,12 @@
 
 namespace lkcode.hetznercloudapi;
 
+/// <inheritdoc/>
 public class HetznerCloudService : IHetznerCloudService
 {
     private readonly IConfiguration _configuration;
 
-    private readonly string _apiToken;
+    private string? _apiToken = null;
 
     public HetznerCloudService(IConfiguration configuration)
     {
@@ -14,6 +15,19 @@ public class HetznerCloudService : IHetznerCloudService
 
         // load config
         IConfigurationSection hcloudConfig = this._configuration.GetSection("hcloud");
-        this._apiToken = hcloudConfig.GetSection("apitoken").Value;
+        string apiToken = hcloudConfig.GetSection("apitoken").Value;
+
+        this.LoadToken(apiToken);
+    }
+
+    /// <inheritdoc/>
+    public void LoadToken(string apiToken)
+    {
+        this._apiToken = apiToken;
+
+        if (string.IsNullOrEmpty(this._apiToken))
+        {
+            // no api token was given
+        }
     }
 }
