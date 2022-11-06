@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using lkcode.hetznercloudapi.Interfaces;
+using lkcode.hetznercloudapi.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace lkcode.hetznercloudapi;
 
@@ -12,6 +14,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddHetznerCloud(this IServiceCollection service)
     {
         service.AddSingleton<IHetznerCloudService, HetznerCloudService>();
+        service.AddSingleton<IServerService, ServerService>();
 
         return service;
     }

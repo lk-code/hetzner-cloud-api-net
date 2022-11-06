@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using lkcode.hetznercloudapi.Interfaces;
+using Microsoft.Extensions.Configuration;
 
-namespace lkcode.hetznercloudapi;
+namespace lkcode.hetznercloudapi.Services;
 
 /// <inheritdoc/>
 public class HetznerCloudService : IHetznerCloudService

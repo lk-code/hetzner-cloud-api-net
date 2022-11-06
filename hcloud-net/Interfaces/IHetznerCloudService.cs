@@ -1,4 +1,4 @@
-﻿namespace lkcode.hetznercloudapi;
+﻿namespace lkcode.hetznercloudapi.Interfaces;
 
 /// <summary>
 /// 
