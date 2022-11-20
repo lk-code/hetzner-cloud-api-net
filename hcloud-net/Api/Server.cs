@@ -133,25 +133,25 @@ namespace lkcode.hetznercloudapi.Api
 
             return serverList;
         }
-           
-        
-        
+
+
+
         /// <summary>
         /// Returns all servers on all pages.
         /// </summary>
         /// <returns>Returns a list with the server-objects.</returns>
-           public static async Task<List<Server>> GetAllAsync()
+        public static async Task<List<Server>> GetAllAsync()
         {
-             List<Server> serverList = new List<Server>();
+            List<Server> serverList = new List<Server>();
 
 
             serverList.AddRange(await GetAsync(1));
-           while(_currentPage < _maxPages)
+            while (_currentPage < _maxPages)
             {
                 serverList.AddRange(await GetAsync(_currentPage + 1));
             }
 
-          
+
             return serverList;
         }
 
@@ -416,11 +416,11 @@ namespace lkcode.hetznercloudapi.Api
             {
                 arguments.Add("type", type);
             }
-            
+
             string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/create_image", this.Id), arguments);
             JObject responseObject = JObject.Parse(responseContent);
 
-            if(responseObject["error"] != null)
+            if (responseObject["error"] != null)
             {
                 // error
                 Objects.Server.Universal.ErrorResponse error = JsonConvert.DeserializeObject<Objects.Server.Universal.ErrorResponse>(responseContent);
@@ -428,7 +428,8 @@ namespace lkcode.hetznercloudapi.Api
                 response.Error = GetErrorFromResponseData(error);
 
                 return response;
-            } else
+            }
+            else
             {
                 // success
                 Objects.Server.PostCreateImage.Response response = JsonConvert.DeserializeObject<Objects.Server.PostCreateImage.Response>(responseContent);
@@ -500,11 +501,13 @@ namespace lkcode.hetznercloudapi.Api
         /// Please note that server names must be unique per project and valid hostnames as per RFC 1123 (i.e.may only contain letters, digits, periods, and dashes).
         /// </summary>
         /// <returns></returns>
-        public async Task ChangeName(string name) {
+        public async Task ChangeName(string name)
+        {
             Dictionary<string, string> arguments = new Dictionary<string, string>();
 
             if (!string.IsNullOrEmpty(name.Trim()) &&
-                !string.IsNullOrWhiteSpace(name.Trim())) {
+                !string.IsNullOrWhiteSpace(name.Trim()))
+            {
                 arguments.Add("name", name);
             }
 
@@ -521,11 +524,13 @@ namespace lkcode.hetznercloudapi.Api
         /// Floating IPs assigned to the Server are not affected by this.
         /// </summary>
         /// <returns></returns>
-        public async Task<ServerActionResponse> ChangeRDNS(string ip, string dns_ptr) {
+        public async Task<ServerActionResponse> ChangeRDNS(string ip, string dns_ptr)
+        {
             Dictionary<string, object> arguments = new Dictionary<string, object>();
             ip = ip.Trim();
             dns_ptr = dns_ptr.Trim();
-            if (string.IsNullOrEmpty(ip) || !string.IsNullOrEmpty(dns_ptr)) {
+            if (string.IsNullOrEmpty(ip) || !string.IsNullOrEmpty(dns_ptr))
+            {
 
             }
 
@@ -571,7 +576,8 @@ namespace lkcode.hetznercloudapi.Api
                 !string.IsNullOrWhiteSpace(type.Trim()))
             {
                 arguments.Add("type", type);
-            } else
+            }
+            else
             {
                 throw new InvalidArgumentException("missing required argument 'type'");
             }
@@ -622,7 +628,7 @@ namespace lkcode.hetznercloudapi.Api
             string responseContent = await ApiCore.SendRequest(url);
 
             ServerMetric serverMetric = GetServerMetricFromResponse(responseContent, type);
-            
+
             return serverMetric;
         }
 
@@ -677,7 +683,7 @@ namespace lkcode.hetznercloudapi.Api
             {
                 throw new ServerDataInvalidException("the server-name is empty or invalid.");
             }
-            
+
             // validates the server-type data
             if (this.ServerType == null || this.ServerType.Id <= 0)
             {
@@ -745,7 +751,7 @@ namespace lkcode.hetznercloudapi.Api
             serverMetric.Type = serverMetricType;
 
             serverMetric.TimeSeries = new ServerMetricTimeSeries();
-            switch(serverMetricType)
+            switch (serverMetricType)
             {
                 case ServerMetricType.CPU:
                     {
@@ -1002,7 +1008,7 @@ namespace lkcode.hetznercloudapi.Api
         {
             ServerMetricValue serverMetricValue = new ServerMetricValue()
             {
-                Timestamp = DateTimeHelper.GetFromUnixTimestamp(timestamp),
+                Timestamp = timestamp.ToDateTimeFromUnixTimestamp(),
                 TimestampValue = timestamp,
                 Value = value,
             };

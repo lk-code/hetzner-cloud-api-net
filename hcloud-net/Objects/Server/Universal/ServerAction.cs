@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace lkcode.hetznercloudapi.Objects.Server.Universal
+﻿namespace lkcode.hetznercloudapi.Objects.Server.Universal
 {
     public class Resource
     {

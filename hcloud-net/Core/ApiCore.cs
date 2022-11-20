@@ -1,11 +1,7 @@
 ﻿using lkcode.hetznercloudapi.Exceptions;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace lkcode.hetznercloudapi.Core
 {
@@ -14,10 +10,12 @@ namespace lkcode.hetznercloudapi.Core
         /// <summary>
         /// 
         /// </summary>
+        [Obsolete("Wird in einem kommenden Update entfernt. Bitte benutzen Sie IHetznerCloudService.")]
         private static string _apiToken { get; set; } = string.Empty;
         /// <summary>
         /// 
         /// </summary>
+        [Obsolete("Wird in einem kommenden Update entfernt. Bitte benutzen Sie IHetznerCloudService.")]
         public static string ApiToken
         {
             get
@@ -33,10 +31,12 @@ namespace lkcode.hetznercloudapi.Core
         /// <summary>
         /// 
         /// </summary>
+        [Obsolete("Wird in einem kommenden Update entfernt. Bitte benutzen Sie IHetznerCloudService.")]
         private static string _clientUserAgent { get; set; } = "HetznerCloudApi .NET Library";
         /// <summary>
         /// 
         /// </summary>
+        [Obsolete("Wird in einem kommenden Update entfernt. Bitte benutzen Sie IHetznerCloudService.")]
         public static string ClientUserAgent
         {
             get
@@ -52,6 +52,8 @@ namespace lkcode.hetznercloudapi.Core
         /// <summary>
         /// 
         /// </summary>
+        /// 
+        [Obsolete("Wird in einem kommenden Update entfernt. Bitte benutzen Sie IHetznerCloudService.")]
         public static readonly string ApiServer = "https://api.hetzner.cloud/v1";
 
         #region # public request methods #
@@ -208,7 +210,7 @@ namespace lkcode.hetznercloudapi.Core
             if (string.IsNullOrEmpty(response) ||
                 string.IsNullOrWhiteSpace(response))
             {
-                throw new InvalidJsonResponseException("the json response from the api is empty. maybe an error?");
+                throw new InvalidResponseException("the json response from the api is empty. maybe an error?");
             }
         }
 

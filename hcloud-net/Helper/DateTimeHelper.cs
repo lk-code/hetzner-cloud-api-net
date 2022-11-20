@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace lkcode.hetznercloudapi.Helper
 {
@@ -12,7 +11,7 @@ namespace lkcode.hetznercloudapi.Helper
         /// </summary>
         /// <param name="dateTime"></param>
         /// <returns></returns>
-        public static string GetAsIso8601String(DateTime dateTime)
+        public static string ToIso8601String(this DateTime dateTime)
         {
             string dateTimeIso8601 = dateTime.ToString(format_iso8601, CultureInfo.InvariantCulture);
 
@@ -24,7 +23,7 @@ namespace lkcode.hetznercloudapi.Helper
         /// </summary>
         /// <param name="timestamp"></param>
         /// <returns></returns>
-        public static DateTime GetFromUnixTimestamp(long timestamp)
+        public static DateTime ToDateTimeFromUnixTimestamp(this long timestamp)
         {
             DateTime localDateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(timestamp).DateTime.ToLocalTime();
 
