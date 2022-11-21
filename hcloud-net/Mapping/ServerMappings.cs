@@ -20,6 +20,7 @@ internal static class ServerMappings
             IncludedTraffic = serverResponse.IncludedTraffic.EnsureWithException("the included-traffic property can't be null (invalid api response)"),
             IngoingTraffic = serverResponse.IngoingTraffic.EnsureWithException("the ingoing-traffic property can't be null (invalid api response)"),
             OutgoingTraffic = serverResponse.OutgoingTraffic.EnsureWithException("the outgoing-traffic property can't be null (invalid api response)"),
+            Labels = serverResponse.Labels.Ensure()
         };
 
         return server;

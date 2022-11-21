@@ -18,4 +18,6 @@ internal class ServerResponse
     public long? IngoingTraffic { get; set; } = null;
     [JsonProperty("outgoing_traffic")]
     public long? OutgoingTraffic { get; set; } = null;
+    [JsonProperty("labels")]
+    public Dictionary<string, string>? Labels { get; set; } = null;
 }

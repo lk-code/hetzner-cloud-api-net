@@ -43,4 +43,14 @@ public static class NullableHelper
 
         return value;
     }
+
+    public static Dictionary<string, string> Ensure(this Dictionary<string, string>? value)
+    {
+        if (value == null)
+        {
+            return new Dictionary<string, string>();
+        }
+
+        return value;
+    }
 }

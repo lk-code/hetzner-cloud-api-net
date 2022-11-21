@@ -32,7 +32,17 @@ public class Server
     /// Outbound Traffic for the current billing period in bytes
     /// </summary>
     public long OutgoingTraffic { get; internal set; } = 0;
+    /// <summary>
+    /// User-defined labels (key-value pairs)
+    /// 
+    /// more informations: https://docs.hetzner.cloud/#labels
+    /// </summary>
+    public Dictionary<string, string> Labels { get; internal set; } = new();
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id"></param>
     public Server(long id)
     {
         Id = id;
