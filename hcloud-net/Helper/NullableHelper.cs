@@ -24,6 +24,16 @@ public static class NullableHelper
         return (long)value;
     }
 
+    public static DateTime EnsureWithException(this DateTime? value, string errorMessage)
+    {
+        if (value == null)
+        {
+            throw new InvalidArgumentException(errorMessage);
+        }
+
+        return (DateTime)value;
+    }
+
     public static string Ensure(this string? value)
     {
         if (value == null)

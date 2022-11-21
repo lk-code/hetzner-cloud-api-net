@@ -8,4 +8,8 @@ internal class ServerResponse
     public long? Id { get; set; } = null;
     [JsonProperty("name")]
     public string? Name { get; set; } = null;
+    [JsonProperty("status")]
+    public string? Status { get; set; } = null;
+    [JsonProperty("created")]
+    public DateTime? Created { get; set; } = null;
 }
