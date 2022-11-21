@@ -12,4 +12,10 @@ internal class ServerResponse
     public string? Status { get; set; } = null;
     [JsonProperty("created")]
     public DateTime? Created { get; set; } = null;
+    [JsonProperty("included_traffic")]
+    public long? IncludedTraffic { get; set; } = null;
+    [JsonProperty("ingoing_traffic")]
+    public long? IngoingTraffic { get; set; } = null;
+    [JsonProperty("outgoing_traffic")]
+    public long? OutgoingTraffic { get; set; } = null;
 }
