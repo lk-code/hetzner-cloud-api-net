@@ -1,12 +1,11 @@
 ﻿using lkcode.hetznercloudapi.Exceptions;
 using lkcode.hetznercloudapi.Helper;
-using lkcode.hetznercloudapi.Instances;
+using lkcode.hetznercloudapi.Instances.Server;
 using lkcode.hetznercloudapi.Interfaces;
 using lkcode.hetznercloudapi.Mapping;
 using lkcode.hetznercloudapi.Models.Api.Server;
 using lkcode.hetznercloudapi.ParameterObjects.Pagination;
 using lkcode.hetznercloudapi.ParameterObjects.Sort;
-using System.Security.Cryptography.X509Certificates;
 
 namespace lkcode.hetznercloudapi.Services;
 
@@ -72,6 +71,42 @@ public class ServerService : IServerService
             servers);
 
         return result;
+    }
+
+    /// <inheritdoc/>
+    public async Task<Server> GetByIdAsync(long id)
+    {
+        string requestUri = $"/servers/{id}";
+
+        try
+        {
+            ServerByIdResponse? response = await this._hetznerCloudService.GetRequest<ServerByIdResponse>(requestUri);
+            // verify response
+            if (response == null)
+            {
+                throw new InvalidResponseException("the api response is empty or invalid.");
+            }
+
+            if (response.Server == null)
+            {
+                throw new ResourceNotFoundException($"the server with the id {id} was not found");
+            }
+
+            Server server = response.Server.ToServerInstance();
+
+            return server;
+        }
+        catch (HttpRequestException err)
+        {
+            if (err.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                throw new ResourceNotFoundException($"the server with the id {id} was not found");
+            }
+            else
+            {
+                throw;
+            }
+        }
     }
 
     ///// <inheritdoc/>

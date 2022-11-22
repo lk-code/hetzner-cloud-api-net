@@ -1,6 +1,6 @@
 ﻿using lkcode.hetznercloudapi.Enums;
 using lkcode.hetznercloudapi.Helper;
-using lkcode.hetznercloudapi.Instances;
+using lkcode.hetznercloudapi.Instances.Server;
 using lkcode.hetznercloudapi.Models.Api.Server;
 
 namespace lkcode.hetznercloudapi.Mapping;
