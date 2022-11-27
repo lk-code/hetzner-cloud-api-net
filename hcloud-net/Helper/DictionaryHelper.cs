@@ -2,7 +2,7 @@
 
 internal static class DictionaryHelper
 {
-    public static string ToQueryString(this Dictionary<string, string>? arguments)
+    internal static string ToQueryString(this Dictionary<string, string>? arguments)
     {
         if (arguments == null)
         {

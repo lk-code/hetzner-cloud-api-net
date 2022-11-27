@@ -11,13 +11,12 @@ namespace lkcode.hetznercloudapi.Services;
 /// <inheritdoc/>
 public class HetznerCloudService : IHetznerCloudService
 {
-    private readonly IConfiguration _configuration;
-
+    private readonly IConfiguration _configuration = null!;
 
     public const string API_SERVER = "https://api.hetzner.cloud/v1";
 
     private string? _apiToken = null;
-    private readonly string _clientUserAgent = null!;
+    private readonly string _clientUserAgent;
 
     public HetznerCloudService(IConfiguration configuration)
     {

@@ -65,9 +65,9 @@ public class ServerService : IServerService
             .Select(x => x.ToServerInstance())
             .ToList();
 
-        Page<Server> result = new Page<Server>(response.Meta.Pagination.Page.EnsureWithException("the page property in the api response is empty or invalid."),
-            response.Meta.Pagination.ItemsPerPage.EnsureWithException("the items-per-page property in the api response is empty or invalid."),
-            response.Meta.Pagination.TotalEntries.EnsureWithException("the total-entries property in the api response is empty or invalid."),
+        Page<Server> result = new Page<Server>(response.Meta.Pagination.Page.Ensure("the page property in the api response is empty or invalid."),
+            response.Meta.Pagination.ItemsPerPage.Ensure("the items-per-page property in the api response is empty or invalid."),
+            response.Meta.Pagination.TotalEntries.Ensure("the total-entries property in the api response is empty or invalid."),
             servers);
 
         return result;
@@ -100,7 +100,7 @@ public class ServerService : IServerService
         {
             if (err.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                throw new ResourceNotFoundException($"the server with the id {id} was not found");
+                throw new ResourceNotFoundException($"the server with the id {id} was not found", err);
             }
             else
             {
@@ -109,17 +109,23 @@ public class ServerService : IServerService
         }
     }
 
-    ///// <inheritdoc/>
-    //public async Task<Objects.Server.PostShutdown.Response> Shutdown(long serverId)
-    //{
-    //    string requestUri = $"/servers/{serverId}/actions/shutdown";
-    //    Objects.Server.PostShutdown.Response? response = await this._hetznerCloudService.PostRequest<Objects.Server.PostShutdown.Response>(requestUri);
-
-    //    if (response == null)
-    //    {
-    //        throw new InvalidResponseException("The api response is null");
-    //    }
-
-    //    return response;
-    //}
+    /// <inheritdoc/>
+    public Task Create(string name,
+        string image,
+        string serverType,
+        string? datacenter,
+        string? location,
+        bool? startAfterCreate,
+        object? labels,
+        bool? automount,
+        IEnumerable<long>? volumes,
+        IEnumerable<string>? sshKeys,
+        IEnumerable<long>? networks,
+        object? publicNet,
+        IEnumerable<long>? firewalls,
+        long? placementGroup,
+        string? userData)
+    {
+        throw new NotImplementedException();
+    }
 }
