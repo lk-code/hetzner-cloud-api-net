@@ -7,7 +7,7 @@ namespace lkcode.hetznercloudapi.Mapping;
 
 internal static class ServerMappings
 {
-    internal static Server ToServerInstance(this ServerResponse serverResponse)
+    internal static Server ToServer(this ServerResponse serverResponse)
     {
         ServerStatus serverStatus = ServerStatus.Unknown;
         Enum.TryParse(serverResponse.Status, out serverStatus);

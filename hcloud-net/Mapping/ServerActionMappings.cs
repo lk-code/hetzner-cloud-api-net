@@ -8,34 +8,27 @@ namespace lkcode.hetznercloudapi.Mapping;
 
 internal static class ServerActionMappings
 {
-    internal static ActionResult ToActionResult(this ShutdownResponse response)
+    internal static Instances.ServerActions.ServerAction ToActionResult(this ActionResponse response)
     {
-        if (response.Action == null)
-        {
-            throw new InvalidArgumentException("the action property can't be null (invalid api response)");
-        }
-
-        ActionResponse action = response.Action;
-
-        IEnumerable<ActionResourceResult> resources = action.Resources
+        IEnumerable<ActionResourceResult> resources = response.Resources
             .Ensure("the progress property can't be null (invalid api response)")
             .Select(x => x.ToActionResourceResult())
         .ToList();
 
         ServerActionsResult actionStatus = ServerActionsResult.Unknown;
-        Enum.TryParse(action.Status.Ensure("the status property can't be null (invalid api response)"), out actionStatus);
+        Enum.TryParse(response.Status.Ensure("the status property can't be null (invalid api response)"), out actionStatus);
 
-        ActionResult result = new ActionResult(action.Command.Ensure("the command property can't be null (invalid api response)"),
-            action.Id.Ensure("the id property can't be null (invalid api response)"),
-            action.Progress.Ensure("the progress property can't be null (invalid api response)"),
+        Instances.ServerActions.ServerAction result = new Instances.ServerActions.ServerAction(response.Command.Ensure("the command property can't be null (invalid api response)"),
+            response.Id.Ensure("the id property can't be null (invalid api response)"),
+            response.Progress.Ensure("the progress property can't be null (invalid api response)"),
             resources,
-            action.Started.Ensure("the started property can't be null (invalid api response)"),
+            response.Started.Ensure("the started property can't be null (invalid api response)"),
             actionStatus
             );
 
-        if (!string.IsNullOrEmpty(action.Finished))
+        if (!string.IsNullOrEmpty(response.Finished))
         {
-            result.Finished = DateTime.Parse(action.Finished);
+            result.Finished = DateTime.Parse(response.Finished);
         }
 
         return result;

@@ -1,6 +1,6 @@
 ﻿namespace lkcode.hetznercloudapi.ParameterObjects.Sort;
 
-public enum SortDirection
+public enum SortingDirection
 {
     ASC,
     DESC

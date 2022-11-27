@@ -2,6 +2,7 @@
 using lkcode.hetznercloudapi.ParameterObjects.Filter;
 using lkcode.hetznercloudapi.ParameterObjects.Pagination;
 using lkcode.hetznercloudapi.ParameterObjects.Sort;
+using System;
 
 namespace lkcode.hetznercloudapi.Interfaces;
 
@@ -18,7 +19,7 @@ public interface IServerService
     Task<Page<Server>> GetAllAsync(int page = 1,
         int itemsPerPage = 25,
         List<IFilter>? filter = null,
-        ServerSort? sorting = null);
+        Sorting<ServerSortField>? sorting = null);
 
     /// <summary>
     /// Returns a specific Server object. The Server must exist inside the Project

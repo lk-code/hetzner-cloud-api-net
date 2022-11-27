@@ -22,7 +22,7 @@ public class ServerService : IServerService
     public async Task<Page<Server>> GetAllAsync(int page = 1,
         int itemsPerPage = 25,
         List<IFilter>? filter = null,
-        ServerSort? sorting = null)
+        Sorting<ServerSortField>? sorting = null)
     {
         if (page <= 0)
         {
@@ -62,7 +62,7 @@ public class ServerService : IServerService
         }
 
         IEnumerable<Server> servers = response.Servers
-            .Select(x => x.ToServerInstance())
+            .Select(x => x.ToServer())
             .ToList();
 
         Page<Server> result = new Page<Server>(response.Meta.Pagination.Page.Ensure("the page property in the api response is empty or invalid."),
@@ -92,7 +92,7 @@ public class ServerService : IServerService
                 throw new ResourceNotFoundException($"the server with the id {id} was not found");
             }
 
-            Server server = response.Server.ToServerInstance();
+            Server server = response.Server.ToServer();
 
             return server;
         }

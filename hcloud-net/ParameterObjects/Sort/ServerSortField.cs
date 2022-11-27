@@ -2,7 +2,7 @@
 
 public enum ServerSortField
 {
-    ID,
-    NAME,
-    CREATED
+    Id,
+    Name,
+    Created
 }

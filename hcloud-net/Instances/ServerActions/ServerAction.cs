@@ -5,7 +5,7 @@ namespace lkcode.hetznercloudapi.Instances.ServerActions;
 /// <summary>
 /// 
 /// </summary>
-public class ActionResult
+public class ServerAction
 {
     /// <summary>
     /// Command executed in the Action
@@ -49,7 +49,7 @@ public class ActionResult
     /// <param name="resources">Resources the Action relates to</param>
     /// <param name="started">Point in time when the Action was started (in ISO-8601 format)</param>
     /// <param name="status">Status of the Action</param>
-    public ActionResult(string command,
+    public ServerAction(string command,
         long id,
         double progress,
         IEnumerable<ActionResourceResult> resources,
