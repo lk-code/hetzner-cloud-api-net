@@ -1,4 +1,5 @@
-﻿using lkcode.hetznercloudapi.Interfaces;
+﻿using lkcode.hetznercloudapi.Enums;
+using lkcode.hetznercloudapi.Interfaces;
 
 namespace lkcode.hetznercloudapi.ParameterObjects.Filter;
 

@@ -1,36 +1,14 @@
-﻿using System;
+﻿namespace lkcode.hetznercloudapi.Exceptions;
 
-namespace lkcode.hetznercloudapi.Exceptions
+public class InvalidArgumentException : Exception
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public class InvalidArgumentException : Exception
+    public InvalidArgumentException(string message)
+        : base(message)
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        public InvalidArgumentException()
-        {
-        }
+    }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="message"></param>
-        public InvalidArgumentException(string message)
-            : base(message)
-        {
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="message"></param>
-        /// <param name="inner"></param>
-        public InvalidArgumentException(string message, Exception inner)
-            : base(message, inner)
-        {
-        }
+    public InvalidArgumentException(string message, Exception inner)
+        : base(message, inner)
+    {
     }
 }

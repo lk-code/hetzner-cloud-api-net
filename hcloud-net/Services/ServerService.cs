@@ -26,7 +26,7 @@ public class ServerService : IServerService
     {
         if (page <= 0)
         {
-            throw new InvalidPageException($"invalid page number ({page}). must be greather than 0.");
+            throw new InvalidArgumentException($"invalid page number ({page}). must be greather than 0.");
         }
 
         string requestUri = $"/servers";
@@ -44,7 +44,7 @@ public class ServerService : IServerService
             arguments.Add(sorting.Field.ToString(), sorting.Direction.ToString());
         }
 
-        ServerAllResponse? response = await this._hetznerCloudService.GetRequest<ServerAllResponse>(requestUri, arguments);
+        GetAllResponse? response = await this._hetznerCloudService.GetRequest<GetAllResponse>(requestUri, arguments);
 
         // verify response
         if (response == null)
@@ -80,7 +80,7 @@ public class ServerService : IServerService
 
         try
         {
-            ServerByIdResponse? response = await this._hetznerCloudService.GetRequest<ServerByIdResponse>(requestUri);
+            GetByIdResponse? response = await this._hetznerCloudService.GetRequest<GetByIdResponse>(requestUri);
             // verify response
             if (response == null)
             {

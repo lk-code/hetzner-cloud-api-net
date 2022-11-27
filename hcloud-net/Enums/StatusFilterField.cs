@@ -1,14 +1,14 @@
 ﻿namespace lkcode.hetznercloudapi.Enums;
 
-public enum ServerStatus
+public enum StatusFilterField
 {
-    Unknown,
-    Running,
     Initializing,
     Starting,
+    Running,
     Stopping,
     Off,
     Deleting,
+    Rebuilding,
     Migrating,
-    Rebuilding
+    Unknown
 }

@@ -2,7 +2,7 @@
 
 namespace lkcode.hetznercloudapi.Models.Api.Server;
 
-internal class ServerAllResponse
+internal class GetAllResponse
 {
     [JsonProperty("meta")]
     public MetaResponse? Meta { get; set; }
