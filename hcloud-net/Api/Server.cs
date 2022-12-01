@@ -1,4 +1,4 @@
-﻿using lkcode.hetznercloudapi.Core;
+using lkcode.hetznercloudapi.Core;
 using lkcode.hetznercloudapi.Exceptions;
 using lkcode.hetznercloudapi.Helper;
 using Newtonsoft.Json;
@@ -133,16 +133,16 @@ namespace lkcode.hetznercloudapi.Api
 
             return serverList;
         }
-           
-        
-        
+
+
+
         /// <summary>
         /// Returns all servers on all pages.
         /// </summary>
         /// <returns>Returns a list with the server-objects.</returns>
-           public static async Task<List<Server>> GetAllAsync()
+        public static async Task<List<Server>> GetAllAsync()
         {
-             List<Server> serverList = new List<Server>();
+            List<Server> serverList = new List<Server>();
 
 
             serverList.AddRange(await GetAsync(1));
@@ -151,7 +151,7 @@ namespace lkcode.hetznercloudapi.Api
                 serverList.AddRange(await GetAsync(_currentPage + 1));
             }
 
-          
+
             return serverList;
         }
 
@@ -416,7 +416,7 @@ namespace lkcode.hetznercloudapi.Api
             {
                 arguments.Add("type", type);
             }
-            
+
             string responseContent = await ApiCore.SendPostRequest(string.Format("/servers/{0}/actions/create_image", this.Id), arguments);
             JObject responseObject = JObject.Parse(responseContent);
 
@@ -622,7 +622,7 @@ namespace lkcode.hetznercloudapi.Api
             string responseContent = await ApiCore.SendRequest(url);
 
             ServerMetric serverMetric = GetServerMetricFromResponse(responseContent, type);
-            
+
             return serverMetric;
         }
 
@@ -677,7 +677,7 @@ namespace lkcode.hetznercloudapi.Api
             {
                 throw new ServerDataInvalidException("the server-name is empty or invalid.");
             }
-            
+
             // validates the server-type data
             if (this.ServerType == null || this.ServerType.Id <= 0)
             {
@@ -1025,18 +1025,26 @@ namespace lkcode.hetznercloudapi.Api
             server._created = responseData.created;
             server.Network = new Network()
             {
-                Ipv4 = new AddressIpv4()
+                FloatingIpIds = responseData.public_net.floating_ips
+            };
+
+            if (responseData.public_net.ipv4 != null)
+            {
+                server.Network.Ipv4 = new AddressIpv4()
                 {
                     Ip = responseData.public_net.ipv4.ip,
                     Blocked = responseData.public_net.ipv4.blocked
-                },
-                Ipv6 = new AddressIpv6()
+                };
+            }
+
+            if (responseData.public_net.ipv6 != null)
+            {
+                server.Network.Ipv6 = new AddressIpv6()
                 {
                     Ip = responseData.public_net.ipv6.ip,
                     Blocked = responseData.public_net.ipv6.blocked
-                },
-                FloatingIpIds = responseData.public_net.floating_ips
-            };
+                };
+            }
 
             return server;
         }
