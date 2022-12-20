@@ -13,6 +13,8 @@
 
 In version 2 the project was updated to .NET 6 and optimized. The library now runs with .NET MAUI, WinUI 3, Blazor and of course with all .NET 6 applications.
 
+<a href="https://www.buymeacoffee.com/lk.code" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+
 ## installation
 
 see the getting started page here https://github.com/lk-code/hetzner-cloud-api-net/wiki/getting-started
