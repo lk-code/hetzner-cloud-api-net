@@ -10,7 +10,12 @@ internal static class ServerMappings
     internal static Server ToServer(this ServerResponse serverResponse)
     {
         ServerStatus serverStatus = ServerStatus.Unknown;
-        Enum.TryParse(serverResponse.Status, out serverStatus);
+        if (!string.IsNullOrEmpty(serverResponse.Status))
+        {
+            string status = serverResponse.Status;
+            status = status.First().ToString().ToUpper() + status.Substring(1);
+            Enum.TryParse(status, out serverStatus);
+        }
 
         Server server = new Server(serverResponse.Id.Ensure("the server-id can't be null (invalid api response)"))
         {
