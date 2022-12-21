@@ -15,6 +15,7 @@ public static class ServiceCollectionExtensions
     {
         service.AddSingleton<IHetznerCloudService, HetznerCloudService>();
         service.AddSingleton<IServerService, ServerService>();
+        service.AddSingleton<IServerActionsService, ServerActionsService>();
 
         return service;
     }

@@ -1,38 +1,32 @@
 ﻿using lkcode.hetznercloudapi.Exceptions;
 using lkcode.hetznercloudapi.Helper;
-using lkcode.hetznercloudapi.Instances.Server;
+using lkcode.hetznercloudapi.Instances.ServerActions;
 using lkcode.hetznercloudapi.Interfaces;
 using lkcode.hetznercloudapi.Mapping;
-using lkcode.hetznercloudapi.Models.Api.Server;
+using lkcode.hetznercloudapi.Models.Api.ServerActions;
 using lkcode.hetznercloudapi.ParameterObjects.Pagination;
 using lkcode.hetznercloudapi.ParameterObjects.Sort;
+using System;
 
 namespace lkcode.hetznercloudapi.Services;
 
-public class ServerService : IServerService
+public class ServerActionsService : IServerActionsService
 {
     private readonly IHetznerCloudService _hetznerCloudService;
 
-    public ServerService(IHetznerCloudService hetznerCloudService)
+    public ServerActionsService(IHetznerCloudService hetznerCloudService)
     {
         this._hetznerCloudService = hetznerCloudService ?? throw new ArgumentNullException(nameof(hetznerCloudService));
     }
 
     /// <inheritdoc/>
-    public async Task<Page<Server>> GetAllAsync(int page = 1,
-        int itemsPerPage = 25,
+    public async Task<Page<ServerAction>> GetAllActions(long id,
         List<IFilter>? filter = null,
-        Sorting<ServerSortField>? sorting = null)
+        Sorting<ServerActionSortField>? sorting = null)
     {
-        if (page <= 0)
-        {
-            throw new InvalidArgumentException($"invalid page number ({page}). must be greather than 0.");
-        }
-
-        string requestUri = $"/servers";
+        string requestUri = $"/servers/{id}/actions";
 
         Dictionary<string, string> arguments = new();
-        arguments.Add("page", page.ToString());
 
         // render filter and sorting
         if (filter != null && filter.Count > 0)
@@ -56,76 +50,59 @@ public class ServerService : IServerService
         {
             throw new InvalidResponseException("the meta property in the api response is empty or invalid.");
         }
-        if (response.Servers == null)
+        if (response.Actions == null)
         {
-            throw new InvalidResponseException("the server property in the api response is empty or invalid.");
+            throw new InvalidResponseException("the actions property in the api response is empty or invalid.");
         }
 
-        IEnumerable<Server> servers = response.Servers
-            .Select(x => x.ToServer())
+        IEnumerable<ServerAction> actions = response.Actions
+            .Select(x => x.ToActionResult())
             .ToList();
 
-        Page<Server> result = new Page<Server>(response.Meta.Pagination.Page.Ensure("the page property in the api response is empty or invalid."),
+        Page<ServerAction> result = new Page<ServerAction>(response.Meta.Pagination.Page.Ensure("the page property in the api response is empty or invalid."),
             response.Meta.Pagination.ItemsPerPage.Ensure("the items-per-page property in the api response is empty or invalid."),
             response.Meta.Pagination.TotalEntries.Ensure("the total-entries property in the api response is empty or invalid."),
-            servers);
+            actions);
 
         return result;
     }
 
     /// <inheritdoc/>
-    public async Task<Server> GetByIdAsync(long id)
+    public async Task<Instances.ServerActions.ServerAction> Shutdown(long id)
     {
-        string requestUri = $"/servers/{id}";
+        string requestUri = $"/servers/{id}/actions/shutdown";
 
         try
         {
-            GetByIdResponse? response = await this._hetznerCloudService.GetRequest<GetByIdResponse>(requestUri);
+            ShutdownResponse? response = await this._hetznerCloudService.GetRequest<ShutdownResponse>(requestUri);
             // verify response
             if (response == null)
             {
                 throw new InvalidResponseException("the api response is empty or invalid.");
             }
-
-            if (response.Server == null)
+            if (response.Action == null)
             {
-                throw new ResourceNotFoundException($"the server with the id {id} was not found");
+                throw new InvalidArgumentException("the action property can't be null (invalid api response)");
             }
 
-            Server server = response.Server.ToServer();
+            Instances.ServerActions.ServerAction result = response.Action.ToActionResult();
 
-            return server;
+            return result;
         }
         catch (HttpRequestException err)
         {
             if (err.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                throw new ResourceNotFoundException($"the server with the id {id} was not found", err);
+                throw new ResourceNotFoundException($"the resource with the id {id} was not found", err);
+            }
+            if (err.StatusCode == System.Net.HttpStatusCode.MethodNotAllowed)
+            {
+                throw new ActionNotAllowedException($"the requested action is not allowed", err);
             }
             else
             {
                 throw;
             }
         }
-    }
-
-    /// <inheritdoc/>
-    public Task Create(string name,
-        string image,
-        string serverType,
-        string? datacenter,
-        string? location,
-        bool? startAfterCreate,
-        object? labels,
-        bool? automount,
-        IEnumerable<long>? volumes,
-        IEnumerable<string>? sshKeys,
-        IEnumerable<long>? networks,
-        object? publicNet,
-        IEnumerable<long>? firewalls,
-        long? placementGroup,
-        string? userData)
-    {
-        throw new NotImplementedException();
     }
 }

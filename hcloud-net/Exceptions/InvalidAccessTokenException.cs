@@ -1,21 +1,14 @@
-﻿using System;
+﻿namespace lkcode.hetznercloudapi.Exceptions;
 
-namespace lkcode.hetznercloudapi.Exceptions
+public class InvalidAccessTokenException : Exception
 {
-    public class InvalidAccessTokenException : Exception
+    public InvalidAccessTokenException(string message)
+        : base(message)
     {
-        public InvalidAccessTokenException()
-        {
-        }
+    }
 
-        public InvalidAccessTokenException(string message)
-            : base(message)
-        {
-        }
-
-        public InvalidAccessTokenException(string message, Exception inner)
-            : base(message, inner)
-        {
-        }
+    public InvalidAccessTokenException(string message, Exception inner)
+        : base(message, inner)
+    {
     }
 }
