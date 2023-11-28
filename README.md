@@ -17,6 +17,8 @@ The current version is provided as .NET Standard 2.0, currently I am working on 
 
 <a href="https://www.buymeacoffee.com/lk.code" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
+# Hetzner Cloud API Client for .NET
+
 ## installation
 
 see the getting started page here https://github.com/lk-code/hetzner-cloud-api-net/wiki/getting-started
@@ -32,5 +34,21 @@ see the documentation on https://github.com/lk-code/hetzner-cloud-api-net/wiki
 ## informations :)
 
 see the demo projects here https://github.com/lk-code/hetzner-cloud-api-net-demo
+
+# New Documentation for Hetzner Cloud API Client (based on v2-Client)
+
+## installation
+
+```
+dotnet add package hetznercloudapi
+```
+
+## usage
+
+### initialization
+
+#### API Token via AppSettings
+
+#### Load API Token dynamically
 
 [![Contributors](https://contrib.rocks/image?repo=lk-code/hetzner-cloud-api-net)](https://github.com/lk-code/hetzner-cloud-api-net/graphs/contributors)
