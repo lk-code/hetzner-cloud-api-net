@@ -1,4 +1,5 @@
-﻿using lkcode.hetznercloudapi.Exceptions;
+﻿using Hetzner.Cloud.Interfaces;
+using lkcode.hetznercloudapi.Exceptions;
 using lkcode.hetznercloudapi.Helper;
 using lkcode.hetznercloudapi.Instances.Server;
 using lkcode.hetznercloudapi.Interfaces;

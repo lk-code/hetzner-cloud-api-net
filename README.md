@@ -49,6 +49,26 @@ dotnet add package hetznercloudapi
 
 #### API Token via AppSettings
 
+add the following block to your AppSettings:
+
+```
+{
+    "HetznerCloud": {
+        "ApiToken": "YOUR_API_TOKEN"
+    }
+}
+```
+
 #### Load API Token dynamically
+
+Alternatively, the API token can also be set dynamically:
+
+```
+IHetznerCloudService _hetznerCloudService = {get instance via DI};
+
+...
+
+_hetznerCloudService.LoadApiToken("{YOUR_API_TOKEN}");
+```
 
 [![Contributors](https://contrib.rocks/image?repo=lk-code/hetzner-cloud-api-net)](https://github.com/lk-code/hetzner-cloud-api-net/graphs/contributors)

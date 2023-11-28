@@ -7,6 +7,7 @@ using lkcode.hetznercloudapi.Models.Api.ServerActions;
 using lkcode.hetznercloudapi.ParameterObjects.Pagination;
 using lkcode.hetznercloudapi.ParameterObjects.Sort;
 using System;
+using Hetzner.Cloud.Interfaces;
 
 namespace lkcode.hetznercloudapi.Services;
 

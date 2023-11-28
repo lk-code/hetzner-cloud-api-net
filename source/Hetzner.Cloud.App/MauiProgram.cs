@@ -1,4 +1,5 @@
-﻿using lkcode.hetznercloudapi;
+﻿using System.Reflection;
+using FluentMAUI.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Hetzner.Cloud.App;
@@ -20,6 +21,11 @@ public static class MauiProgram
         builder.Services.AddBlazorWebViewDeveloperTools();
         builder.Logging.AddDebug();
 #endif
+        
+        builder.UseFluentConfiguration(options =>
+        {
+            options.LoadAppsettingsFrom = Assembly.GetExecutingAssembly();
+        });
 
         return builder.Build();
     }
