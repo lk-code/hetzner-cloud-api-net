@@ -12,11 +12,11 @@ namespace lkcode.hetznercloudapi.Services;
 
 public class ServerService : IServerService
 {
-    private readonly IHetznerCloudService _hetznerCloudService;
+    private readonly HttpClient _httpClient;
 
-    public ServerService(IHetznerCloudService hetznerCloudService)
+    public ServerService(IHttpClientFactory httpClientFactory)
     {
-        this._hetznerCloudService = hetznerCloudService ?? throw new ArgumentNullException(nameof(hetznerCloudService));
+        _httpClient = httpClientFactory.CreateClient("HetznerCloudHttpClient");
     }
 
     /// <inheritdoc/>
@@ -40,23 +40,30 @@ public class ServerService : IServerService
         {
             filter.ForEach(x => arguments.Add(x.GetFilterField(), x.GetValue()));
         }
+
         if (sorting != null)
         {
             arguments.Add(sorting.Field.ToString(), sorting.Direction.ToString());
         }
+        
+        var response = await this._httpClient.GetAsync(requestUri);
 
-        GetAllResponse? response = await this._hetznerCloudService.GetRequest<GetAllResponse>(requestUri, arguments);
+        int i = 0;
+
+        // GetAllResponse? response = await this._hetznerCloudService.GetRequest<GetAllResponse>(requestUri, arguments);
 
         // verify response
         if (response == null)
         {
             throw new InvalidResponseException("the api response is empty or invalid.");
         }
+
         if (response.Meta == null
             || response.Meta.Pagination == null)
         {
             throw new InvalidResponseException("the meta property in the api response is empty or invalid.");
         }
+
         if (response.Servers == null)
         {
             throw new InvalidResponseException("the server property in the api response is empty or invalid.");
@@ -66,9 +73,12 @@ public class ServerService : IServerService
             .Select(x => x.ToServer())
             .ToList();
 
-        Page<Server> result = new Page<Server>(response.Meta.Pagination.Page.Ensure("the page property in the api response is empty or invalid."),
-            response.Meta.Pagination.ItemsPerPage.Ensure("the items-per-page property in the api response is empty or invalid."),
-            response.Meta.Pagination.TotalEntries.Ensure("the total-entries property in the api response is empty or invalid."),
+        Page<Server> result = new Page<Server>(
+            response.Meta.Pagination.Page.Ensure("the page property in the api response is empty or invalid."),
+            response.Meta.Pagination.ItemsPerPage.Ensure(
+                "the items-per-page property in the api response is empty or invalid."),
+            response.Meta.Pagination.TotalEntries.Ensure(
+                "the total-entries property in the api response is empty or invalid."),
             servers);
 
         return result;
