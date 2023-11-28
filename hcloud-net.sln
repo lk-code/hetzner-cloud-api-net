@@ -7,6 +7,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hcloud-net", "hcloud-net\hc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hcloud-net.Test", "hcloud-net.Test\hcloud-net.Test.csproj", "{1531CF1A-D171-4B36-8637-88F687850139}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{891651B7-0DE2-4126-8F08-46BB636D9C2A}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+		.github\FUNDING.yml = .github\FUNDING.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{592E1E8C-43B0-4D8A-8844-2443FC148254}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU
@@ -137,5 +150,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A20B82F6-9B7B-45D2-A4BB-06485CAD4B4C}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{592E1E8C-43B0-4D8A-8844-2443FC148254} = {891651B7-0DE2-4126-8F08-46BB636D9C2A}
 	EndGlobalSection
 EndGlobal
