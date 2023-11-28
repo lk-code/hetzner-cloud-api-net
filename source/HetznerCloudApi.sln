@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hcloud-net", "hcloud-net\hcloud-net.csproj", "{DBA53C80-1A17-43FB-8030-92262AFC33CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hetzner.Cloud", "Hetzner.Cloud\Hetzner.Cloud.csproj", "{DBA53C80-1A17-43FB-8030-92262AFC33CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hcloud-net.Test", "hcloud-net.Test\hcloud-net.Test.csproj", "{1531CF1A-D171-4B36-8637-88F687850139}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hetzner.Cloud.Tests", "Hetzner.Cloud.Tests\Hetzner.Cloud.Tests.csproj", "{1531CF1A-D171-4B36-8637-88F687850139}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{891651B7-0DE2-4126-8F08-46BB636D9C2A}"
 	ProjectSection(SolutionItems) = preProject

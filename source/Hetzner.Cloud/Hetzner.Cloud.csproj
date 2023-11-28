@@ -17,15 +17,14 @@
 		<PackageOutputPath>./nupkg</PackageOutputPath>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-		<PackageId> hetznercloudapi</PackageId>
-		<RootNamespace>lkcode.hetznercloudapi</RootNamespace>
+		<PackageId>hetznercloudapi</PackageId>
 	</PropertyGroup>
 	<ItemGroup>
-		<None Include="..\icon_128.png">
+		<None Include="..\..\icon_128.png">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
-		<None Include="..\README.md">
+		<None Include="..\..\README.md">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
