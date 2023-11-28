@@ -2,7 +2,6 @@
 using Hetzner.Cloud.Interfaces;
 using Hetzner.Cloud.Services;
 using lkcode.hetznercloudapi.Interfaces;
-using lkcode.hetznercloudapi.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Hetzner.Cloud;
@@ -34,7 +33,6 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton<IHetznerCloudService, HetznerCloudService>();
         services.AddSingleton<IServerService, ServerService>();
-        services.AddSingleton<IServerActionsService, ServerActionsService>();
 
         return services;
     }

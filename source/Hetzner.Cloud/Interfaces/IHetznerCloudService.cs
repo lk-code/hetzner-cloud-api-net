@@ -12,7 +12,7 @@ public interface IHetznerCloudService
     void LoadToken(string apiToken);
 
     /// <summary>
-    /// 
+    /// configures the given httpclient for the hetzner cloud api
     /// </summary>
     /// <param name="serviceProvider"></param>
     /// <param name="httpClient"></param>

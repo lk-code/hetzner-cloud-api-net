@@ -1,0 +1,23 @@
+﻿@page "/"
+@using Hetzner.Cloud.Interfaces
+
+@inject IServerService ServerService
+
+@code {
+
+    protected override async void OnInitialized()
+    {
+        base.OnInitialized();
+
+        var servers = await ServerService.GetAllAsync();
+        
+        int i = 0;
+    }
+
+}
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
