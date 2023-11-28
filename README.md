@@ -11,7 +11,9 @@
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=lk-code_hetzner-cloud-api-net&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=lk-code_hetzner-cloud-api-net)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=lk-code_hetzner-cloud-api-net&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=lk-code_hetzner-cloud-api-net)
 
-In version 2 the project was updated to .NET 6 and optimized. The library now runs with .NET MAUI, WinUI 3, Blazor and of course with all .NET 6 applications.
+Here you can find a .NET library for the Hetzner Cloud API, with which all functions of the endpoints can be used.
+
+The current version is provided as .NET Standard 2.0, currently I am working on a new version for .NET 6 (with features like dependency injection, etc.)
 
 <a href="https://www.buymeacoffee.com/lk.code" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
@@ -30,3 +32,5 @@ see the documentation on https://github.com/lk-code/hetzner-cloud-api-net/wiki
 ## informations :)
 
 see the demo projects here https://github.com/lk-code/hetzner-cloud-api-net-demo
+
+[![Contributors](https://contrib.rocks/image?repo=lk-code/hetzner-cloud-api-net)](https://github.com/lk-code/hetzner-cloud-api-net/graphs/contributors)
