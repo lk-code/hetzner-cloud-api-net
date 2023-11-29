@@ -1,7 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using Hetzner.Cloud.Interfaces;
 using Hetzner.Cloud.Services;
-using lkcode.hetznercloudapi.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Hetzner.Cloud;

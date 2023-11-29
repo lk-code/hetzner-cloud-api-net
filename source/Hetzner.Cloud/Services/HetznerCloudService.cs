@@ -9,7 +9,7 @@ public class HetznerCloudService : IHetznerCloudService
 {
     private readonly IConfiguration _configuration = null!;
 
-    public const string API_SERVER = "https://api.hetzner.cloud/v1";
+    public const string API_SERVER = "https://api.hetzner.cloud";
 
     private string? _apiToken = null;
     private readonly string _clientUserAgent;

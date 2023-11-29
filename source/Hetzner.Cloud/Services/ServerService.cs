@@ -1,5 +1,7 @@
-﻿using Hetzner.Cloud.Interfaces;
+﻿using System.Net;
+using Hetzner.Cloud.Interfaces;
 using lkcode.hetznercloudapi.Exceptions;
+using lkcode.hetznercloudapi.Exceptions.Http;
 using lkcode.hetznercloudapi.Instances.Server;
 using lkcode.hetznercloudapi.Interfaces;
 using lkcode.hetznercloudapi.ParameterObjects.Pagination;
@@ -23,7 +25,7 @@ public class ServerService(IHttpClientFactory httpClientFactory) : IServerServic
             throw new InvalidArgumentException($"invalid page number ({page}). must be greather than 0.");
         }
 
-        string requestUri = $"servers";
+        string requestUri = $"/v1/servers";
 
         Dictionary<string, string> arguments = new();
         arguments.Add("page", page.ToString());
@@ -38,10 +40,22 @@ public class ServerService(IHttpClientFactory httpClientFactory) : IServerServic
         {
             arguments.Add(sorting.Field.ToString(), sorting.Direction.ToString());
         }
-        
-        var response = await this._httpClient.GetAsync(requestUri, cancellationToken);
 
-        int i = 0;
+        HttpResponseMessage response = await this._httpClient.GetAsync(requestUri, cancellationToken);
+
+        if (response.IsSuccessStatusCode)
+        {
+            string content = await response.Content.ReadAsStringAsync();
+
+            int i = 0;
+            return null;
+        }
+
+        switch (response.StatusCode)
+        {
+            default:
+                throw new ApiException(response.StatusCode, $"Invalid Request");
+        }
 
         return null;
 
