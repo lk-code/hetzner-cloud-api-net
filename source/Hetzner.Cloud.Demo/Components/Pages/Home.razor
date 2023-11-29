@@ -1,5 +1,76 @@
 ﻿@page "/"
+@using Hetzner.Cloud.Interfaces
+@rendermode InteractiveServer
 
-<PageTitle>Home</PageTitle>
+@inject IHetznerCloudService HetznerCloudService
+
+@code {
+    private string apiToken;
+    private string alertMessage;
+    private string alertType;
+
+    private async Task VerifyApiToken()
+    {
+        if (string.IsNullOrEmpty(apiToken))
+        {
+            ShowAlert("Please enter a valid api token.", "danger");
+            return;
+        }
+        
+        this.HetznerCloudService.LoadApiToken(apiToken);
+
+        ShowAlert("API key successfully verified!", "success");
+    }
+
+    private void ShowAlert(string message, string type)
+    {
+        alertMessage = message;
+        alertType = type;
+
+        Task.Delay(3000).ContinueWith(_ =>
+        {
+            alertMessage = null;
+            alertType = null;
+        });
+    }
+
+}
 
 <h1>Hetzner Cloud Demo</h1>
+
+<div class="container mt-5">
+
+    <div class="row">
+
+        <div class="col-md-6 offset-md-3">
+
+            <div class="card">
+
+                <div class="card-header">
+                    <h3 class="card-title">API Token</h3>
+                </div>
+
+                <div class="card-body">
+                    <form>
+                        @if (!string.IsNullOrEmpty(alertMessage))
+                        {
+                            <div class="alert alert-@alertType" role="alert">
+                                @alertMessage
+                            </div>
+                        }
+
+                        <div class="mb-3">
+                            <label for="apiToken" class="form-label">Key:</label>
+                            <input type="text" class="form-control" id="apiToken" @bind="apiToken">
+                        </div>
+                        <button type="button" class="btn btn-primary" @onclick="VerifyApiToken">Load API Token</button>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -8,6 +8,7 @@ namespace Hetzner.Cloud.Services;
 public class HetznerCloudService : IHetznerCloudService
 {
     private readonly IConfiguration _configuration = null!;
+    private HttpClient? _httpClient = null;
 
     public const string API_SERVER = "https://api.hetzner.cloud";
 
@@ -23,21 +24,28 @@ public class HetznerCloudService : IHetznerCloudService
 
         this._clientUserAgent = hcloudConfig.GetSection("useragent").Value;
 
-        this.LoadToken(hcloudConfig.GetSection("apitoken").Value);
+        this.LoadApiToken(hcloudConfig.GetSection("apitoken").Value);
     }
 
     /// <inheritdoc/>
-    public void LoadToken(string apiToken)
+    public void LoadApiToken(string apiToken)
     {
         this._apiToken = apiToken;
+
+        if (this._httpClient is not null)
+        {
+            this._httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this._apiToken);
+        }
     }
 
     /// <inheritdoc/>
     public void ConfigureClient(IServiceProvider serviceProvider, HttpClient httpClient)
     {
-        httpClient.BaseAddress = new Uri(API_SERVER);
+        this._httpClient = httpClient;
+        
+        this._httpClient.BaseAddress = new Uri(API_SERVER);
 
         // httpClient.DefaultRequestHeaders.Add("User-Agent", this._clientUserAgent);
-        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this._apiToken);
+        this._httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this._apiToken);
     }
 }

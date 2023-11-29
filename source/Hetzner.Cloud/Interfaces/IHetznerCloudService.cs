@@ -6,10 +6,10 @@
 public interface IHetznerCloudService
 {
     /// <summary>
-    /// load a new api-token for the hetzner cloud
+    /// load a new api-token for the hetzner cloud.
     /// </summary>
     /// <param name="apiToken">the api-token</param>
-    void LoadToken(string apiToken);
+    void LoadApiToken(string apiToken);
 
     /// <summary>
     /// configures the given httpclient for the hetzner cloud api
