@@ -1,10 +1,11 @@
-﻿using System.Net;
+﻿using Hetzner.Cloud.Helper;
+using Hetzner.Cloud.Instances.Server;
 using Hetzner.Cloud.Interfaces;
+using Hetzner.Cloud.Mapping;
+using Hetzner.Cloud.Pagination;
 using lkcode.hetznercloudapi.Exceptions;
 using lkcode.hetznercloudapi.Exceptions.Http;
-using lkcode.hetznercloudapi.Instances.Server;
 using lkcode.hetznercloudapi.Interfaces;
-using lkcode.hetznercloudapi.ParameterObjects.Pagination;
 using lkcode.hetznercloudapi.ParameterObjects.Sort;
 
 namespace Hetzner.Cloud.Services;
@@ -43,21 +44,22 @@ public class ServerService(IHttpClientFactory httpClientFactory) : IServerServic
 
         HttpResponseMessage response = await this._httpClient.GetAsync(requestUri, cancellationToken);
 
-        if (response.IsSuccessStatusCode)
+        if (!response.IsSuccessStatusCode)
         {
-            string content = await response.Content.ReadAsStringAsync();
-
-            int i = 0;
-            return null;
+            switch (response.StatusCode)
+            {
+                default:
+                    throw new ApiException(response.StatusCode, $"Invalid Request");
+            }
         }
 
-        switch (response.StatusCode)
-        {
-            default:
-                throw new ApiException(response.StatusCode, $"Invalid Request");
-        }
+        string content = await response.Content.ReadAsStringAsync();
 
-        return null;
+        Page<Server> result = content
+            .CreatePagination()
+            .LoadContent("servers", (json) => json.ToServer());
+        
+        return result;
 
         // GetAllResponse? response = await this._hetznerCloudService.GetRequest<GetAllResponse>(requestUri, arguments);
         //

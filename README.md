@@ -71,4 +71,20 @@ IHetznerCloudService _hetznerCloudService = {get instance via DI};
 _hetznerCloudService.LoadApiToken("{YOUR_API_TOKEN}");
 ```
 
+### Server
+
+Access via `IServerService`
+
+#### Get all servers
+
+Definition:
+
+```
+Task<Page<Server>> GetAllAsync(int page = 1,
+    int itemsPerPage = 25,
+    List<IFilter>? filter = null,
+    Sorting<ServerSortField>? sorting = null,
+    CancellationToken cancellationToken = default);
+```
+
 [![Contributors](https://contrib.rocks/image?repo=lk-code/hetzner-cloud-api-net)](https://github.com/lk-code/hetzner-cloud-api-net/graphs/contributors)
