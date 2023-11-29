@@ -1,0 +1,97 @@
+@page "/servers"
+@attribute [StreamRendering]
+
+@using Hetzner.Cloud.Interfaces
+@using Hetzner.Cloud.Pagination
+@using Hetzner.Cloud.Instances.Server
+
+@inject IServerService ServerService
+
+@code {
+    private List<Server> Servers { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadServersAsync();
+    }
+
+    private async Task LoadServersAsync()
+    {
+        this.Servers.Clear();
+
+        try
+        {
+            PagedResponse<Server> servers = await ServerService.GetAllAsync();
+
+            foreach (var server in servers.Items)
+            {
+                this.Servers.Add(server);
+            }
+    // foreach (var server in servers.Items)
+    // {
+    //     SingledResponse<Server> serverDetails = await ServerService.GetByIdAsync(server.Id);
+    //
+    //     int i = 0;
+    // }
+        }
+        catch (Exception ex)
+        {
+        }
+    }
+
+}
+
+<PageTitle>Home</PageTitle>
+
+<h1>Servers</h1>
+
+<table class="table">
+
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Created</th>
+        <th scope="col">Locked</th>
+        <th scope="col">Actions</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    @if (this.Servers.Any())
+    {
+        @foreach (var server in this.Servers)
+        {
+            <tr>
+                <th scope="row">@server.Id</th>
+                <td>@server.Name</td>
+                <td>@server.Created.ToShortDateString() @server.Created.ToShortTimeString()</td>
+                <td>
+                    @if (@server.Locked)
+                    {
+                        <button type="button" disabled class="btn btn-sm btn-secondary"><i class="bi bi-lock"></i></button>
+                    }
+                    else
+                    {
+                        <button type="button" disabled class="btn btn-sm btn-secondary"><i class="bi bi-unlock"></i></button>
+                    }
+                </td>
+                <td>
+
+                    <div class="btn-group" role="group" aria-label="Server Actions">
+                        <button type="button" class="btn btn-sm btn-primary">Open Detail</button>
+                    </div>
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <th scope="row">Loading...</th>
+        </tr>
+    }
+    </tbody>
+
+</table>

@@ -19,13 +19,13 @@ internal static class ServerMappings
 
         Server server = new(serverJson.GetProperty("id").GetInt64())
         {
-            // Name = serverResponse.Name.Ensure("the name property can't be null (invalid api response)"),
+            Name = serverJson.GetProperty("name").GetString()!,
             Status = serverStatus,
-            // Created = serverResponse.Created.Ensure("the created property can't be null (invalid api response)"),
-            // IncludedTraffic = serverResponse.IncludedTraffic.Ensure("the included-traffic property can't be null (invalid api response)"),
-            // IngoingTraffic = serverResponse.IngoingTraffic.Ensure("the ingoing-traffic property can't be null (invalid api response)"),
-            // OutgoingTraffic = serverResponse.OutgoingTraffic.Ensure("the outgoing-traffic property can't be null (invalid api response)"),
-            // Labels = serverResponse.Labels.Ensure()
+            Created = DateTime.Parse(serverJson.GetProperty("created").GetString()!),
+            IncludedTraffic = serverJson.GetProperty("included_traffic").GetInt64(),
+            IngoingTraffic = serverJson.GetProperty("ingoing_traffic").GetInt64(),
+            OutgoingTraffic = serverJson.GetProperty("outgoing_traffic").GetInt64(),
+            Locked = serverJson.GetProperty("locked").GetBoolean(),
         };
 
         return server;

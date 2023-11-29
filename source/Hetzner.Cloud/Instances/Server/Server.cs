@@ -7,7 +7,7 @@ public class Server
     /// <summary>
     /// ID of the Resource
     /// </summary>
-    public long Id { get; private set; } = 0;
+    public long Id { get; private set; }
     /// <summary>
     /// Name of the Server (must be unique per Project and a valid hostname as per RFC 1123)
     /// </summary>
@@ -23,15 +23,19 @@ public class Server
     /// <summary>
     /// Inbound Traffic for the current billing period in bytes
     /// </summary>
-    public long IncludedTraffic { get; internal set; } = 0;
+    public long IncludedTraffic { get; internal set; }
     /// <summary>
     /// Inbound Traffic for the current billing period in bytes
     /// </summary>
-    public long IngoingTraffic { get; internal set; } = 0;
+    public long IngoingTraffic { get; internal set; }
     /// <summary>
     /// Outbound Traffic for the current billing period in bytes
     /// </summary>
-    public long OutgoingTraffic { get; internal set; } = 0;
+    public long OutgoingTraffic { get; internal set; }
+    /// <summary>
+    /// True if Server has been locked and is not available to user
+    /// </summary>
+    public bool Locked { get; internal set; } = false;
     /// <summary>
     /// User-defined labels (key-value pairs)
     /// 

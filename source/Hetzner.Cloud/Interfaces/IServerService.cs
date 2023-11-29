@@ -16,7 +16,7 @@ public interface IServerService
     /// <param name="filter">filter allows only <seealso cref="NameFilter"/>, <seealso cref="LabelFilter"/> and <seealso cref="StatusFilter"/>.</param>
     /// <param name="sorting">sorts the result</param>
     /// <returns></returns>
-    Task<Page<Server>> GetAllAsync(int page = 1,
+    Task<PagedResponse<Server>> GetAllAsync(int page = 1,
         int itemsPerPage = 25,
         List<IFilter>? filter = null,
         Sorting<ServerSortField>? sorting = null,
@@ -27,6 +27,6 @@ public interface IServerService
     /// </summary>
     /// <param name="id">ID of the Server</param>
     /// <returns></returns>
-    Task<Server> GetByIdAsync(long id,
+    Task<SingledResponse<Server>> GetByIdAsync(long id,
         CancellationToken cancellationToken = default);
 }

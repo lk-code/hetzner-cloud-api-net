@@ -1,8 +1,10 @@
-﻿using Hetzner.Cloud.Helper;
+﻿using System.Net;
+using Hetzner.Cloud.Helper;
 using Hetzner.Cloud.Instances.Server;
 using Hetzner.Cloud.Interfaces;
 using Hetzner.Cloud.Mapping;
 using Hetzner.Cloud.Pagination;
+using Hetzner.Cloud.UriBuilder;
 using lkcode.hetznercloudapi.Exceptions;
 using lkcode.hetznercloudapi.Exceptions.Http;
 using lkcode.hetznercloudapi.Interfaces;
@@ -15,7 +17,7 @@ public class ServerService(IHttpClientFactory httpClientFactory) : IServerServic
     private readonly HttpClient _httpClient = httpClientFactory.CreateClient("HetznerCloudHttpClient");
 
     /// <inheritdoc/>
-    public async Task<Page<Server>> GetAllAsync(int page = 1,
+    public async Task<PagedResponse<Server>> GetAllAsync(int page = 1,
         int itemsPerPage = 25,
         List<IFilter>? filter = null,
         Sorting<ServerSortField>? sorting = null,
@@ -26,21 +28,11 @@ public class ServerService(IHttpClientFactory httpClientFactory) : IServerServic
             throw new InvalidArgumentException($"invalid page number ({page}). must be greather than 0.");
         }
 
-        string requestUri = $"/v1/servers";
-
-        Dictionary<string, string> arguments = new();
-        arguments.Add("page", page.ToString());
-
-        // render filter and sorting
-        if (filter != null && filter.Count > 0)
-        {
-            filter.ForEach(x => arguments.Add(x.GetFilterField(), x.GetValue()));
-        }
-
-        if (sorting != null)
-        {
-            arguments.Add(sorting.Field.ToString(), sorting.Direction.ToString());
-        }
+        string requestUri = "/v1/servers".AsUriBuilder()
+            .AddPagination(page, itemsPerPage)
+            .AddFilter(filter)
+            .AddSorting(sorting)
+            .ToUri();
 
         HttpResponseMessage response = await this._httpClient.GetAsync(requestUri, cancellationToken);
 
@@ -55,81 +47,39 @@ public class ServerService(IHttpClientFactory httpClientFactory) : IServerServic
 
         string content = await response.Content.ReadAsStringAsync();
 
-        Page<Server> result = content
-            .CreatePagination()
+        PagedResponse<Server> result = content
+            .AsPagedResponse()
             .LoadContent("servers", (json) => json.ToServer());
         
         return result;
-
-        // GetAllResponse? response = await this._hetznerCloudService.GetRequest<GetAllResponse>(requestUri, arguments);
-        //
-        // // verify response
-        // if (response == null)
-        // {
-        //     throw new InvalidResponseException("the api response is empty or invalid.");
-        // }
-        //
-        // if (response.Meta == null
-        //     || response.Meta.Pagination == null)
-        // {
-        //     throw new InvalidResponseException("the meta property in the api response is empty or invalid.");
-        // }
-        //
-        // if (response.Servers == null)
-        // {
-        //     throw new InvalidResponseException("the server property in the api response is empty or invalid.");
-        // }
-        //
-        // IEnumerable<Server> servers = response.Servers
-        //     .Select(x => x.ToServer())
-        //     .ToList();
-        //
-        // Page<Server> result = new Page<Server>(
-        //     response.Meta.Pagination.Page.Ensure("the page property in the api response is empty or invalid."),
-        //     response.Meta.Pagination.ItemsPerPage.Ensure(
-        //         "the items-per-page property in the api response is empty or invalid."),
-        //     response.Meta.Pagination.TotalEntries.Ensure(
-        //         "the total-entries property in the api response is empty or invalid."),
-        //     servers);
-        //
-        // return result;
     }
 
     /// <inheritdoc/>
-    public async Task<Server> GetByIdAsync(long id,
+    public async Task<SingledResponse<Server>> GetByIdAsync(long id,
         CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
-        // string requestUri = $"/servers/{id}";
-        //
-        // try
-        // {
-        //     GetByIdResponse? response = await this._hetznerCloudService.GetRequest<GetByIdResponse>(requestUri);
-        //     // verify response
-        //     if (response == null)
-        //     {
-        //         throw new InvalidResponseException("the api response is empty or invalid.");
-        //     }
-        //
-        //     if (response.Server == null)
-        //     {
-        //         throw new ResourceNotFoundException($"the server with the id {id} was not found");
-        //     }
-        //
-        //     Server server = response.Server.ToServer();
-        //
-        //     return server;
-        // }
-        // catch (HttpRequestException err)
-        // {
-        //     if (err.StatusCode == System.Net.HttpStatusCode.NotFound)
-        //     {
-        //         throw new ResourceNotFoundException($"the server with the id {id} was not found", err);
-        //     }
-        //     else
-        //     {
-        //         throw;
-        //     }
-        // }
+        string requestUri = $"/v1/servers/{id}".AsUriBuilder()
+            .ToUri();
+
+        HttpResponseMessage response = await this._httpClient.GetAsync(requestUri, cancellationToken);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            switch (response.StatusCode)
+            {
+                case HttpStatusCode.NotFound:
+                    throw new ResourceNotFoundException($"the server with the id {id} was not found");
+                default:
+                    throw new ApiException(response.StatusCode, $"Invalid Request");
+            }
+        }
+
+        string content = await response.Content.ReadAsStringAsync();
+
+        SingledResponse<Server> result = content
+            .AsSingledResponse()
+            .LoadContent("server", (json) => json.ToServer());
+
+        return result;
     }
 }
