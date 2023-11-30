@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Hetzner.Cloud.Enums;
+using Hetzner.Cloud.Helper;
 using Hetzner.Cloud.Models;
 
 namespace Hetzner.Cloud.Mapping;
@@ -26,6 +27,7 @@ internal static class ServerMappings
             IngoingTraffic = serverJson.GetProperty("ingoing_traffic").GetInt64(),
             OutgoingTraffic = serverJson.GetProperty("outgoing_traffic").GetInt64(),
             Locked = serverJson.GetProperty("locked").GetBoolean(),
+            Labels = serverJson.GetProperty("labels").ToDictionary(),
         };
 
         return server;

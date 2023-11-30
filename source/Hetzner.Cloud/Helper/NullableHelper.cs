@@ -4,11 +4,28 @@ namespace Hetzner.Cloud.Helper;
 
 internal static class NullableHelper
 {
+    internal static string Ensure(this string? value, string? errorMessage)
+    {
+        if (value is null)
+        {
+            if (errorMessage is null)
+            {
+                return string.Empty;
+            }
+            else
+            {
+                throw new InvalidArgumentException(errorMessage);
+            }
+        }
+
+        return value;
+    }
+    
     internal static int Ensure(this int? value, string? errorMessage)
     {
-        if (value == null)
+        if (value is null)
         {
-            if (errorMessage == null)
+            if (errorMessage is null)
             {
                 return int.MinValue;
             }
@@ -23,9 +40,9 @@ internal static class NullableHelper
 
     internal static long Ensure(this long? value, string? errorMessage)
     {
-        if (value == null)
+        if (value is null)
         {
-            if (errorMessage == null)
+            if (errorMessage is null)
             {
                 return long.MinValue;
             }
@@ -40,9 +57,9 @@ internal static class NullableHelper
 
     internal static double Ensure(this double? value, string? errorMessage)
     {
-        if (value == null)
+        if (value is null)
         {
-            if (errorMessage == null)
+            if (errorMessage is null)
             {
                 return double.MinValue;
             }
@@ -57,9 +74,9 @@ internal static class NullableHelper
 
     internal static DateTime Ensure(this DateTime? value, string? errorMessage)
     {
-        if (value == null)
+        if (value is null)
         {
-            if (errorMessage == null)
+            if (errorMessage is null)
             {
                 return DateTime.MinValue;
             }
@@ -72,28 +89,11 @@ internal static class NullableHelper
         return (DateTime)value;
     }
 
-    internal static string Ensure(this string? value, string? errorMessage)
-    {
-        if (value == null)
-        {
-            if (errorMessage == null)
-            {
-                return string.Empty;
-            }
-            else
-            {
-                throw new InvalidArgumentException(errorMessage);
-            }
-        }
-
-        return value;
-    }
-
     internal static Dictionary<string, string> Ensure(this Dictionary<string, string>? value, string? errorMessage = null)
     {
-        if (value == null)
+        if (value is null)
         {
-            if (errorMessage == null)
+            if (errorMessage is null)
             {
                 return new();
             }
@@ -108,9 +108,9 @@ internal static class NullableHelper
 
     internal static IEnumerable<T> Ensure<T>(this IEnumerable<T>? value, string? errorMessage)
     {
-        if (value == null)
+        if (value is null)
         {
-            if (errorMessage == null)
+            if (errorMessage is null)
             {
                 return Enumerable.Empty<T>();
             }
