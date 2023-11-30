@@ -1,7 +1,7 @@
 ﻿using Hetzner.Cloud.Enums;
 using lkcode.hetznercloudapi.Interfaces;
 
-namespace lkcode.hetznercloudapi.ParameterObjects.Filter;
+namespace Hetzner.Cloud.Filter;
 
 public class StatusFilter : IFilter
 {
