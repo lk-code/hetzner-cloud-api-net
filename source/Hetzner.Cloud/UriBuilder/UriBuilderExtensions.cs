@@ -1,4 +1,4 @@
-using lkcode.hetznercloudapi.Exceptions;
+using Hetzner.Cloud.Exceptions;
 using lkcode.hetznercloudapi.Interfaces;
 using lkcode.hetznercloudapi.ParameterObjects.Sort;
 

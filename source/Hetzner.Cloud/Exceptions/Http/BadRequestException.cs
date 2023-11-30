@@ -1,4 +1,4 @@
-namespace lkcode.hetznercloudapi.Exceptions.Http;
+namespace Hetzner.Cloud.Exceptions.Http;
 
 public class BadRequestException : Exception
 {

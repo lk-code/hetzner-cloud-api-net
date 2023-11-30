@@ -1,12 +1,12 @@
 ﻿using System.Net;
+using Hetzner.Cloud.Exceptions;
+using Hetzner.Cloud.Exceptions.Http;
 using Hetzner.Cloud.Helper;
 using Hetzner.Cloud.Instances.Server;
 using Hetzner.Cloud.Interfaces;
 using Hetzner.Cloud.Mapping;
 using Hetzner.Cloud.Pagination;
 using Hetzner.Cloud.UriBuilder;
-using lkcode.hetznercloudapi.Exceptions;
-using lkcode.hetznercloudapi.Exceptions.Http;
 using lkcode.hetznercloudapi.Interfaces;
 using lkcode.hetznercloudapi.ParameterObjects.Sort;
 

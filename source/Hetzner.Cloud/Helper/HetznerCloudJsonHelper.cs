@@ -1,6 +1,6 @@
 using System.Text.Json;
+using Hetzner.Cloud.Exceptions;
 using Hetzner.Cloud.Pagination;
-using lkcode.hetznercloudapi.Exceptions;
 
 namespace Hetzner.Cloud.Helper;
 

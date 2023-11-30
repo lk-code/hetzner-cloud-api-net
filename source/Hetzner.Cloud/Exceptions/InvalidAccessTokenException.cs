@@ -1,4 +1,4 @@
-﻿namespace lkcode.hetznercloudapi.Exceptions;
+﻿namespace Hetzner.Cloud.Exceptions;
 
 public class InvalidAccessTokenException : Exception
 {

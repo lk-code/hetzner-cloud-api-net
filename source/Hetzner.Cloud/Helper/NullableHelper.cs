@@ -1,4 +1,4 @@
-﻿using lkcode.hetznercloudapi.Exceptions;
+﻿using Hetzner.Cloud.Exceptions;
 
 namespace lkcode.hetznercloudapi.Helper;
 

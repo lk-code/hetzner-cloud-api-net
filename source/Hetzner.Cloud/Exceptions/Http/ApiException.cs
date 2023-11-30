@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace lkcode.hetznercloudapi.Exceptions.Http;
+namespace Hetzner.Cloud.Exceptions.Http;
 
 public class ApiException : Exception
 {
