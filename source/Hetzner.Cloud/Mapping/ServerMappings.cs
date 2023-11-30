@@ -28,6 +28,9 @@ internal static class ServerMappings
             OutgoingTraffic = serverJson.GetProperty("outgoing_traffic").GetInt64(),
             Locked = serverJson.GetProperty("locked").GetBoolean(),
             Labels = serverJson.GetProperty("labels").ToDictionary(),
+            BackupWindow = serverJson.GetProperty("backup_window").GetString(),
+            PrimaryDiskSize = serverJson.GetProperty("primary_disk_size").GetInt64(),
+            PlacementGroup = serverJson.GetProperty("placement_group").ToPlacementGroup(),
         };
 
         return server;

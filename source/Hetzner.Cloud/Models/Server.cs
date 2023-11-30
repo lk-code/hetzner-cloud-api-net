@@ -2,12 +2,12 @@
 
 namespace Hetzner.Cloud.Models;
 
-public class Server
+public class Server(long id)
 {
     /// <summary>
     /// ID of the Resource
     /// </summary>
-    public long Id { get; private set; }
+    public long Id { get; private set; } = id;
     /// <summary>
     /// Name of the Server (must be unique per Project and a valid hostname as per RFC 1123)
     /// </summary>
@@ -35,20 +35,22 @@ public class Server
     /// <summary>
     /// True if Server has been locked and is not available to user
     /// </summary>
-    public bool Locked { get; internal set; } = false;
+    public bool Locked { get; internal set; }
     /// <summary>
     /// User-defined labels (key-value pairs)
-    /// 
     /// more informations: https://docs.hetzner.cloud/#labels
     /// </summary>
     public Dictionary<string, string> Labels { get; internal set; } = new();
-
     /// <summary>
-    /// 
+    /// Time window (UTC) in which the backup will run, or null if the backups are not enabled
     /// </summary>
-    /// <param name="id"></param>
-    public Server(long id)
-    {
-        Id = id;
-    }
+    public string? BackupWindow { get; internal set; }
+    /// <summary>
+    /// Size of the primary Disk
+    /// </summary>
+    public long PrimaryDiskSize { get; internal set; }
+    /// <summary>
+    /// The placement group the server is assigned to.
+    /// </summary>
+    public PlacementGroup? PlacementGroup { get; internal set; }
 }
