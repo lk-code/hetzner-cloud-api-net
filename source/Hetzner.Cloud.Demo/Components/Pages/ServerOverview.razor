@@ -7,6 +7,8 @@
 
 @inject IServerService ServerService
 
+<PageTitle>Servers</PageTitle>
+
 @code {
     private List<Server> Servers { get; set; } = new();
 
@@ -40,8 +42,6 @@
     }
 
 }
-
-<PageTitle>Home</PageTitle>
 
 <h1>Servers</h1>
 
@@ -82,6 +82,14 @@
                     <div class="btn-group" role="group" aria-label="Server Actions">
                         <button type="button" class="btn btn-sm btn-primary">Open Detail</button>
                     </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    @foreach(var label in server.Labels)
+                    {
+                        <span class="badge bg-primary me-2">@label.Key / @label.Value</span>
+                    }
                 </td>
             </tr>
         }
