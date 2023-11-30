@@ -1,6 +1,6 @@
 ﻿using Hetzner.Cloud.Enums;
 
-namespace lkcode.hetznercloudapi.Instances.ServerActions;
+namespace Hetzner.Cloud.Instances.ServerActions;
 
 /// <summary>
 /// 

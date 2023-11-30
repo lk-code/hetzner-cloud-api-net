@@ -1,6 +1,6 @@
 ﻿using Hetzner.Cloud.Exceptions;
 
-namespace lkcode.hetznercloudapi.Helper;
+namespace Hetzner.Cloud.Helper;
 
 internal static class NullableHelper
 {

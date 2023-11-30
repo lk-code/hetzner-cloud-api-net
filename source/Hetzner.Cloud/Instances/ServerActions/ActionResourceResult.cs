@@ -1,4 +1,4 @@
-﻿namespace lkcode.hetznercloudapi.Instances.ServerActions;
+﻿namespace Hetzner.Cloud.Instances.ServerActions;
 
 /// <summary>
 /// Resource the Action relates to
