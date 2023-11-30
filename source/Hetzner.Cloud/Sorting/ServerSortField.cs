@@ -1,4 +1,4 @@
-﻿namespace lkcode.hetznercloudapi.ParameterObjects.Sort;
+﻿namespace Hetzner.Cloud.Sorting;
 
 public enum ServerSortField
 {

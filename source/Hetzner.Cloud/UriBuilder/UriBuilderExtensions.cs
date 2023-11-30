@@ -1,6 +1,6 @@
 using Hetzner.Cloud.Exceptions;
-using lkcode.hetznercloudapi.Interfaces;
-using lkcode.hetznercloudapi.ParameterObjects.Sort;
+using Hetzner.Cloud.Interfaces;
+using Hetzner.Cloud.Sorting;
 
 namespace Hetzner.Cloud.UriBuilder;
 

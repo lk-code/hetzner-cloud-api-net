@@ -6,9 +6,8 @@ using Hetzner.Cloud.Instances.Server;
 using Hetzner.Cloud.Interfaces;
 using Hetzner.Cloud.Mapping;
 using Hetzner.Cloud.Pagination;
+using Hetzner.Cloud.Sorting;
 using Hetzner.Cloud.UriBuilder;
-using lkcode.hetznercloudapi.Interfaces;
-using lkcode.hetznercloudapi.ParameterObjects.Sort;
 
 namespace Hetzner.Cloud.Services;
 

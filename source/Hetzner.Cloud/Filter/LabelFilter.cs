@@ -1,4 +1,4 @@
-﻿using lkcode.hetznercloudapi.Interfaces;
+﻿using Hetzner.Cloud.Interfaces;
 
 namespace Hetzner.Cloud.Filter;
 

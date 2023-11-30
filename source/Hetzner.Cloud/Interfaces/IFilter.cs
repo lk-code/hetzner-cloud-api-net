@@ -1,4 +1,4 @@
-﻿namespace lkcode.hetznercloudapi.Interfaces;
+﻿namespace Hetzner.Cloud.Interfaces;
 
 public interface IFilter
 {

@@ -1,8 +1,7 @@
 ﻿using Hetzner.Cloud.Filter;
 using Hetzner.Cloud.Instances.Server;
 using Hetzner.Cloud.Pagination;
-using lkcode.hetznercloudapi.Interfaces;
-using lkcode.hetznercloudapi.ParameterObjects.Sort;
+using Hetzner.Cloud.Sorting;
 
 namespace Hetzner.Cloud.Interfaces;
 
