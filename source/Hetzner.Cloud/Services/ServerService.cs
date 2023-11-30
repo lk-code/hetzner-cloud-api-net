@@ -2,9 +2,9 @@
 using Hetzner.Cloud.Exceptions;
 using Hetzner.Cloud.Exceptions.Http;
 using Hetzner.Cloud.Helper;
-using Hetzner.Cloud.Instances.Server;
 using Hetzner.Cloud.Interfaces;
 using Hetzner.Cloud.Mapping;
+using Hetzner.Cloud.Models;
 using Hetzner.Cloud.Pagination;
 using Hetzner.Cloud.Sorting;
 using Hetzner.Cloud.UriBuilder;

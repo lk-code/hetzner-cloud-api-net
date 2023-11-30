@@ -1,6 +1,6 @@
 ﻿using Hetzner.Cloud.Enums;
 
-namespace Hetzner.Cloud.Instances.Server;
+namespace Hetzner.Cloud.Models;
 
 public class Server
 {

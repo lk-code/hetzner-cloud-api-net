@@ -1,5 +1,5 @@
 ﻿using Hetzner.Cloud.Filter;
-using Hetzner.Cloud.Instances.Server;
+using Hetzner.Cloud.Models;
 using Hetzner.Cloud.Pagination;
 using Hetzner.Cloud.Sorting;
 
