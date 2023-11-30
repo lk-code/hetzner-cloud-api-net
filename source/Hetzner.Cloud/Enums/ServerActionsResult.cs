@@ -1,4 +1,4 @@
-﻿namespace lkcode.hetznercloudapi.Enums;
+﻿namespace Hetzner.Cloud.Enums;
 
 public enum ServerActionsResult
 {

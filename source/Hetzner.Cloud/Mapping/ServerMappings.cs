@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
+using Hetzner.Cloud.Enums;
 using Hetzner.Cloud.Instances.Server;
-using lkcode.hetznercloudapi.Enums;
 
 namespace Hetzner.Cloud.Mapping;
 

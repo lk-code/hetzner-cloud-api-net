@@ -1,4 +1,4 @@
-﻿using lkcode.hetznercloudapi.Enums;
+﻿using Hetzner.Cloud.Enums;
 
 namespace lkcode.hetznercloudapi.Instances.ServerActions;
 
