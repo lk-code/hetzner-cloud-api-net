@@ -29,12 +29,6 @@
             {
                 this.Servers.Add(server);
             }
-    // foreach (var server in servers.Items)
-    // {
-    //     SingledResponse<Server> serverDetails = await ServerService.GetByIdAsync(server.Id);
-    //
-    //     int i = 0;
-    // }
         }
         catch (Exception ex)
         {
@@ -43,63 +37,77 @@
 
 }
 
-<h1>Servers</h1>
+<div class="row">
 
-<table class="table">
+    <div class="col-md-12">
+        
+        <h1>Servers</h1>
 
-    <thead>
-    <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Created</th>
-        <th scope="col">Locked</th>
-        <th scope="col">Actions</th>
-    </tr>
-    </thead>
+        <table class="table">
 
-    <tbody>
-
-    @if (this.Servers.Any())
-    {
-        @foreach (var server in this.Servers)
-        {
+            <thead>
             <tr>
-                <th scope="row">@server.Id</th>
-                <td>@server.Name</td>
-                <td>@server.Created.ToShortDateString() @server.Created.ToShortTimeString()</td>
-                <td>
-                    @if (@server.Locked)
-                    {
-                        <button type="button" disabled class="btn btn-sm btn-secondary"><i class="bi bi-lock"></i></button>
-                    }
-                    else
-                    {
-                        <button type="button" disabled class="btn btn-sm btn-secondary"><i class="bi bi-unlock"></i></button>
-                    }
-                </td>
-                <td>
-
-                    <div class="btn-group" role="group" aria-label="Server Actions">
-                        <button type="button" class="btn btn-sm btn-primary">Open Detail</button>
-                    </div>
-                </td>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Status</th>
+                <th scope="col">Created</th>
+                <th scope="col">Locked</th>
+                <th scope="col">Actions</th>
             </tr>
-            <tr>
-                <td colspan="5">
-                    @foreach(var label in server.Labels)
-                    {
-                        <span class="badge bg-primary me-2">@label.Key / @label.Value</span>
-                    }
-                </td>
-            </tr>
-        }
-    }
-    else
-    {
-        <tr>
-            <th scope="row">Loading...</th>
-        </tr>
-    }
-    </tbody>
+            </thead>
 
-</table>
+            <tbody>
+
+            @if (this.Servers.Any())
+            {
+                @foreach (var server in this.Servers)
+                {
+                    <tr>
+                        <th scope="row">@server.Id</th>
+                        <td>@server.Name</td>
+                        <td>@server.Status</td>
+                        <td>@server.Created.ToShortDateString() @server.Created.ToShortTimeString()</td>
+                        <td>
+                            @if (@server.Locked)
+                            {
+                                <button type="button" disabled class="btn btn-sm btn-secondary">
+                                    <i class="bi bi-lock"></i>
+                                </button>
+                            }
+                            else
+                            {
+                                <button type="button" disabled class="btn btn-sm btn-secondary">
+                                    <i class="bi bi-unlock"></i>
+                                </button>
+                            }
+                        </td>
+                        <td>
+
+                            <div class="btn-group" role="group" aria-label="Server Actions">
+                                <a class="btn btn-sm btn-primary" href="servers/@server.Id">Open</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            @foreach (var label in server.Labels)
+                            {
+                                <span class="badge bg-primary me-2">@label.Key / @label.Value</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <th scope="row">Loading...</th>
+                </tr>
+            }
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

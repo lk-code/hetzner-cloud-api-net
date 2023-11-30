@@ -1,0 +1,99 @@
+@page "/servers/{id}"
+@attribute [StreamRendering]
+
+@using Hetzner.Cloud.Interfaces
+@using Hetzner.Cloud.Models
+@using Hetzner.Cloud.Pagination
+@using Hetzner.Cloud.Demo.Helper
+
+@inject IServerService ServerService
+
+<PageTitle>Server-Detail</PageTitle>
+
+@code {
+
+    [Parameter]
+    public string Id { get; set; }
+
+    private Server? Server { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadServerAsync();
+    }
+
+    private async Task LoadServerAsync()
+    {
+        try
+        {
+            this.Server = null;
+
+            SingledResponse<Server> serverDetails = await ServerService.GetByIdAsync(Convert.ToInt64(Id));
+            this.Server = serverDetails.Item;
+        }
+        catch (Exception ex)
+        {
+        }
+    }
+
+}
+
+<div class="row">
+
+    <div class="col-md-12">
+        <h1>Server</h1>
+    </div>
+
+    @if (Server is null)
+    {
+        <p>Loading ...</p>
+    }
+    else
+    {
+        <div class="col-md-6">
+
+            <div class="card">
+
+                <h5 class="card-header">@Server.Name</h5>
+
+                <div class="card-body">
+                    This is some text within a card body.
+                </div>
+
+                <div class="card-footer text-body-secondary">
+                    Created: @Server.Created.ToShortDateString() @Server.Created.ToShortTimeString()
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="card">
+
+                <h5 class="card-header">Details</h5>
+
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Id: @Server.Id</li>
+                    <li class="list-group-item">Created: @Server.Created.ToShortDateString() @Server.Created.ToShortTimeString()</li>
+                    <li class="list-group-item">Backup Window: @Server.BackupWindow</li>
+                    <li class="list-group-item">Included Traffic: @Server.IncludedTraffic.AsGigaBytes()</li>
+                    <li class="list-group-item">Ingoing Traffic: @Server.IngoingTraffic.AsMegaBytes()</li>
+                    <li class="list-group-item">Outgoing Traffic: @Server.OutgoingTraffic.AsMegaBytes()</li>
+                    <li class="list-group-item">Locked: @Server.Locked.ToString("Yes", "No")</li>
+                  </ul>
+
+                <div class="card-footer text-body-secondary">
+                    @foreach (var label in Server.Labels)
+                    {
+                        <span class="badge bg-secondary me-2">@label.Key / @label.Value</span>
+                    }
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+</div>
