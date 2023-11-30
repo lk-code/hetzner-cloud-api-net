@@ -82,7 +82,7 @@
                     <li class="list-group-item">Ingoing Traffic: @Server.IngoingTraffic.AsMegaBytes()</li>
                     <li class="list-group-item">Outgoing Traffic: @Server.OutgoingTraffic.AsMegaBytes()</li>
                     <li class="list-group-item">Locked: @Server.Locked.ToString("Yes", "No")</li>
-                  </ul>
+                </ul>
 
                 <div class="card-footer text-body-secondary">
                     @foreach (var label in Server.Labels)
@@ -90,6 +90,40 @@
                         <span class="badge bg-secondary me-2">@label.Key / @label.Value</span>
                     }
                 </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card">
+
+                <h5 class="card-header">PlacementGroup</h5>
+
+                @if (Server.PlacementGroup is null)
+                {
+                    <div class="card-body">
+                        no placement group given
+                    </div>
+                }
+                else
+                {
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Id: @Server.PlacementGroup.Id</li>
+                        <li class="list-group-item">Name: @Server.PlacementGroup.Name</li>
+                        <li class="list-group-item">Created: @Server.PlacementGroup.Created.ToShortDateString() @Server.PlacementGroup.Created.ToShortTimeString()</li>
+                        <li class="list-group-item">Type: @Server.PlacementGroup.Type</li>
+                        <li class="list-group-item">ServerIds: @string.Join(", ", Server.PlacementGroup.ServerIds)</li>
+                    </ul>
+
+                    <div class="card-footer text-body-secondary">
+                        @foreach (var label in Server.PlacementGroup.Labels)
+                        {
+                            <span class="badge bg-secondary me-2">@label.Key / @label.Value</span>
+                        }
+                    </div>
+                }
 
             </div>
 
