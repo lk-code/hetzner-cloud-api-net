@@ -14,6 +14,7 @@ jobs:
     env:
       VERSION: 3.0.${{ github.run_number }}-beta
       PROJECT_FILE: "**/Hetzner.Cloud.csproj"
+      NUGET_FILE: "**/*hetznercloudapi*.nupkg"
 
     steps:
       - name: Set up JDK 11
@@ -32,20 +33,6 @@ jobs:
 
       - name: Restore dependencies
         run: dotnet restore source/
-
-      - name: Version Visual Studio SDK projects
-        uses: roryprimrose/set-vs-sdk-project-version@v1.0.6
-        with:
-          # The wildcard filter that identifies projects to version
-          projectFilter: ${{ env.PROJECT_FILE }}
-          # Maps to the Version element
-          version: ${{ env.VERSION }}
-          # Maps to the AssemblyVersion element
-          assemblyVersion: ${{ env.VERSION }}
-          # Maps to the FileVersion element
-          fileVersion: ${{ env.VERSION }}
-          # Maps to the InformationalVersion element
-          informationalVersion: ${{ env.VERSION }}
 
       - name: Cache SonarCloud packages
         uses: actions/cache@v1
@@ -87,5 +74,11 @@ jobs:
           git tag ${{ env.VERSION }}
           git push origin ${{ env.VERSION }}
 
-      - name: Publish
-        run: dotnet nuget push **/*hetznercloudapi*.nupkg --no-symbols --skip-duplicate --api-key ${{secrets.NUGET_API_KEY}} --source "nuget.org"
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: ${{ env.VERSION }}
+          path: ${{ env.NUGET_FILE }}
+
+#      - name: Publish
+#        run: dotnet nuget push ${{ env.NUGET_FILE }} --no-symbols --skip-duplicate --api-key ${{ secrets.NUGET_API_KEY }} --source "nuget.org"
