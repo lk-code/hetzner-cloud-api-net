@@ -1,0 +1,113 @@
+@page "/servers"
+@attribute [StreamRendering]
+
+@using Hetzner.Cloud.Interfaces
+@using Hetzner.Cloud.Models
+@using Hetzner.Cloud.Pagination
+
+@inject IServerService ServerService
+
+<PageTitle>Servers</PageTitle>
+
+@code {
+    private List<Server> Servers { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadServersAsync();
+    }
+
+    private async Task LoadServersAsync()
+    {
+        this.Servers.Clear();
+
+        try
+        {
+            PagedResponse<Server> servers = await ServerService.GetAllAsync();
+
+            foreach (var server in servers.Items)
+            {
+                this.Servers.Add(server);
+            }
+        }
+        catch (Exception ex)
+        {
+        }
+    }
+
+}
+
+<div class="row">
+
+    <div class="col-md-12">
+        
+        <h1>Servers</h1>
+
+        <table class="table">
+
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Status</th>
+                <th scope="col">Created</th>
+                <th scope="col">Locked</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            @if (this.Servers.Any())
+            {
+                @foreach (var server in this.Servers)
+                {
+                    <tr>
+                        <th scope="row">@server.Id</th>
+                        <td>@server.Name</td>
+                        <td>@server.Status</td>
+                        <td>@server.Created.ToShortDateString() @server.Created.ToShortTimeString()</td>
+                        <td>
+                            @if (@server.Locked)
+                            {
+                                <button type="button" disabled class="btn btn-sm btn-secondary">
+                                    <i class="bi bi-lock"></i>
+                                </button>
+                            }
+                            else
+                            {
+                                <button type="button" disabled class="btn btn-sm btn-secondary">
+                                    <i class="bi bi-unlock"></i>
+                                </button>
+                            }
+                        </td>
+                        <td>
+
+                            <div class="btn-group" role="group" aria-label="Server Actions">
+                                <a class="btn btn-sm btn-primary" href="servers/@server.Id">Open</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            @foreach (var label in server.Labels)
+                            {
+                                <span class="badge bg-primary me-2">@label.Key / @label.Value</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <th scope="row">Loading...</th>
+                </tr>
+            }
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
