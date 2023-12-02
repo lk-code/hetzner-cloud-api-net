@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      VERSION: 2.0.${{ github.run_number }}
+      VERSION: 3.0.${{ github.run_number }}
       PROJECT_FILE: "**/Hetzner.Cloud.csproj"
 
     steps:
