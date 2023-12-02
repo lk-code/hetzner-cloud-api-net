@@ -80,5 +80,5 @@ jobs:
           name: ${{ env.VERSION }}
           path: ${{ env.NUGET_FILE }}
 
-#      - name: Publish
-#        run: dotnet nuget push ${{ env.NUGET_FILE }} --no-symbols --skip-duplicate --api-key ${{ secrets.NUGET_API_KEY }} --source "nuget.org"
+      - name: Publish
+        run: dotnet nuget push ${{ env.NUGET_FILE }} --no-symbols --skip-duplicate --api-key ${{ secrets.NUGET_API_KEY }} --source "nuget.org"
