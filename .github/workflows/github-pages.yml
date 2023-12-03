@@ -23,18 +23,26 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
             
       - name: Setup .NET
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: 6.0.x
-        
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
-        
-      - name: Install htmlc
-        shell: pwsh
+            
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.8.1
+
+      - name: install sass
+        run: npm install -g sass
+
+      - name: install htmlc
         run: dotnet tool install --global htmlc
+
+      - name: htmlc environment check
+        run: htmlc environment check
         
       - name: htmlc compile
         run: htmlc compile docs -s /assets/scss/main.scss
