@@ -44,12 +44,16 @@
         <h1>Server</h1>
     </div>
 
-    @if (Server is null)
-    {
-        <p>Loading ...</p>
-    }
-    else
-    {
+</div>
+
+@if (Server is null)
+{
+    <p>Loading ...</p>
+}
+else
+{
+    <div class="row mb-4">
+        
         <div class="col-md-6">
 
             <div class="card">
@@ -95,6 +99,56 @@
 
         </div>
 
+    </div>
+
+    <div class="row mb-4">
+
+        <div class="col-md-4">
+
+            <div class="card">
+
+                <h5 class="card-header">Datacenter</h5>
+
+                @if (Server.Datacenter is null)
+                {
+                    <div class="card-body">
+                        no datacenter given
+                    </div>
+                }
+                else
+                {
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Id: @Server.Datacenter.Id</li>
+                        <li class="list-group-item">Name: @Server.Datacenter.Name</li>
+                        <li class="list-group-item">Description: @Server.Datacenter.Description</li>
+                        
+                        @if (Server.Datacenter.Location is null)
+                        {
+                            <li class="list-group-item">no location for datacenter given</li>
+                        }
+                        else
+                        {
+                            <li class="list-group-item">Location City: @Server.Datacenter.Location!.City</li>
+                            <li class="list-group-item">Location Country: @Server.Datacenter.Location!.Country</li>
+                        }
+                        
+                        @if (Server.Datacenter.ServerTypes is null)
+                        {
+                            <li class="list-group-item">no server types for datacenter given</li>
+                        }
+                        else
+                        {
+                            <li class="list-group-item">ServerTypes Available: @string.Join(", ", Server.Datacenter.ServerTypes!.Available)</li>
+                            <li class="list-group-item">ServerTypes AvailableForMigration: @string.Join(", ", Server.Datacenter.ServerTypes!.AvailableForMigration)</li>
+                            <li class="list-group-item">ServerTypes Supported: @string.Join(", ", Server.Datacenter.ServerTypes!.Supported)</li>
+                        }
+                    </ul>
+                }
+
+            </div>
+
+        </div>
+
         <div class="col-md-4">
 
             <div class="card">
@@ -128,6 +182,6 @@
             </div>
 
         </div>
-    }
 
-</div>
+    </div>
+}

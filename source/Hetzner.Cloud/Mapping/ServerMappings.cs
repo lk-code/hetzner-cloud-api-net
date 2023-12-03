@@ -7,9 +7,9 @@ namespace Hetzner.Cloud.Mapping;
 
 internal static class ServerMappings
 {
-    internal static Server ToServer(this JsonElement serverJson)
+    internal static Server ToServer(this JsonElement json)
     {
-        string? serverStatusValue = serverJson.GetProperty("status").GetString();
+        string? serverStatusValue = json.GetProperty("status").GetString();
         ServerStatus serverStatus = ServerStatus.Unknown;
         if (!string.IsNullOrEmpty(serverStatusValue))
         {
@@ -18,21 +18,22 @@ internal static class ServerMappings
             Enum.TryParse(status, out serverStatus);
         }
 
-        Server server = new(serverJson.GetProperty("id").GetInt64())
+        Server data = new(json.GetProperty("id").GetInt64())
         {
-            Name = serverJson.GetProperty("name").GetString()!,
+            Name = json.GetProperty("name").GetString()!,
             Status = serverStatus,
-            Created = DateTime.Parse(serverJson.GetProperty("created").GetString()!),
-            IncludedTraffic = serverJson.GetProperty("included_traffic").GetInt64(),
-            IngoingTraffic = serverJson.GetProperty("ingoing_traffic").GetInt64(),
-            OutgoingTraffic = serverJson.GetProperty("outgoing_traffic").GetInt64(),
-            Locked = serverJson.GetProperty("locked").GetBoolean(),
-            Labels = serverJson.GetProperty("labels").ToDictionary(),
-            BackupWindow = serverJson.GetProperty("backup_window").GetString(),
-            PrimaryDiskSize = serverJson.GetProperty("primary_disk_size").GetInt64(),
-            PlacementGroup = serverJson.GetProperty("placement_group").ToPlacementGroup(),
+            Created = DateTime.Parse(json.GetProperty("created").GetString()!),
+            IncludedTraffic = json.GetProperty("included_traffic").GetInt64(),
+            IngoingTraffic = json.GetProperty("ingoing_traffic").GetInt64(),
+            OutgoingTraffic = json.GetProperty("outgoing_traffic").GetInt64(),
+            Locked = json.GetProperty("locked").GetBoolean(),
+            Labels = json.GetProperty("labels").ToDictionary(),
+            BackupWindow = json.GetProperty("backup_window").GetString(),
+            PrimaryDiskSize = json.GetProperty("primary_disk_size").GetInt64(),
+            PlacementGroup = json.GetProperty("placement_group").ToPlacementGroup(),
+            Datacenter = json.GetProperty("datacenter").ToDatacenter(),
         };
 
-        return server;
+        return data;
     }
 }

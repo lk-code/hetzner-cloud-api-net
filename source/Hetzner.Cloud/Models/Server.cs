@@ -53,4 +53,8 @@ public class Server(long id)
     /// The placement group the server is assigned to.
     /// </summary>
     public PlacementGroup? PlacementGroup { get; internal set; }
+    /// <summary>
+    /// Datacenter this Resource is located at
+    /// </summary>
+    public Datacenter? Datacenter { get; internal set; }
 }

@@ -20,7 +20,7 @@ public static class JsonHelper
     {
         if (jsonElement is null)
         {
-            return null;
+            return Array.Empty<long>();
         }
 
         List<long> list = new();
