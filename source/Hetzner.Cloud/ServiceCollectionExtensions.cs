@@ -12,7 +12,7 @@ public static class ServiceCollectionExtensions
     /// </summary>
     /// <param name="services">the <see cref="IServiceCollection"/> instance</param>
     /// <returns>the <see cref="IServiceCollection"/> instance</returns>
-    public static IServiceCollection AddHetznerCloud(this IServiceCollection services)
+    public static IServiceCollection AddHetznerCloud(this IServiceCollection services, string apiToken = "")
     {
         services
             .AddHttpClient("HetznerCloudHttpClient",
@@ -23,6 +23,11 @@ public static class ServiceCollectionExtensions
             .ConfigureHttpClient((serviceProvider, httpClient) =>
             {
                 IHetznerCloudService hetznerCloudService = serviceProvider.GetRequiredService<IHetznerCloudService>();
+
+                if (!string.IsNullOrEmpty(apiToken))
+                {
+                    hetznerCloudService.LoadApiToken(apiToken);
+                }
 
                 httpClient.DefaultRequestHeaders.Accept.Clear();
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
