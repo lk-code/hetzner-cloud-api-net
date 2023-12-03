@@ -37,7 +37,7 @@ jobs:
         run: dotnet tool install --global htmlc
         
       - name: htmlc compile
-        run: htmlc compile docs
+        run: htmlc compile docs -s /assets/scss/main.scss
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
