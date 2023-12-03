@@ -32,6 +32,18 @@ internal static class ServerMappings
             PrimaryDiskSize = json.GetProperty("primary_disk_size").GetInt64(),
             PlacementGroup = json.GetProperty("placement_group").ToPlacementGroup(),
             Datacenter = json.GetProperty("datacenter").ToDatacenter(),
+            Protection = json.GetProperty("protection").ToServerProtection(),
+        };
+
+        return data;
+    }
+    
+    internal static ServerProtection ToServerProtection(this JsonElement json)
+    {
+        ServerProtection data = new()
+        {
+            Delete = json.GetProperty("delete").GetBoolean()!,
+            Rebuild = json.GetProperty("rebuild").GetBoolean()!,
         };
 
         return data;

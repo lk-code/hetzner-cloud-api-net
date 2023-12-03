@@ -86,6 +86,18 @@ else
                     <li class="list-group-item">Ingoing Traffic: @Server.IngoingTraffic.AsMegaBytes()</li>
                     <li class="list-group-item">Outgoing Traffic: @Server.OutgoingTraffic.AsMegaBytes()</li>
                     <li class="list-group-item">Locked: @Server.Locked.ToString("Yes", "No")</li>
+                    
+                    @if (Server.Protection is null)
+                    {
+                        <div class="card-body">
+                            no datacenter given
+                        </div>
+                    }
+                    else
+                    {
+                        <li class="list-group-item">Protection Delete: @Server.Protection.Delete.ToString("Yes", "No")</li>
+                        <li class="list-group-item">Protection Rebuild: @Server.Protection.Rebuild.ToString("Yes", "No")</li>
+                    }
                 </ul>
 
                 <div class="card-footer text-body-secondary">

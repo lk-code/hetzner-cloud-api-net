@@ -57,4 +57,8 @@ public class Server(long id)
     /// Datacenter this Resource is located at
     /// </summary>
     public Datacenter? Datacenter { get; internal set; }
+    /// <summary>
+    /// Protection configuration for the Server
+    /// </summary>
+    public ServerProtection? Protection { get; internal set; }
 }
