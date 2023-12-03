@@ -13,7 +13,6 @@ jobs:
 
     env:
       VERSION: 3.0.${{ github.run_number }}-beta
-      PROJECT_FILE: "**/Hetzner.Cloud.csproj"
       NUGET_FILE: "**/*hetznercloudapi*.nupkg"
 
     steps:
