@@ -48,6 +48,8 @@ see the demo projects here https://github.com/lk-code/hetzner-cloud-api-net-demo
 
 ## installation
 
+The v3 client is currently only available as a **prerelease**. Accordingly, the **"Include Prerelease"** flag must be set in the NuGet search.
+
 ```
 dotnet add package hetznercloudapi
 ```

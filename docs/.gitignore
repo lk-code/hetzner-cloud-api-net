@@ -1,0 +1,8 @@
+# macOS
+.DS_Store
+
+# Jetbrains Settings
+.idea/
+
+# htmlc output
+dist/
