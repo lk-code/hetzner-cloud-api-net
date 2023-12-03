@@ -73,7 +73,51 @@ services.AddHetznerCloud("{YOUR_API_TOKEN}");
 The PagedResponse class is returned by all methods that call a Hetzner Cloud API route that uses pagination. PagedResponse contains the results of the query and the pagination values.
 
 
-#### 4.2. Execute own HTTP-Requests
+```
+public class PagedResponse<T> {
+    /// <summary>
+    /// Contains the response of the Hetzner Cloud as JSON.
+    /// </summary>
+    public readonly JsonDocument JsonDocument { get; }
+    /// <summary>
+    /// Specifies which page the current request refers to.
+    /// </summary>
+    public readonly long CurrentPage { get; }
+    /// <summary>
+    /// Specifies how many items are output per page.
+    /// </summary>
+    public readonly long ItemsPerPage { get; }
+    /// <summary>
+    /// Specifies how many items there are in total.
+    /// </summary>
+    public readonly long TotalItems { get; }
+    /// <summary>
+    /// Contains all items of the current request.
+    /// </summary>
+    public IReadOnlyCollection<T> Items { get; set; }
+}
+```
+
+
+#### 4.2. SingledResponse
+
+The SingledResponse class is returned by all methods that call a Hetzner Cloud API route that return a single object. SingledResponse contains the result of the query and the original JSON. Alternatively, each method offers a version that returns the item directly.
+
+
+```
+public class SingledResponse<T> {
+    /// <summary>
+    /// Contains the response of the Hetzner Cloud as JSON.
+    /// </summary>
+    public readonly JsonDocument JsonDocument { get; }
+    /// <summary>
+    /// Contains the item of the current request.
+    /// </summary>
+    public T Item { get; set; }
+}
+```
+
+#### 4.3. Execute own HTTP-Requests
 
 You can retrieve the HTTP client via dependency injection and use it for HTTP requests. The HTTP client is configured and uses the API token.
 
