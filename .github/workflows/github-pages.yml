@@ -36,11 +36,6 @@ jobs:
         shell: pwsh
         run: dotnet tool install --global htmlc
         
-      - name: Build with htmlc
-        shell: pwsh
-        run: |
-          cd /home/runner/work/htmlc/htmlc/docs
-        
       - name: htmlc compile
         run: htmlc compile docs
           
