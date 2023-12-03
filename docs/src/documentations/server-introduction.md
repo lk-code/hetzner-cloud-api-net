@@ -1,0 +1,1 @@
+The service provides all methods for accessing the server methods.

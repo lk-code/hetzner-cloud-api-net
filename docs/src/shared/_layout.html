@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
 
     <!-- Theme CSS -->
-    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+    <link id="theme-style" rel="stylesheet" href="@StylePath">
 
 </head>
 
@@ -42,11 +42,31 @@
 
             <div class="container">
 
-                @File=_teaser.html
+                <div class="row">
 
-                @Body
+                    <div class="col-sm-12">
 
-                @File=_footer.html
+                        @File=_teaser.html
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            @Body
+
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-sm-12">
+
+                        @File=_footer.html
+
+                    </div>
+
+                </div>
 
             </div>
 

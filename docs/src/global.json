@@ -1,5 +1,9 @@
 {
     "Application": {
         "Name": "Hetzner Cloud API"
+    },
+    "Project": {
+        "GitHubLink": "https://github.com/lk-code/hetzner-cloud-api-net",
+        "NuGetLink": "https://www.nuget.org/packages/hetznercloudapi"
     }
 }

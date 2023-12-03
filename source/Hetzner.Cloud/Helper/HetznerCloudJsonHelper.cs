@@ -50,7 +50,7 @@ public static class HetznerCloudJsonHelper
             paginatedContent.JsonDocument,
             paginatedContent.CurrentPage,
             paginatedContent.ItemsPerPage,
-            paginatedContent.TotalEntries,
+            paginatedContent.TotalItems,
             items
         );
     }
