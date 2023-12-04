@@ -23,15 +23,15 @@ public class Server(long id)
     /// <summary>
     /// Inbound Traffic for the current billing period in bytes
     /// </summary>
-    public long IncludedTraffic { get; internal set; }
+    public long? IncludedTraffic { get; internal set; }
     /// <summary>
     /// Inbound Traffic for the current billing period in bytes
     /// </summary>
-    public long IngoingTraffic { get; internal set; }
+    public long? IngoingTraffic { get; internal set; }
     /// <summary>
     /// Outbound Traffic for the current billing period in bytes
     /// </summary>
-    public long OutgoingTraffic { get; internal set; }
+    public long? OutgoingTraffic { get; internal set; }
     /// <summary>
     /// True if Server has been locked and is not available to user
     /// </summary>
@@ -61,4 +61,8 @@ public class Server(long id)
     /// Protection configuration for the Server
     /// </summary>
     public ServerProtection? Protection { get; internal set; }
+    /// <summary>
+    /// Image the server is based on.
+    /// </summary>
+    public Image? Image { get; internal set; }
 }

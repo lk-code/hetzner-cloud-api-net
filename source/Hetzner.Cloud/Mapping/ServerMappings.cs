@@ -7,25 +7,21 @@ namespace Hetzner.Cloud.Mapping;
 
 internal static class ServerMappings
 {
-    internal static Server ToServer(this JsonElement json)
+    internal static Server? ToServer(this JsonElement json)
     {
-        string? serverStatusValue = json.GetProperty("status").GetString();
-        ServerStatus serverStatus = ServerStatus.Unknown;
-        if (!string.IsNullOrEmpty(serverStatusValue))
+        if (json.ValueKind == JsonValueKind.Null)
         {
-            string status = serverStatusValue;
-            status = status.First().ToString().ToUpper() + status.Substring(1);
-            Enum.TryParse(status, out serverStatus);
+            return null;
         }
 
         Server data = new(json.GetProperty("id").GetInt64())
         {
             Name = json.GetProperty("name").GetString()!,
-            Status = serverStatus,
-            Created = DateTime.Parse(json.GetProperty("created").GetString()!),
-            IncludedTraffic = json.GetProperty("included_traffic").GetInt64(),
-            IngoingTraffic = json.GetProperty("ingoing_traffic").GetInt64(),
-            OutgoingTraffic = json.GetProperty("outgoing_traffic").GetInt64(),
+            Status = json.GetProperty("status").ToServerStatus(),
+            Created = json.GetProperty("created").GetDateTime(),
+            IncludedTraffic = json.GetNullableProperty("included_traffic").GetInt64(),
+            IngoingTraffic = json.GetNullableProperty("ingoing_traffic").GetInt64(),
+            OutgoingTraffic = json.GetNullableProperty("outgoing_traffic").GetInt64(),
             Locked = json.GetProperty("locked").GetBoolean(),
             Labels = json.GetProperty("labels").ToDictionary(),
             BackupWindow = json.GetProperty("backup_window").GetString(),
@@ -33,13 +29,33 @@ internal static class ServerMappings
             PlacementGroup = json.GetProperty("placement_group").ToPlacementGroup(),
             Datacenter = json.GetProperty("datacenter").ToDatacenter(),
             Protection = json.GetProperty("protection").ToServerProtection(),
+            Image = json.GetProperty("image").ToImage(),
         };
 
         return data;
     }
     
-    internal static ServerProtection ToServerProtection(this JsonElement json)
+    internal static ServerStatus ToServerStatus(this JsonElement json)
     {
+        string? value = json.GetString();
+        ServerStatus enumValue = ServerStatus.Unknown;
+        if (!string.IsNullOrEmpty(value))
+        {
+            string parsedEnumValue = value;
+            parsedEnumValue = parsedEnumValue.First().ToString().ToUpper() + parsedEnumValue.Substring(1);
+            Enum.TryParse(parsedEnumValue, out enumValue);
+        }
+
+        return enumValue;
+    }
+    
+    internal static ServerProtection? ToServerProtection(this JsonElement json)
+    {
+        if (json.ValueKind == JsonValueKind.Null)
+        {
+            return null;
+        }
+
         ServerProtection data = new()
         {
             Delete = json.GetProperty("delete").GetBoolean()!,

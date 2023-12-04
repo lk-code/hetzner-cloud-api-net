@@ -1,4 +1,4 @@
-﻿namespace Hetzner.Cloud.Enums;
+﻿namespace Hetzner.Cloud.Models;
 
 public enum ServerStatus
 {

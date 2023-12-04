@@ -11,6 +11,7 @@
 
 @code {
     private List<Server> Servers { get; set; } = new();
+    private string Error = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -20,6 +21,7 @@
     private async Task LoadServersAsync()
     {
         this.Servers.Clear();
+        this.Error = string.Empty;
 
         try
         {
@@ -32,15 +34,31 @@
         }
         catch (Exception ex)
         {
+            this.Error = ex.Message;
         }
     }
 
 }
 
+@if (!string.IsNullOrEmpty(this.Error))
+{
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="alert alert-danger" role="alert">
+                @Error
+            </div>
+
+        </div>
+
+    </div>
+}
+
 <div class="row">
 
     <div class="col-md-12">
-        
+
         <h1>Servers</h1>
 
         <table class="table">

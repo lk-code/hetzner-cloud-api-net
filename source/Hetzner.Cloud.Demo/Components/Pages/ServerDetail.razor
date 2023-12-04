@@ -16,6 +16,7 @@
     public string Id { get; set; }
 
     private Server? Server { get; set; }
+    private string Error = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -27,15 +28,32 @@
         try
         {
             this.Server = null;
+            this.Error = string.Empty;
 
             SingledResponse<Server> serverDetails = await ServerService.GetByIdAsync(Convert.ToInt64(Id));
             this.Server = serverDetails.Item;
         }
         catch (Exception ex)
         {
+            this.Error = ex.Message;
         }
     }
 
+}
+
+@if (!string.IsNullOrEmpty(this.Error))
+{
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="alert alert-danger" role="alert">
+                @Error
+            </div>
+
+        </div>
+
+    </div>
 }
 
 <div class="row">
@@ -53,7 +71,7 @@
 else
 {
     <div class="row mb-4">
-        
+
         <div class="col-md-6">
 
             <div class="card">
@@ -80,17 +98,18 @@ else
 
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">Id: @Server.Id</li>
+                    <li class="list-group-item">Status: @Server.Status.ToString()</li>
                     <li class="list-group-item">Created: @Server.Created.ToShortDateString() @Server.Created.ToShortTimeString()</li>
                     <li class="list-group-item">Backup Window: @Server.BackupWindow</li>
-                    <li class="list-group-item">Included Traffic: @Server.IncludedTraffic.AsGigaBytes()</li>
-                    <li class="list-group-item">Ingoing Traffic: @Server.IngoingTraffic.AsMegaBytes()</li>
-                    <li class="list-group-item">Outgoing Traffic: @Server.OutgoingTraffic.AsMegaBytes()</li>
                     <li class="list-group-item">Locked: @Server.Locked.ToString("Yes", "No")</li>
-                    
+                    <li class="list-group-item">Included Traffic: @Server.IncludedTraffic.Ensure(0).AsGigaBytes()</li>
+                    <li class="list-group-item">Ingoing Traffic: @Server.IngoingTraffic.Ensure(0).AsMegaBytes()</li>
+                    <li class="list-group-item">Outgoing Traffic: @Server.OutgoingTraffic.Ensure(0).AsMegaBytes()</li>
+
                     @if (Server.Protection is null)
                     {
                         <div class="card-body">
-                            no datacenter given
+                            no protection given
                         </div>
                     }
                     else
@@ -133,7 +152,7 @@ else
                         <li class="list-group-item">Id: @Server.Datacenter.Id</li>
                         <li class="list-group-item">Name: @Server.Datacenter.Name</li>
                         <li class="list-group-item">Description: @Server.Datacenter.Description</li>
-                        
+
                         @if (Server.Datacenter.Location is null)
                         {
                             <li class="list-group-item">no location for datacenter given</li>
@@ -143,7 +162,7 @@ else
                             <li class="list-group-item">Location City: @Server.Datacenter.Location!.City</li>
                             <li class="list-group-item">Location Country: @Server.Datacenter.Location!.Country</li>
                         }
-                        
+
                         @if (Server.Datacenter.ServerTypes is null)
                         {
                             <li class="list-group-item">no server types for datacenter given</li>
@@ -155,6 +174,71 @@ else
                             <li class="list-group-item">ServerTypes Supported: @string.Join(", ", Server.Datacenter.ServerTypes!.Supported)</li>
                         }
                     </ul>
+                }
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card">
+
+                <h5 class="card-header">Image</h5>
+
+                @if (Server.Image is null)
+                {
+                    <div class="card-body">
+                        no image given
+                    </div>
+                }
+                else
+                {
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Id: @Server.Image.Id</li>
+                        <li class="list-group-item">Name: @Server.Image.Name.Ensure()</li>
+                        <li class="list-group-item">Architecture: @Server.Image.Architecture</li>
+                        <li class="list-group-item">Created: @Server.Image.Created.ToShortDateString() @Server.Image.Created.ToShortTimeString()</li>
+                        <li class="list-group-item">DiskSize: @Server.Image.DiskSize GB</li>
+                        <li class="list-group-item">ImageSize: @Server.Image.ImageSize.Ensure(0) GB</li>
+                        <li class="list-group-item">OsFlavor: @Server.Image.OsFlavor.ToString()</li>
+                        <li class="list-group-item">OsVersion: @Server.Image.OsVersion.Ensure()</li>
+                        <li class="list-group-item">RapidDeploy: @Server.Image.RapidDeploy.ToString("Yes", "No")</li>
+                        <li class="list-group-item">Status: @Server.Image.Status.ToString()</li>
+                        <li class="list-group-item">Type: @Server.Image.Type.ToString()</li>
+
+                        @if (Server.Image.CreatedFrom is null)
+                        {
+                            <li class="list-group-item">no created from for image given</li>
+                        }
+                        else
+                        {
+                            <li class="list-group-item">CreatedFrom Id: @string.Join(", ", Server.Image.CreatedFrom!.Id)</li>
+                            <li class="list-group-item">CreatedFrom Name: @string.Join(", ", Server.Image.CreatedFrom!.Name)</li>
+                        }
+
+                        @if (Server.Image.Protection is null)
+                        {
+                            <div class="card-body">
+                                no protection for image given
+                            </div>
+                        }
+                        else
+                        {
+                            <li class="list-group-item">Protection Delete: @Server.Image.Protection.Delete.ToString("Yes", "No")</li>
+                        }
+                    </ul>
+
+                    <div class="card-footer text-body-secondary">
+                        @foreach (var label in Server.Image.Labels)
+                        {
+                            <span class="badge bg-secondary me-2">@label.Key / @label.Value</span>
+                        }
+                        @if (Server.Image.Labels.Count == 0)
+                        {
+                            <span>no labels for image given</span>
+                        }
+                    </div>
                 }
 
             </div>
