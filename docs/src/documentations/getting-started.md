@@ -101,7 +101,7 @@ public class PagedResponse<T> {
 
 #### 4.2. SingledResponse
 
-The SingledResponse class is returned by all methods that call a Hetzner Cloud API route that return a single object. SingledResponse contains the result of the query and the original JSON. Alternatively, each method offers a version that returns the item directly.
+The SingledResponse class is returned by all methods that call a Hetzner Cloud API route that return a single object. SingledResponse contains the result of the query and the original JSON.
 
 
 ```
