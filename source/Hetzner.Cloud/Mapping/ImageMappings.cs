@@ -23,7 +23,7 @@ internal static class ImageMappings
             Deprecated = json.GetNullableProperty("deprecated").GetDateTime(),
             Description = json.GetProperty("description").GetString()!,
             DiskSize = json.GetProperty("disk_size").GetDouble(),
-            ImageSize = json.GetNullableProperty("disk_size").GetDouble(),
+            ImageSize = json.GetNullableProperty("image_size").GetDouble(),
             Labels = json.GetProperty("labels").ToDictionary(),
             Name = json.GetNullableProperty("name").GetString()!,
             OsFlavor = json.GetProperty("os_flavor").ToOsFlavor(),
