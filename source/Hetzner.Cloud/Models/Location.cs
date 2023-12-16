@@ -5,7 +5,7 @@ public class Location(long id)
     /// <summary>
     /// ID of the Location
     /// </summary>
-    public long Id { get; private set; } = id;
+    public long Id { get; } = id;
     /// <summary>
     /// City the Location is closest to
     /// </summary>

@@ -5,7 +5,7 @@ public class Image(long id)
     /// <summary>
     /// ID of the Resource
     /// </summary>
-    public long Id { get; private set; } = id;
+    public long Id { get; } = id;
     /// <summary>
     /// Type of cpu architecture this image is compatible with.
     /// </summary>

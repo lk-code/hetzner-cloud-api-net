@@ -7,7 +7,7 @@ public class Server(long id)
     /// <summary>
     /// ID of the Resource
     /// </summary>
-    public long Id { get; private set; } = id;
+    public long Id { get; } = id;
     /// <summary>
     /// Name of the Server (must be unique per Project and a valid hostname as per RFC 1123)
     /// </summary>
