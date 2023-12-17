@@ -26,57 +26,15 @@ internal static class ImageMappings
             ImageSize = json.GetNullableProperty("image_size").GetDouble(),
             Labels = json.GetProperty("labels").ToDictionary(),
             Name = json.GetNullableProperty("name").GetString()!,
-            OsFlavor = json.GetProperty("os_flavor").ToOsFlavor(),
+            OsFlavor = json.GetProperty("os_flavor").ToEnum<OsFlavor>(),
             OsVersion = json.GetNullableProperty("os_version").GetString()!,
             Protection = json.GetProperty("protection").ToImageProtection(),
             RapidDeploy = json.GetProperty("rapid_deploy").GetBoolean()!,
-            Status = json.GetProperty("status").ToImageStatus(),
-            Type = json.GetProperty("type").ToImageType(),
+            Status = json.GetProperty("status").ToEnum<ImageStatus>(),
+            Type = json.GetProperty("type").ToEnum<ImageType>(),
         };
 
         return data;
-    }
-    
-    internal static ImageType ToImageType(this JsonElement json)
-    {
-        string? value = json.GetString();
-        ImageType enumValue = ImageType.System;
-        if (!string.IsNullOrEmpty(value))
-        {
-            string parsedEnumValue = value;
-            parsedEnumValue = parsedEnumValue.First().ToString().ToUpper() + parsedEnumValue.Substring(1);
-            Enum.TryParse(parsedEnumValue, out enumValue);
-        }
-
-        return enumValue;
-    }
-    
-    internal static ImageStatus ToImageStatus(this JsonElement json)
-    {
-        string? value = json.GetString();
-        ImageStatus enumValue = ImageStatus.Unavailable;
-        if (!string.IsNullOrEmpty(value))
-        {
-            string parsedEnumValue = value;
-            parsedEnumValue = parsedEnumValue.First().ToString().ToUpper() + parsedEnumValue.Substring(1);
-            Enum.TryParse(parsedEnumValue, out enumValue);
-        }
-
-        return enumValue;
-    }
-    
-    internal static OsFlavor ToOsFlavor(this JsonElement json)
-    {
-        string? value = json.GetString();
-        OsFlavor enumValue = OsFlavor.Unknown;
-        if (!string.IsNullOrEmpty(value))
-        {
-            string parsedEnumValue = value;
-            parsedEnumValue = parsedEnumValue.First().ToString().ToUpper() + parsedEnumValue.Substring(1);
-            Enum.TryParse(parsedEnumValue, out enumValue);
-        }
-
-        return enumValue;
     }
 
     internal static ImageCreatedFrom ToImageCreatedFrom(this JsonElement json)

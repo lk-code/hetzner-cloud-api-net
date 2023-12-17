@@ -65,4 +65,8 @@ public class Server(long id)
     /// Image the server is based on.
     /// </summary>
     public Image? Image { get; internal set; }
+    /// <summary>
+    /// ISO Image that is attached to this Server. Null if no ISO is attached.
+    /// </summary>
+    public IsoImage? Iso { get; internal set; }
 }

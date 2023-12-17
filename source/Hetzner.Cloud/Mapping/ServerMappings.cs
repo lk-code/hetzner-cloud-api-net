@@ -11,7 +11,7 @@ internal static class ServerMappings
         Server data = new(json.GetProperty("id").GetInt64())
         {
             Name = json.GetProperty("name").GetString()!,
-            Status = json.GetProperty("status").ToServerStatus(),
+            Status = json.GetProperty("status").ToEnum<ServerStatus>(),
             Created = json.GetProperty("created").GetDateTime(),
             IncludedTraffic = json.GetNullableProperty("included_traffic").GetInt64(),
             IngoingTraffic = json.GetNullableProperty("ingoing_traffic").GetInt64(),
@@ -24,23 +24,10 @@ internal static class ServerMappings
             Datacenter = json.GetProperty("datacenter").ToDatacenter(),
             Protection = json.GetProperty("protection").ToServerProtection(),
             Image = json.GetProperty("image").ToImage(),
+            Iso = json.GetProperty("iso").ToIsoImage(),
         };
 
         return data;
-    }
-    
-    internal static ServerStatus ToServerStatus(this JsonElement json)
-    {
-        string? value = json.GetString();
-        ServerStatus enumValue = ServerStatus.Unknown;
-        if (!string.IsNullOrEmpty(value))
-        {
-            string parsedEnumValue = value;
-            parsedEnumValue = parsedEnumValue.First().ToString().ToUpper() + parsedEnumValue.Substring(1);
-            Enum.TryParse(parsedEnumValue, out enumValue);
-        }
-
-        return enumValue;
     }
     
     internal static ServerProtection ToServerProtection(this JsonElement json)

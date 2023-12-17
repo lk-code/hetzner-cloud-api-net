@@ -294,6 +294,13 @@ public class ServerServiceTests
         result.Items.First().Image!.Deprecated.Should().Be(DateTime.Parse("2018-02-28T00:00:00+00:00"));
         result.Items.First().Image!.Labels.Should().NotBeNull();
         result.Items.First().Image!.Labels.Should().BeEmpty();
+        result.Items.First().Image!.Architecture.Should().Be("x86");
+        result.Items.First().Iso.Should().NotBeNull();
+        result.Items.First().Iso!.Id.Should().Be(42);
+        result.Items.First().Iso!.Architecture.Should().Be(IsoImageArchitecture.x86);
+        result.Items.First().Iso!.Deprecated.Should().Be(DateTime.Parse("2018-02-28T00:00:00+00:00"));
+        result.Items.First().Iso!.Description.Should().Be("FreeBSD 11.0 x64");
+        result.Items.First().Iso!.Type.Should().Be(IsoImageType.Public);
     }
 
     [TestMethod]
