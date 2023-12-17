@@ -73,4 +73,8 @@ public class Server(long id)
     /// True if rescue mode is enabled. Server will then boot into rescue system on next reboot
     /// </summary>
     public bool RescueEnabled { get; internal set; }
+    /// <summary>
+    /// Load Balancer IDs assigned to the server.
+    /// </summary>
+    public long[] LoadBalancers { get; internal set; } = Array.Empty<long>();
 }

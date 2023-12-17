@@ -304,7 +304,8 @@ public class ServerServiceTests
         result.Items.First().Labels.Should().NotBeNull();
         result.Items.First().Labels.Should().BeEmpty();
         
-        // result.Items.First().LoadBalancers;
+        result.Items.First().LoadBalancers.Should().NotBeNull();
+        result.Items.First().LoadBalancers.Should().BeEmpty();
         
         result.Items.First().PlacementGroup.Should().NotBeNull();
         result.Items.First().PlacementGroup!.Id.Should().Be(42);
@@ -618,7 +619,8 @@ public class ServerServiceTests
         result.Item!.Labels.Should().NotBeNull();
         result.Item!.Labels.Should().BeEmpty();
         
-        // result.Item!.LoadBalancers;
+        result.Item!.LoadBalancers.Should().NotBeNull();
+        result.Item!.LoadBalancers.Should().BeEmpty();
         
         result.Item!.PlacementGroup.Should().NotBeNull();
         result.Item!.PlacementGroup!.Id.Should().Be(42);
