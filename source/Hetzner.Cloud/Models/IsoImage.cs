@@ -18,7 +18,7 @@ public class IsoImage(long id)
     /// <summary>
     /// Describes if, when & how the resources was deprecated. If this field is set to null the resource is not deprecated. If it has a value, it is considered deprecated.
     /// </summary>
-    public object? Deprecation { get; internal set; }
+    public IsoImageDeprecation? Deprecation { get; internal set; }
     /// <summary>
     /// Description of the ISO
     /// </summary>

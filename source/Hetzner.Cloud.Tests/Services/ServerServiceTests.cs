@@ -234,9 +234,11 @@ public class ServerServiceTests
         result.Items.First().Labels.Should().BeEmpty();
         result.Items.First().BackupWindow.Should().Be("22-02");
         result.Items.First().PrimaryDiskSize.Should().Be(50);
+        
         result.Items.First().Protection.Should().NotBeNull();
         result.Items.First().Protection!.Delete.Should().BeFalse();
         result.Items.First().Protection!.Rebuild.Should().BeFalse();
+        
         result.Items.First().PlacementGroup.Should().NotBeNull();
         result.Items.First().PlacementGroup!.Id.Should().Be(42);
         result.Items.First().PlacementGroup!.Name.Should().Be("my-resource");
@@ -244,6 +246,7 @@ public class ServerServiceTests
         result.Items.First().PlacementGroup!.ServerIds.Should().NotBeNull();
         result.Items.First().PlacementGroup!.ServerIds.Should().HaveCount(1);
         result.Items.First().PlacementGroup!.ServerIds.Should().Contain(42);
+        
         result.Items.First().Datacenter.Should().NotBeNull();
         result.Items.First().Datacenter!.Id.Should().Be(42);
         result.Items.First().Datacenter!.Name.Should().Be("fsn1-dc8");
@@ -273,6 +276,7 @@ public class ServerServiceTests
         result.Items.First().Datacenter!.ServerTypes!.Supported.Should().Contain(1);
         result.Items.First().Datacenter!.ServerTypes!.Supported.Should().Contain(2);
         result.Items.First().Datacenter!.ServerTypes!.Supported.Should().Contain(3);
+        
         result.Items.First().Image.Should().NotBeNull();
         result.Items.First().Image!.Id.Should().Be(42);
         result.Items.First().Image!.Name.Should().Be("ubuntu-20.04");
@@ -295,11 +299,16 @@ public class ServerServiceTests
         result.Items.First().Image!.Labels.Should().NotBeNull();
         result.Items.First().Image!.Labels.Should().BeEmpty();
         result.Items.First().Image!.Architecture.Should().Be("x86");
+        
         result.Items.First().Iso.Should().NotBeNull();
-        result.Items.First().Iso!.Id.Should().Be(42);
         result.Items.First().Iso!.Architecture.Should().Be(IsoImageArchitecture.x86);
         result.Items.First().Iso!.Deprecated.Should().Be(DateTime.Parse("2018-02-28T00:00:00+00:00"));
+        result.Items.First().Iso!.Deprecation.Should().NotBeNull();
+        result.Items.First().Iso!.Deprecation!.Announced.Should().Be(DateTime.Parse("2023-06-01T00:00:00+00:00"));
+        result.Items.First().Iso!.Deprecation!.UnavailableAfter.Should().Be(DateTime.Parse("2023-09-01T00:00:00+00:00"));
         result.Items.First().Iso!.Description.Should().Be("FreeBSD 11.0 x64");
+        result.Items.First().Iso!.Id.Should().Be(42);
+        result.Items.First().Iso!.Name.Should().Be("FreeBSD-11.0-RELEASE-amd64-dvd1");
         result.Items.First().Iso!.Type.Should().Be(IsoImageType.Public);
     }
 
