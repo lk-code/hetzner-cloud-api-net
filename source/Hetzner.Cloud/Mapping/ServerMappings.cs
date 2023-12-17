@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using Hetzner.Cloud.Enums;
 using Hetzner.Cloud.Helper;
 using Hetzner.Cloud.Models;
 
@@ -7,13 +6,8 @@ namespace Hetzner.Cloud.Mapping;
 
 internal static class ServerMappings
 {
-    internal static Server? ToServer(this JsonElement json)
+    internal static Server ToServer(this JsonElement json)
     {
-        if (json.ValueKind == JsonValueKind.Null)
-        {
-            return null;
-        }
-
         Server data = new(json.GetProperty("id").GetInt64())
         {
             Name = json.GetProperty("name").GetString()!,
@@ -49,17 +43,12 @@ internal static class ServerMappings
         return enumValue;
     }
     
-    internal static ServerProtection? ToServerProtection(this JsonElement json)
+    internal static ServerProtection ToServerProtection(this JsonElement json)
     {
-        if (json.ValueKind == JsonValueKind.Null)
-        {
-            return null;
-        }
-
         ServerProtection data = new()
         {
-            Delete = json.GetProperty("delete").GetBoolean()!,
-            Rebuild = json.GetProperty("rebuild").GetBoolean()!,
+            Delete = json.GetProperty("delete").GetBoolean(),
+            Rebuild = json.GetProperty("rebuild").GetBoolean(),
         };
 
         return data;

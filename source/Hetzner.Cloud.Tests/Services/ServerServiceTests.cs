@@ -297,6 +297,41 @@ public class ServerServiceTests
     }
 
     [TestMethod]
+    public async Task GetAllAsync_WithEmpty_Returns()
+    {
+        // Arrange
+        var jsonContent = """
+                          {
+                            "meta": {
+                              "pagination": {
+                                "last_page": 4,
+                                "next_page": 4,
+                                "page": 3,
+                                "per_page": 25,
+                                "previous_page": 2,
+                                "total_entries": 0
+                              }
+                            },
+                            "servers": [
+                            ]
+                          }
+                          """;
+        _mockHttp.When("https://localhost/v1/servers?page=1&per_page=25")
+            .Respond("application/json", jsonContent);
+
+        // Act
+        var result = await _serverService.GetAllAsync();
+
+        // Assert
+        result.Should().NotBeNull();
+        result.CurrentPage.Should().Be(3);
+        result.ItemsPerPage.Should().Be(25);
+        result.TotalItems.Should().Be(0);
+        result.Items.Should().NotBeNull();
+        result.Items.Should().BeEmpty();
+    }
+
+    [TestMethod]
     public async Task GetByIdAsync_WithHetznerSample_Returns()
     {
         // Arrange
