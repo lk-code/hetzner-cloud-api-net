@@ -12,6 +12,7 @@
 @code {
     private List<Server> Servers { get; set; } = new();
     private string Error = string.Empty;
+    private string ErrorDetails = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -22,6 +23,7 @@
     {
         this.Servers.Clear();
         this.Error = string.Empty;
+        this.ErrorDetails = string.Empty;
 
         try
         {
@@ -35,6 +37,7 @@
         catch (Exception ex)
         {
             this.Error = ex.Message;
+            this.ErrorDetails = ex.StackTrace;
         }
     }
 
@@ -48,6 +51,9 @@
 
             <div class="alert alert-danger" role="alert">
                 @Error
+                <br />
+                <br />
+                <code>@ErrorDetails</code>
             </div>
 
         </div>
