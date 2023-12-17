@@ -329,7 +329,25 @@ public class ServerServiceTests
         
         // result.Items.First().PublicNet;
         
-        // result.Items.First().Type;
+        result.Items.First().Type.Should().NotBeNull();
+        result.Items.First().Type!.Id.Should().Be(1);
+        result.Items.First().Type!.Cores.Should().Be(1);
+        result.Items.First().Type!.CpuType.Should().Be(ServerCpuTypes.Shared);
+        result.Items.First().Type!.Deprecated.Should().BeFalse();
+        result.Items.First().Type!.Description.Should().Be("CX11");
+        result.Items.First().Type!.Disk.Should().Be(25);
+        result.Items.First().Type!.Memory.Should().Be(1);
+        result.Items.First().Type!.Name.Should().Be("cx11");
+        result.Items.First().Type!.StorageType.Should().Be(ServerStorageTypes.Local);
+        result.Items.First().Type!.Prices.Should().NotBeNull();
+        result.Items.First().Type!.Prices!.Should().HaveCount(1);
+        result.Items.First().Type!.Prices!.First().Location.Should().Be("fsn1");
+        result.Items.First().Type!.Prices!.First().Hourly.Should().NotBeNull();
+        result.Items.First().Type!.Prices!.First().Hourly!.Gross.Should().Be("1.1900000000000000");
+        result.Items.First().Type!.Prices!.First().Hourly!.Net.Should().Be("1.0000000000");
+        result.Items.First().Type!.Prices!.First().Monthly.Should().NotBeNull();
+        result.Items.First().Type!.Prices!.First().Monthly!.Gross.Should().Be("1.1900000000000000");
+        result.Items.First().Type!.Prices!.First().Monthly!.Net.Should().Be("1.0000000000");
         
         result.Items.First().Volumes.Should().NotBeNull();
         result.Items.First().Volumes.Should().BeEmpty();
@@ -651,7 +669,25 @@ public class ServerServiceTests
         
         // result.Item!.PublicNet;
         
-        // result.Item!.Type;
+        result.Item!.Type.Should().NotBeNull();
+        result.Item!.Type!.Id.Should().Be(1);
+        result.Item!.Type!.Cores.Should().Be(1);
+        result.Item!.Type!.CpuType.Should().Be(ServerCpuTypes.Shared);
+        result.Item!.Type!.Deprecated.Should().BeFalse();
+        result.Item!.Type!.Description.Should().Be("CX11");
+        result.Item!.Type!.Disk.Should().Be(25);
+        result.Item!.Type!.Memory.Should().Be(1);
+        result.Item!.Type!.Name.Should().Be("cx11");
+        result.Item!.Type!.StorageType.Should().Be(ServerStorageTypes.Local);
+        result.Item!.Type!.Prices.Should().NotBeNull();
+        result.Item!.Type!.Prices!.Should().HaveCount(1);
+        result.Item!.Type!.Prices!.First().Location.Should().Be("fsn1");
+        result.Item!.Type!.Prices!.First().Hourly.Should().NotBeNull();
+        result.Item!.Type!.Prices!.First().Hourly!.Gross.Should().Be("1.1900000000000000");
+        result.Item!.Type!.Prices!.First().Hourly!.Net.Should().Be("1.0000000000");
+        result.Item!.Type!.Prices!.First().Monthly.Should().NotBeNull();
+        result.Item!.Type!.Prices!.First().Monthly!.Gross.Should().Be("1.1900000000000000");
+        result.Item!.Type!.Prices!.First().Monthly!.Net.Should().Be("1.0000000000");
         
         result.Item!.Volumes.Should().NotBeNull();
         result.Item!.Volumes.Should().BeEmpty();

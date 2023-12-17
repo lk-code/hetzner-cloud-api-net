@@ -85,4 +85,8 @@ public class Server(long id)
     /// IDs of Volumes assigned to this Server
     /// </summary>
     public long[] Volumes { get; internal set; } = Array.Empty<long>();
+    /// <summary>
+    /// Private networks information
+    /// </summary>
+    public ServerType Type { get; internal set; }
 }

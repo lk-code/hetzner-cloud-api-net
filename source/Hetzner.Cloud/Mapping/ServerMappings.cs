@@ -29,6 +29,25 @@ internal static class ServerMappings
             LoadBalancers = json.GetNullableProperty("load_balancers").ToLongArray()!,
             PrivateNetworks = json.GetProperty("private_net").ToPrivateNetworks(),
             Volumes = json.GetNullableProperty("volumes").ToLongArray()!,
+            Type = json.GetProperty("server_type").ToServerType(),
+        };
+
+        return data;
+    }
+    
+    internal static ServerType ToServerType(this JsonElement json)
+    {
+        ServerType data = new(json.GetProperty("id").GetInt64())
+        {
+            Cores = json.GetProperty("cores").GetInt64(),
+            CpuType = json.GetProperty("cpu_type").ToEnum<ServerCpuTypes>(),
+            Deprecated = json.GetProperty("deprecated").GetBoolean(),
+            Description = json.GetProperty("description").GetString()!,
+            Disk = json.GetProperty("disk").GetDouble(),
+            Memory = json.GetProperty("memory").GetDouble(),
+            Name = json.GetProperty("name").GetString()!,
+            Prices = json.GetProperty("prices").ToPrices(),
+            StorageType = json.GetProperty("storage_type").ToEnum<ServerStorageTypes>(),
         };
 
         return data;
