@@ -79,13 +79,8 @@ internal static class ImageMappings
         return enumValue;
     }
 
-    internal static ImageCreatedFrom? ToImageCreatedFrom(this JsonElement json)
+    internal static ImageCreatedFrom ToImageCreatedFrom(this JsonElement json)
     {
-        if (json.ValueKind == JsonValueKind.Null)
-        {
-            return null;
-        }
-
         ImageCreatedFrom data = new(json.GetProperty("id").GetInt64())
         {
             Name = json.GetProperty("name").GetString()!,
@@ -94,16 +89,11 @@ internal static class ImageMappings
         return data;
     }
     
-    internal static ImageProtection? ToImageProtection(this JsonElement json)
+    internal static ImageProtection ToImageProtection(this JsonElement json)
     {
-        if (json.ValueKind == JsonValueKind.Null)
-        {
-            return null;
-        }
-
         ImageProtection data = new()
         {
-            Delete = json.GetProperty("delete").GetBoolean()!,
+            Delete = json.GetProperty("delete").GetBoolean(),
         };
 
         return data;
