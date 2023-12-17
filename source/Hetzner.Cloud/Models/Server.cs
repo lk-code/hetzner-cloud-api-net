@@ -69,4 +69,8 @@ public class Server(long id)
     /// ISO Image that is attached to this Server. Null if no ISO is attached.
     /// </summary>
     public IsoImage? Iso { get; internal set; }
+    /// <summary>
+    /// True if rescue mode is enabled. Server will then boot into rescue system on next reboot
+    /// </summary>
+    public bool RescueEnabled { get; internal set; }
 }

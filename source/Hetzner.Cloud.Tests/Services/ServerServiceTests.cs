@@ -219,33 +219,23 @@ public class ServerServiceTests
         result.CurrentPage.Should().Be(3);
         result.ItemsPerPage.Should().Be(25);
         result.TotalItems.Should().Be(100);
+        
         result.Items.Should().NotBeNull();
         result.Items.Should().HaveCount(1);
+        
         result.Items.First().Should().NotBeNull();
-        result.Items.First().Id.Should().Be(42);
-        result.Items.First().Name.Should().Be("my-resource");
-        result.Items.First().Status.Should().Be(ServerStatus.Running);
+        result.Items.First().BackupWindow.Should().Be("22-02");
         result.Items.First().Created.Should().Be(DateTime.Parse("2016-01-30T23:55:00+00:00"));
+        result.Items.First().Id.Should().Be(42);
         result.Items.First().IncludedTraffic.Should().Be(654321);
         result.Items.First().IngoingTraffic.Should().Be(123456);
-        result.Items.First().OutgoingTraffic.Should().Be(123456);
         result.Items.First().Locked.Should().BeFalse();
-        result.Items.First().Labels.Should().NotBeNull();
-        result.Items.First().Labels.Should().BeEmpty();
-        result.Items.First().BackupWindow.Should().Be("22-02");
+        result.Items.First().Name.Should().Be("my-resource");
+        result.Items.First().OutgoingTraffic.Should().Be(123456);
         result.Items.First().PrimaryDiskSize.Should().Be(50);
+        result.Items.First().RescueEnabled.Should().BeFalse();
         
-        result.Items.First().Protection.Should().NotBeNull();
-        result.Items.First().Protection!.Delete.Should().BeFalse();
-        result.Items.First().Protection!.Rebuild.Should().BeFalse();
-        
-        result.Items.First().PlacementGroup.Should().NotBeNull();
-        result.Items.First().PlacementGroup!.Id.Should().Be(42);
-        result.Items.First().PlacementGroup!.Name.Should().Be("my-resource");
-        result.Items.First().PlacementGroup!.Type.Should().Be("spread");
-        result.Items.First().PlacementGroup!.ServerIds.Should().NotBeNull();
-        result.Items.First().PlacementGroup!.ServerIds.Should().HaveCount(1);
-        result.Items.First().PlacementGroup!.ServerIds.Should().Contain(42);
+        result.Items.First().Status.Should().Be(ServerStatus.Running);
         
         result.Items.First().Datacenter.Should().NotBeNull();
         result.Items.First().Datacenter!.Id.Should().Be(42);
@@ -310,6 +300,31 @@ public class ServerServiceTests
         result.Items.First().Iso!.Id.Should().Be(42);
         result.Items.First().Iso!.Name.Should().Be("FreeBSD-11.0-RELEASE-amd64-dvd1");
         result.Items.First().Iso!.Type.Should().Be(IsoImageType.Public);
+        
+        result.Items.First().Labels.Should().NotBeNull();
+        result.Items.First().Labels.Should().BeEmpty();
+        
+        // result.Items.First().LoadBalancers;
+        
+        result.Items.First().PlacementGroup.Should().NotBeNull();
+        result.Items.First().PlacementGroup!.Id.Should().Be(42);
+        result.Items.First().PlacementGroup!.Name.Should().Be("my-resource");
+        result.Items.First().PlacementGroup!.Type.Should().Be("spread");
+        result.Items.First().PlacementGroup!.ServerIds.Should().NotBeNull();
+        result.Items.First().PlacementGroup!.ServerIds.Should().HaveCount(1);
+        result.Items.First().PlacementGroup!.ServerIds.Should().Contain(42);
+        
+        // result.Items.First().PrivateNet;
+        
+        result.Items.First().Protection.Should().NotBeNull();
+        result.Items.First().Protection!.Delete.Should().BeFalse();
+        result.Items.First().Protection!.Rebuild.Should().BeFalse();
+        
+        // result.Items.First().PublicNet;
+        
+        // result.Items.First().Type;
+        
+        // result.Items.First().Volumes;
     }
 
     [TestMethod]
@@ -523,5 +538,106 @@ public class ServerServiceTests
         // Assert
         result.Should().NotBeNull();
         result.Item.Should().NotBeNull();
+        
+        result.Item!.BackupWindow.Should().Be("22-02");
+        result.Item!.Created.Should().Be(DateTime.Parse("2016-01-30T23:55:00+00:00"));
+        result.Item!.Id.Should().Be(42);
+        result.Item!.IncludedTraffic.Should().Be(654321);
+        result.Item!.IngoingTraffic.Should().Be(123456);
+        result.Item!.Locked.Should().BeFalse();
+        result.Item!.Name.Should().Be("my-resource");
+        result.Item!.OutgoingTraffic.Should().Be(123456);
+        result.Item!.PrimaryDiskSize.Should().Be(50);
+        result.Item!.RescueEnabled.Should().BeFalse();
+        result.Item!.Status.Should().Be(ServerStatus.Running);
+        
+        result.Item!.Datacenter.Should().NotBeNull();
+        result.Item!.Datacenter!.Id.Should().Be(42);
+        result.Item!.Datacenter!.Name.Should().Be("fsn1-dc8");
+        result.Item!.Datacenter!.Description.Should().Be("Falkenstein DC Park 8");
+        result.Item!.Datacenter!.Location.Should().NotBeNull();
+        result.Item!.Datacenter!.Location!.Id.Should().Be(1);
+        result.Item!.Datacenter!.Location!.Name.Should().Be("fsn1");
+        result.Item!.Datacenter!.Location!.Description.Should().Be("Falkenstein DC Park 1");
+        result.Item!.Datacenter!.Location!.City.Should().Be("Falkenstein");
+        result.Item!.Datacenter!.Location!.Country.Should().Be("DE");
+        result.Item!.Datacenter!.Location!.Latitude.Should().Be(50.47612);
+        result.Item!.Datacenter!.Location!.Longitude.Should().Be(12.370071);
+        result.Item!.Datacenter!.Location!.NetworkZone.Should().Be("eu-central");
+        result.Item!.Datacenter!.ServerTypes.Should().NotBeNull();
+        result.Item!.Datacenter!.ServerTypes!.Available.Should().NotBeNull();
+        result.Item!.Datacenter!.ServerTypes!.Available.Should().HaveCount(3);
+        result.Item!.Datacenter!.ServerTypes!.Available.Should().Contain(1);
+        result.Item!.Datacenter!.ServerTypes!.Available.Should().Contain(2);
+        result.Item!.Datacenter!.ServerTypes!.Available.Should().Contain(3);
+        result.Item!.Datacenter!.ServerTypes!.AvailableForMigration.Should().NotBeNull();
+        result.Item!.Datacenter!.ServerTypes!.AvailableForMigration.Should().HaveCount(3);
+        result.Item!.Datacenter!.ServerTypes!.AvailableForMigration.Should().Contain(1);
+        result.Item!.Datacenter!.ServerTypes!.AvailableForMigration.Should().Contain(2);
+        result.Item!.Datacenter!.ServerTypes!.AvailableForMigration.Should().Contain(3);
+        result.Item!.Datacenter!.ServerTypes!.Supported.Should().NotBeNull();
+        result.Item!.Datacenter!.ServerTypes!.Supported.Should().HaveCount(3);
+        result.Item!.Datacenter!.ServerTypes!.Supported.Should().Contain(1);
+        result.Item!.Datacenter!.ServerTypes!.Supported.Should().Contain(2);
+        result.Item!.Datacenter!.ServerTypes!.Supported.Should().Contain(3);
+        
+        result.Item!.Image.Should().NotBeNull();
+        result.Item!.Image!.Id.Should().Be(42);
+        result.Item!.Image!.Name.Should().Be("ubuntu-20.04");
+        result.Item!.Image!.Description.Should().Be("Ubuntu 20.04 Standard 64 bit");
+        result.Item!.Image!.Type.Should().Be(ImageType.Snapshot);
+        result.Item!.Image!.Status.Should().Be(ImageStatus.Available);
+        result.Item!.Image!.ImageSize.Should().Be(2.3);
+        result.Item!.Image!.DiskSize.Should().Be(10);
+        result.Item!.Image!.Created.Should().Be(DateTime.Parse("2016-01-30T23:55:00+00:00"));
+        result.Item!.Image!.CreatedFrom.Should().NotBeNull();
+        result.Item!.Image!.CreatedFrom!.Id.Should().Be(1);
+        result.Item!.Image!.CreatedFrom!.Name.Should().Be("Server");
+        result.Item!.Image!.BoundTo.Should().BeNull();
+        result.Item!.Image!.OsFlavor.Should().Be(OsFlavor.Ubuntu);
+        result.Item!.Image!.OsVersion.Should().Be("20.04");
+        result.Item!.Image!.RapidDeploy.Should().BeFalse();
+        result.Item!.Image!.Protection.Should().NotBeNull();
+        result.Item!.Image!.Protection!.Delete.Should().BeFalse();
+        result.Item!.Image!.Deprecated.Should().Be(DateTime.Parse("2018-02-28T00:00:00+00:00"));
+        result.Item!.Image!.Labels.Should().NotBeNull();
+        result.Item!.Image!.Labels.Should().BeEmpty();
+        result.Item!.Image!.Architecture.Should().Be("x86");
+        
+        result.Item!.Iso.Should().NotBeNull();
+        result.Item!.Iso!.Architecture.Should().Be(IsoImageArchitecture.x86);
+        result.Item!.Iso!.Deprecated.Should().Be(DateTime.Parse("2018-02-28T00:00:00+00:00"));
+        result.Item!.Iso!.Deprecation.Should().NotBeNull();
+        result.Item!.Iso!.Deprecation!.Announced.Should().Be(DateTime.Parse("2023-06-01T00:00:00+00:00"));
+        result.Item!.Iso!.Deprecation!.UnavailableAfter.Should().Be(DateTime.Parse("2023-09-01T00:00:00+00:00"));
+        result.Item!.Iso!.Description.Should().Be("FreeBSD 11.0 x64");
+        result.Item!.Iso!.Id.Should().Be(42);
+        result.Item!.Iso!.Name.Should().Be("FreeBSD-11.0-RELEASE-amd64-dvd1");
+        result.Item!.Iso!.Type.Should().Be(IsoImageType.Public);
+        
+        result.Item!.Labels.Should().NotBeNull();
+        result.Item!.Labels.Should().BeEmpty();
+        
+        // result.Item!.LoadBalancers;
+        
+        result.Item!.PlacementGroup.Should().NotBeNull();
+        result.Item!.PlacementGroup!.Id.Should().Be(42);
+        result.Item!.PlacementGroup!.Name.Should().Be("my-resource");
+        result.Item!.PlacementGroup!.Type.Should().Be("spread");
+        result.Item!.PlacementGroup!.ServerIds.Should().NotBeNull();
+        result.Item!.PlacementGroup!.ServerIds.Should().HaveCount(1);
+        result.Item!.PlacementGroup!.ServerIds.Should().Contain(42);
+        
+        // result.Item!.PrivateNet;
+        
+        result.Item!.Protection.Should().NotBeNull();
+        result.Item!.Protection!.Delete.Should().BeFalse();
+        result.Item!.Protection!.Rebuild.Should().BeFalse();
+        
+        // result.Item!.PublicNet;
+        
+        // result.Item!.Type;
+        
+        // result.Item!.Volumes;
     }
 }
