@@ -81,4 +81,8 @@ public class Server(long id)
     /// Private networks information
     /// </summary>
     public PrivateNetwork[] PrivateNetworks { get; internal set; } = Array.Empty<PrivateNetwork>();
+    /// <summary>
+    /// IDs of Volumes assigned to this Server
+    /// </summary>
+    public long[] Volumes { get; internal set; } = Array.Empty<long>();
 }

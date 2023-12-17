@@ -331,7 +331,8 @@ public class ServerServiceTests
         
         // result.Items.First().Type;
         
-        // result.Items.First().Volumes;
+        result.Items.First().Volumes.Should().NotBeNull();
+        result.Items.First().Volumes.Should().BeEmpty();
     }
 
     [TestMethod]
@@ -652,6 +653,7 @@ public class ServerServiceTests
         
         // result.Item!.Type;
         
-        // result.Item!.Volumes;
+        result.Item!.Volumes.Should().NotBeNull();
+        result.Item!.Volumes.Should().BeEmpty();
     }
 }

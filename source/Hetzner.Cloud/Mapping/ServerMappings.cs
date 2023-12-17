@@ -28,6 +28,7 @@ internal static class ServerMappings
             RescueEnabled = json.GetProperty("rescue_enabled").GetBoolean(),
             LoadBalancers = json.GetNullableProperty("load_balancers").ToLongArray()!,
             PrivateNetworks = json.GetProperty("private_net").ToPrivateNetworks(),
+            Volumes = json.GetNullableProperty("volumes").ToLongArray()!,
         };
 
         return data;
