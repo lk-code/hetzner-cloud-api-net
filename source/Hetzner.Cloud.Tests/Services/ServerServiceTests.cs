@@ -290,16 +290,16 @@ public class ServerServiceTests
         result.Items.First().Image!.Labels.Should().BeEmpty();
         result.Items.First().Image!.Architecture.Should().Be("x86");
         
-        result.Items.First().Iso.Should().NotBeNull();
-        result.Items.First().Iso!.Architecture.Should().Be(IsoImageArchitecture.x86);
-        result.Items.First().Iso!.Deprecated.Should().Be(DateTime.Parse("2018-02-28T00:00:00+00:00"));
-        result.Items.First().Iso!.Deprecation.Should().NotBeNull();
-        result.Items.First().Iso!.Deprecation!.Announced.Should().Be(DateTime.Parse("2023-06-01T00:00:00+00:00"));
-        result.Items.First().Iso!.Deprecation!.UnavailableAfter.Should().Be(DateTime.Parse("2023-09-01T00:00:00+00:00"));
-        result.Items.First().Iso!.Description.Should().Be("FreeBSD 11.0 x64");
-        result.Items.First().Iso!.Id.Should().Be(42);
-        result.Items.First().Iso!.Name.Should().Be("FreeBSD-11.0-RELEASE-amd64-dvd1");
-        result.Items.First().Iso!.Type.Should().Be(IsoImageType.Public);
+        result.Items.First().IsoImage.Should().NotBeNull();
+        result.Items.First().IsoImage!.Architecture.Should().Be(IsoImageArchitecture.x86);
+        result.Items.First().IsoImage!.Deprecated.Should().Be(DateTime.Parse("2018-02-28T00:00:00+00:00"));
+        result.Items.First().IsoImage!.Deprecation.Should().NotBeNull();
+        result.Items.First().IsoImage!.Deprecation!.Announced.Should().Be(DateTime.Parse("2023-06-01T00:00:00+00:00"));
+        result.Items.First().IsoImage!.Deprecation!.UnavailableAfter.Should().Be(DateTime.Parse("2023-09-01T00:00:00+00:00"));
+        result.Items.First().IsoImage!.Description.Should().Be("FreeBSD 11.0 x64");
+        result.Items.First().IsoImage!.Id.Should().Be(42);
+        result.Items.First().IsoImage!.Name.Should().Be("FreeBSD-11.0-RELEASE-amd64-dvd1");
+        result.Items.First().IsoImage!.Type.Should().Be(IsoImageType.Public);
         
         result.Items.First().Labels.Should().NotBeNull();
         result.Items.First().Labels.Should().BeEmpty();
@@ -704,7 +704,7 @@ public class ServerServiceTests
         result.Items.First().Image!.Labels.Should().BeEmpty();
         result.Items.First().Image!.Architecture.Should().Be("x86");
         
-        result.Items.First().Iso.Should().BeNull();
+        result.Items.First().IsoImage.Should().BeNull();
         
         result.Items.First().Labels.Should().NotBeNull();
         result.Items.First().Labels.Should().HaveCount(3);
@@ -1000,16 +1000,16 @@ public class ServerServiceTests
         result.Item!.Image!.Labels.Should().BeEmpty();
         result.Item!.Image!.Architecture.Should().Be("x86");
         
-        result.Item!.Iso.Should().NotBeNull();
-        result.Item!.Iso!.Architecture.Should().Be(IsoImageArchitecture.x86);
-        result.Item!.Iso!.Deprecated.Should().Be(DateTime.Parse("2018-02-28T00:00:00+00:00"));
-        result.Item!.Iso!.Deprecation.Should().NotBeNull();
-        result.Item!.Iso!.Deprecation!.Announced.Should().Be(DateTime.Parse("2023-06-01T00:00:00+00:00"));
-        result.Item!.Iso!.Deprecation!.UnavailableAfter.Should().Be(DateTime.Parse("2023-09-01T00:00:00+00:00"));
-        result.Item!.Iso!.Description.Should().Be("FreeBSD 11.0 x64");
-        result.Item!.Iso!.Id.Should().Be(42);
-        result.Item!.Iso!.Name.Should().Be("FreeBSD-11.0-RELEASE-amd64-dvd1");
-        result.Item!.Iso!.Type.Should().Be(IsoImageType.Public);
+        result.Item!.IsoImage.Should().NotBeNull();
+        result.Item!.IsoImage!.Architecture.Should().Be(IsoImageArchitecture.x86);
+        result.Item!.IsoImage!.Deprecated.Should().Be(DateTime.Parse("2018-02-28T00:00:00+00:00"));
+        result.Item!.IsoImage!.Deprecation.Should().NotBeNull();
+        result.Item!.IsoImage!.Deprecation!.Announced.Should().Be(DateTime.Parse("2023-06-01T00:00:00+00:00"));
+        result.Item!.IsoImage!.Deprecation!.UnavailableAfter.Should().Be(DateTime.Parse("2023-09-01T00:00:00+00:00"));
+        result.Item!.IsoImage!.Description.Should().Be("FreeBSD 11.0 x64");
+        result.Item!.IsoImage!.Id.Should().Be(42);
+        result.Item!.IsoImage!.Name.Should().Be("FreeBSD-11.0-RELEASE-amd64-dvd1");
+        result.Item!.IsoImage!.Type.Should().Be(IsoImageType.Public);
         
         result.Item!.Labels.Should().NotBeNull();
         result.Item!.Labels.Should().BeEmpty();

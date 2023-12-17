@@ -105,6 +105,7 @@ else
                     <li class="list-group-item">Included Traffic: @Server.IncludedTraffic.Ensure(0).AsGigaBytes()</li>
                     <li class="list-group-item">Ingoing Traffic: @Server.IngoingTraffic.Ensure(0).AsMegaBytes()</li>
                     <li class="list-group-item">Outgoing Traffic: @Server.OutgoingTraffic.Ensure(0).AsMegaBytes()</li>
+                    <li class="list-group-item">Primary Disk Size: @Server.PrimaryDiskSize.AsGigaBytes()</li>
 
                     @if (Server.Protection is null)
                     {
@@ -249,6 +250,68 @@ else
 
             <div class="card">
 
+                <h5 class="card-header">IsoImage</h5>
+
+                @if (Server.IsoImage is null)
+                {
+                    <div class="card-body">
+                        no iso image given
+                    </div>
+                }
+                else
+                {
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Id: @Server.IsoImage.Id</li>
+                        <li class="list-group-item">Name: @Server.IsoImage.Name.Ensure()</li>
+                        <li class="list-group-item">Description: @Server.IsoImage.Description</li>
+
+                        @if (Server.IsoImage.Architecture is null)
+                        {
+                            <li class="list-group-item">no architecture for iso image given</li>
+                        }
+                        else
+                        {
+                            <li class="list-group-item">Architecture: @Server.IsoImage.Architecture.ToString()</li>
+                        }
+
+                        @if (Server.IsoImage.Deprecated is null)
+                        {
+                            <li class="list-group-item">no deprecated for iso image given</li>
+                        }
+                        else
+                        {
+                            <li class="list-group-item">Deprecated: @Server.IsoImage.Deprecated.Value.ToShortDateString() @Server.IsoImage.Deprecated.Value.ToShortTimeString()</li>
+                        }
+
+                        @if (Server.IsoImage.Deprecation is null)
+                        {
+                            <li class="list-group-item">no deprecation for iso image given</li>
+                        }
+                        else
+                        {
+                            <li class="list-group-item">Deprecation Announced: @Server.IsoImage.Deprecation.Announced.ToShortDateString() @Server.IsoImage.Deprecation.Announced.ToShortTimeString()</li>
+                            <li class="list-group-item">Deprecation UnavailableAfter: @Server.IsoImage.Deprecation.UnavailableAfter.ToShortDateString() @Server.IsoImage.Deprecation.UnavailableAfter.ToShortTimeString()</li>
+                        }
+
+                        @if (Server.IsoImage.Type is null)
+                        {
+                            <li class="list-group-item">no type for iso image given</li>
+                        }
+                        else
+                        {
+                            <li class="list-group-item">Type: @Server.IsoImage.Type.ToString()</li>
+                        }
+                    </ul>
+                }
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card">
+
                 <h5 class="card-header">PlacementGroup</h5>
 
                 @if (Server.PlacementGroup is null)
@@ -273,6 +336,30 @@ else
                             <span class="badge bg-secondary me-2">@label.Key / @label.Value</span>
                         }
                     </div>
+                }
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card">
+
+                <h5 class="card-header">Protection</h5>
+
+                @if (Server.PlacementGroup is null)
+                {
+                    <div class="card-body">
+                        no protection given
+                    </div>
+                }
+                else
+                {
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Delete: @Server.Protection.Delete.ToString("Yes", "No")</li>
+                        <li class="list-group-item">Rebuild: @Server.Protection.Rebuild.ToString("Yes", "No")</li>
+                    </ul>
                 }
 
             </div>

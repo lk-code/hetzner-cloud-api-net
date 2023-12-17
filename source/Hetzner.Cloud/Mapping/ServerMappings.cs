@@ -24,7 +24,7 @@ internal static class ServerMappings
             Datacenter = json.GetProperty("datacenter").ToDatacenter(),
             Protection = json.GetProperty("protection").ToServerProtection(),
             Image = json.GetProperty("image").ToImage(),
-            Iso = json.GetProperty("iso").ToIsoImage(),
+            IsoImage = json.GetProperty("iso").ToIsoImage(),
             RescueEnabled = json.GetProperty("rescue_enabled").GetBoolean(),
             LoadBalancers = json.GetNullableProperty("load_balancers").ToLongArray()!,
             PrivateNetworks = json.GetProperty("private_net").ToPrivateNetworks(),
