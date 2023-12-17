@@ -315,7 +315,13 @@ public class ServerServiceTests
         result.Items.First().PlacementGroup!.ServerIds.Should().HaveCount(1);
         result.Items.First().PlacementGroup!.ServerIds.Should().Contain(42);
         
-        // result.Items.First().PrivateNet;
+        result.Items.First().PrivateNetworks.Should().NotBeNull();
+        result.Items.First().PrivateNetworks.Should().HaveCount(1);
+        result.Items.First().PrivateNetworks.First().AliasIps.Should().NotBeNull();
+        result.Items.First().PrivateNetworks.First().AliasIps.Should().BeEmpty();
+        result.Items.First().PrivateNetworks.First().Ip.Should().Be("10.0.0.2");
+        result.Items.First().PrivateNetworks.First().MacAddress.Should().Be("86:00:ff:2a:7d:e1");
+        result.Items.First().PrivateNetworks.First().Network.Should().Be(4711);
         
         result.Items.First().Protection.Should().NotBeNull();
         result.Items.First().Protection!.Delete.Should().BeFalse();
@@ -630,7 +636,13 @@ public class ServerServiceTests
         result.Item!.PlacementGroup!.ServerIds.Should().HaveCount(1);
         result.Item!.PlacementGroup!.ServerIds.Should().Contain(42);
         
-        // result.Item!.PrivateNet;
+        result.Item!.PrivateNetworks.Should().NotBeNull();
+        result.Item!.PrivateNetworks.Should().HaveCount(1);
+        result.Item!.PrivateNetworks.First().AliasIps.Should().NotBeNull();
+        result.Item!.PrivateNetworks.First().AliasIps.Should().BeEmpty();
+        result.Item!.PrivateNetworks.First().Ip.Should().Be("10.0.0.2");
+        result.Item!.PrivateNetworks.First().MacAddress.Should().Be("86:00:ff:2a:7d:e1");
+        result.Item!.PrivateNetworks.First().Network.Should().Be(4711);
         
         result.Item!.Protection.Should().NotBeNull();
         result.Item!.Protection!.Delete.Should().BeFalse();
