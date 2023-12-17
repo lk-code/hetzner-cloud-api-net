@@ -327,7 +327,27 @@ public class ServerServiceTests
         result.Items.First().Protection!.Delete.Should().BeFalse();
         result.Items.First().Protection!.Rebuild.Should().BeFalse();
         
-        // result.Items.First().PublicNet;
+        result.Items.First().PublicNetwork.Should().NotBeNull();
+        result.Items.First().PublicNetwork!.Firewalls.Should().NotBeNull();
+        result.Items.First().PublicNetwork!.Firewalls.Should().HaveCount(1);
+        result.Items.First().PublicNetwork!.Firewalls.First().Id.Should().Be(42);
+        result.Items.First().PublicNetwork!.Firewalls.First().Status.Should().Be(FirewallStatus.Applied);
+        result.Items.First().PublicNetwork!.FloatingIps.Should().NotBeNull();
+        result.Items.First().PublicNetwork!.FloatingIps.Should().HaveCount(1);
+        result.Items.First().PublicNetwork!.FloatingIps.Should().Contain(478);
+        result.Items.First().PublicNetwork!.Ipv4.Should().NotBeNull();
+        result.Items.First().PublicNetwork!.Ipv4!.Id.Should().Be(42);
+        result.Items.First().PublicNetwork!.Ipv4!.Ip.Should().Be("1.2.3.4");
+        result.Items.First().PublicNetwork!.Ipv4!.Blocked.Should().BeFalse();
+        result.Items.First().PublicNetwork!.Ipv4!.DnsPointer.Should().Be("server01.example.com");
+        result.Items.First().PublicNetwork!.Ipv6.Should().NotBeNull();
+        result.Items.First().PublicNetwork!.Ipv6!.Id.Should().Be(42);
+        result.Items.First().PublicNetwork!.Ipv6!.Ip.Should().Be("2001:db8::/64");
+        result.Items.First().PublicNetwork!.Ipv6!.Blocked.Should().BeFalse();
+        result.Items.First().PublicNetwork!.Ipv6!.DnsPointer.Should().NotBeNull();
+        result.Items.First().PublicNetwork!.Ipv6!.DnsPointer!.Should().HaveCount(1);
+        result.Items.First().PublicNetwork!.Ipv6!.DnsPointer!.First().Ip.Should().Be("2001:db8::1");
+        result.Items.First().PublicNetwork!.Ipv6!.DnsPointer!.First().DnsPointer.Should().Be("server.example.com");
         
         result.Items.First().Type.Should().NotBeNull();
         result.Items.First().Type!.Id.Should().Be(1);
@@ -667,7 +687,27 @@ public class ServerServiceTests
         result.Item!.Protection!.Delete.Should().BeFalse();
         result.Item!.Protection!.Rebuild.Should().BeFalse();
         
-        // result.Item!.PublicNet;
+        result.Item!.PublicNetwork.Should().NotBeNull();
+        result.Item!.PublicNetwork!.Firewalls.Should().NotBeNull();
+        result.Item!.PublicNetwork!.Firewalls.Should().HaveCount(1);
+        result.Item!.PublicNetwork!.Firewalls.First().Id.Should().Be(42);
+        result.Item!.PublicNetwork!.Firewalls.First().Status.Should().Be(FirewallStatus.Applied);
+        result.Item!.PublicNetwork!.FloatingIps.Should().NotBeNull();
+        result.Item!.PublicNetwork!.FloatingIps.Should().HaveCount(1);
+        result.Item!.PublicNetwork!.FloatingIps.Should().Contain(478);
+        result.Item!.PublicNetwork!.Ipv4.Should().NotBeNull();
+        result.Item!.PublicNetwork!.Ipv4!.Id.Should().Be(42);
+        result.Item!.PublicNetwork!.Ipv4!.Ip.Should().Be("1.2.3.4");
+        result.Item!.PublicNetwork!.Ipv4!.Blocked.Should().BeFalse();
+        result.Item!.PublicNetwork!.Ipv4!.DnsPointer.Should().Be("server01.example.com");
+        result.Item!.PublicNetwork!.Ipv6.Should().NotBeNull();
+        result.Item!.PublicNetwork!.Ipv6!.Id.Should().Be(42);
+        result.Item!.PublicNetwork!.Ipv6!.Ip.Should().Be("2001:db8::/64");
+        result.Item!.PublicNetwork!.Ipv6!.Blocked.Should().BeFalse();
+        result.Item!.PublicNetwork!.Ipv6!.DnsPointer.Should().NotBeNull();
+        result.Item!.PublicNetwork!.Ipv6!.DnsPointer!.Should().HaveCount(1);
+        result.Item!.PublicNetwork!.Ipv6!.DnsPointer!.First().Ip.Should().Be("2001:db8::1");
+        result.Item!.PublicNetwork!.Ipv6!.DnsPointer!.First().DnsPointer.Should().Be("server.example.com");
         
         result.Item!.Type.Should().NotBeNull();
         result.Item!.Type!.Id.Should().Be(1);

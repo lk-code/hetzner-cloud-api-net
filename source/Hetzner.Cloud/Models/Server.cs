@@ -89,4 +89,8 @@ public class Server(long id)
     /// Private networks information
     /// </summary>
     public ServerType Type { get; internal set; }
+    /// <summary>
+    /// Public network information. The Server's IPv4 address can be found in public_net->ipv4->ip
+    /// </summary>
+    public PublicNetwork PublicNetwork { get; internal set; }
 }
