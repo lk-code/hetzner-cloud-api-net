@@ -33,6 +33,23 @@ internal static class JsonHelper
         return list.ToArray();
     }
     
+    public static string[] ToStringArray(this JsonElement? jsonElement)
+    {
+        if (jsonElement is null)
+        {
+            return Array.Empty<string>();
+        }
+
+        List<string> list = new();
+
+        foreach (JsonElement property in jsonElement.Value.EnumerateArray())
+        {
+            list.Add(property.GetString());
+        }
+
+        return list.ToArray();
+    }
+    
     public static JsonElement? GetNullableProperty(this JsonElement jsonElement, string propertyName)
     {
         if (jsonElement.TryGetProperty(propertyName, out var property))

@@ -77,4 +77,8 @@ public class Server(long id)
     /// Load Balancer IDs assigned to the server.
     /// </summary>
     public long[] LoadBalancers { get; internal set; } = Array.Empty<long>();
+    /// <summary>
+    /// Private networks information
+    /// </summary>
+    public PrivateNetwork[] PrivateNetworks { get; internal set; } = Array.Empty<PrivateNetwork>();
 }
