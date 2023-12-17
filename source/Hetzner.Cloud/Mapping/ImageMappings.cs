@@ -37,21 +37,26 @@ internal static class ImageMappings
         return data;
     }
 
-    internal static ImageCreatedFrom ToImageCreatedFrom(this JsonElement json)
+    internal static ImageCreatedFrom? ToImageCreatedFrom(this JsonElement jsonElement)
     {
-        ImageCreatedFrom data = new(json.GetProperty("id").GetInt64())
+        if (jsonElement.ValueKind == JsonValueKind.Null)
         {
-            Name = json.GetProperty("name").GetString()!,
+            return null;
+        }
+
+        ImageCreatedFrom data = new(jsonElement.GetProperty("id").GetInt64())
+        {
+            Name = jsonElement.GetProperty("name").GetString()!,
         };
 
         return data;
     }
-    
-    internal static ImageProtection ToImageProtection(this JsonElement json)
+
+    internal static ImageProtection ToImageProtection(this JsonElement jsonElement)
     {
         ImageProtection data = new()
         {
-            Delete = json.GetProperty("delete").GetBoolean(),
+            Delete = jsonElement.GetProperty("delete").GetBoolean(),
         };
 
         return data;

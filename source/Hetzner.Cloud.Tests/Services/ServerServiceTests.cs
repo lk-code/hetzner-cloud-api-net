@@ -376,36 +376,386 @@ public class ServerServiceTests
     [TestMethod]
     public async Task GetAllAsync_WithEmpty_Returns()
     {
-        // Arrange
-        var jsonContent = """
-                          {
-                            "meta": {
-                              "pagination": {
-                                "last_page": 4,
-                                "next_page": 4,
-                                "page": 3,
-                                "per_page": 25,
-                                "previous_page": 2,
-                                "total_entries": 0
-                              }
-                            },
-                            "servers": [
-                            ]
+      // Arrange
+      var jsonContent = """
+                        {
+                          "meta": {
+                            "pagination": {
+                              "last_page": 4,
+                              "next_page": 4,
+                              "page": 3,
+                              "per_page": 25,
+                              "previous_page": 2,
+                              "total_entries": 0
+                            }
+                          },
+                          "servers": [
+                          ]
+                        }
+                        """;
+      _mockHttp.When("https://localhost/v1/servers?page=1&per_page=25")
+        .Respond("application/json", jsonContent);
+
+      // Act
+      var result = await _serverService.GetAllAsync();
+
+      // Assert
+      result.Should().NotBeNull();
+      result.CurrentPage.Should().Be(3);
+      result.ItemsPerPage.Should().Be(25);
+      result.TotalItems.Should().Be(0);
+      result.Items.Should().NotBeNull();
+      result.Items.Should().BeEmpty();
+    }
+
+    [TestMethod]
+    public async Task GetAllAsync_WithSampleServerResponse_Returns()
+    {
+      // Arrange
+      var jsonContent = """
+                        {
+                          "servers": [
+                            {
+                              "id": 42,
+                              "name": "test",
+                              "status": "running",
+                              "created": "2022-11-03T19:07:20+00:00",
+                              "public_net": {
+                                "ipv4": {
+                                  "ip": "1.2.3.4",
+                                  "blocked": false,
+                                  "dns_ptr": "static.1.2.3.4.clients.your-server.de",
+                                  "id": 42
+                                },
+                                "ipv6": {
+                                  "ip": "2001:db8::1",
+                                  "blocked": false,
+                                  "dns_ptr": [],
+                                  "id": 42
+                                },
+                                "floating_ips": [],
+                                "firewalls": []
+                              },
+                              "private_net": [],
+                              "server_type": {
+                                "id": 3,
+                                "name": "cx21",
+                                "description": "CX21",
+                                "cores": 2,
+                                "memory": 4.0,
+                                "disk": 40,
+                                "deprecated": false,
+                                "prices": [
+                                  {
+                                    "location": "nbg1",
+                                    "price_hourly": {
+                                      "net": "0.0079000000",
+                                      "gross": "0.0094010000000000"
+                                    },
+                                    "price_monthly": {
+                                      "net": "4.8500000000",
+                                      "gross": "5.7715000000000000"
+                                    }
+                                  },
+                                  {
+                                    "location": "fsn1",
+                                    "price_hourly": {
+                                      "net": "0.0079000000",
+                                      "gross": "0.0094010000000000"
+                                    },
+                                    "price_monthly": {
+                                      "net": "4.8500000000",
+                                      "gross": "5.7715000000000000"
+                                    }
+                                  },
+                                  {
+                                    "location": "hel1",
+                                    "price_hourly": {
+                                      "net": "0.0079000000",
+                                      "gross": "0.0094010000000000"
+                                    },
+                                    "price_monthly": {
+                                      "net": "4.8500000000",
+                                      "gross": "5.7715000000000000"
+                                    }
+                                  }
+                                ],
+                                "storage_type": "local",
+                                "cpu_type": "shared",
+                                "architecture": "x86",
+                                "included_traffic": 21990232555520,
+                                "deprecation": null
+                              },
+                              "datacenter": {
+                                "id": 4,
+                                "name": "fsn1-dc14",
+                                "description": "Falkenstein 1 virtual DC 14",
+                                "location": {
+                                  "id": 1,
+                                  "name": "fsn1",
+                                  "description": "Falkenstein DC Park 1",
+                                  "country": "DE",
+                                  "city": "Falkenstein",
+                                  "latitude": 50.47612,
+                                  "longitude": 12.370071,
+                                  "network_zone": "eu-central"
+                                },
+                                "server_types": {
+                                  "supported": [
+                                    1,
+                                    3,
+                                    5,
+                                    7,
+                                    9,
+                                    22,
+                                    23,
+                                    24,
+                                    25,
+                                    26,
+                                    45,
+                                    93,
+                                    94,
+                                    95,
+                                    96,
+                                    97,
+                                    98,
+                                    99,
+                                    100,
+                                    101
+                                  ],
+                                  "available": [
+                                    1,
+                                    3,
+                                    5,
+                                    7,
+                                    9,
+                                    22,
+                                    23,
+                                    24,
+                                    25,
+                                    26,
+                                    45,
+                                    93,
+                                    94,
+                                    95,
+                                    96,
+                                    97,
+                                    98,
+                                    99,
+                                    100,
+                                    101
+                                  ],
+                                  "available_for_migration": [
+                                    1,
+                                    3,
+                                    5,
+                                    7,
+                                    9,
+                                    22,
+                                    23,
+                                    24,
+                                    25,
+                                    26,
+                                    27,
+                                    28,
+                                    29,
+                                    30,
+                                    31,
+                                    32,
+                                    45,
+                                    93,
+                                    94,
+                                    95,
+                                    96,
+                                    97,
+                                    98,
+                                    99,
+                                    100,
+                                    101,
+                                    102,
+                                    103
+                                  ]
+                                }
+                              },
+                              "image": {
+                                "id": 67794396,
+                                "type": "system",
+                                "status": "available",
+                                "name": "ubuntu-22.04",
+                                "description": "Ubuntu 22.04",
+                                "image_size": null,
+                                "disk_size": 5,
+                                "created": "2022-04-21T13:32:38+00:00",
+                                "created_from": null,
+                                "bound_to": null,
+                                "os_flavor": "ubuntu",
+                                "os_version": "22.04",
+                                "rapid_deploy": true,
+                                "protection": {
+                                  "delete": false
+                                },
+                                "deprecated": null,
+                                "labels": {},
+                                "deleted": null,
+                                "architecture": "x86"
+                              },
+                              "iso": null,
+                              "rescue_enabled": false,
+                              "locked": false,
+                              "backup_window": null,
+                              "outgoing_traffic": 318350000,
+                              "ingoing_traffic": 703210000,
+                              "included_traffic": 21990232555520,
+                              "protection": {
+                                "delete": false,
+                                "rebuild": false
+                              },
+                              "labels": {
+                                "apps": "lk-code",
+                                "apps/demo": "ein-wert",
+                                "environment": "development"
+                              },
+                              "volumes": [],
+                              "load_balancers": [],
+                              "primary_disk_size": 40,
+                              "placement_group": null
+                            }
+                          ],
+                          "meta": {
+                            "pagination": {
+                              "page": 1,
+                              "per_page": 25,
+                              "previous_page": null,
+                              "next_page": null,
+                              "last_page": 1,
+                              "total_entries": 1
+                            }
                           }
-                          """;
-        _mockHttp.When("https://localhost/v1/servers?page=1&per_page=25")
-            .Respond("application/json", jsonContent);
+                        }
+                        """;
+      _mockHttp.When("https://localhost/v1/servers?page=1&per_page=25")
+        .Respond("application/json", jsonContent);
 
-        // Act
-        var result = await _serverService.GetAllAsync();
+      // Act
+      var result = await _serverService.GetAllAsync();
 
-        // Assert
+      // Assert
         result.Should().NotBeNull();
-        result.CurrentPage.Should().Be(3);
+        result.CurrentPage.Should().Be(1);
         result.ItemsPerPage.Should().Be(25);
-        result.TotalItems.Should().Be(0);
+        result.TotalItems.Should().Be(1);
+        
         result.Items.Should().NotBeNull();
-        result.Items.Should().BeEmpty();
+        result.Items.Should().HaveCount(1);
+        
+        result.Items.First().Should().NotBeNull();
+        result.Items.First().BackupWindow.Should().BeNull();
+        result.Items.First().Created.Should().Be(DateTime.Parse("2022-11-03T19:07:20+00:00"));
+        result.Items.First().Id.Should().Be(42);
+        result.Items.First().IncludedTraffic.Should().Be(21990232555520);
+        result.Items.First().IngoingTraffic.Should().Be(703210000);
+        result.Items.First().Locked.Should().BeFalse();
+        result.Items.First().Name.Should().Be("test");
+        result.Items.First().OutgoingTraffic.Should().Be(318350000);
+        result.Items.First().PrimaryDiskSize.Should().Be(40);
+        result.Items.First().RescueEnabled.Should().BeFalse();
+        
+        result.Items.First().Status.Should().Be(ServerStatus.Running);
+        
+        result.Items.First().Datacenter.Should().NotBeNull();
+        result.Items.First().Datacenter!.Id.Should().Be(4);
+        result.Items.First().Datacenter!.Name.Should().Be("fsn1-dc14");
+        result.Items.First().Datacenter!.Description.Should().Be("Falkenstein 1 virtual DC 14");
+        result.Items.First().Datacenter!.Location.Should().NotBeNull();
+        result.Items.First().Datacenter!.Location!.Id.Should().Be(1);
+        result.Items.First().Datacenter!.Location!.Name.Should().Be("fsn1");
+        result.Items.First().Datacenter!.Location!.Description.Should().Be("Falkenstein DC Park 1");
+        result.Items.First().Datacenter!.Location!.City.Should().Be("Falkenstein");
+        result.Items.First().Datacenter!.Location!.Country.Should().Be("DE");
+        result.Items.First().Datacenter!.Location!.Latitude.Should().Be(50.47612);
+        result.Items.First().Datacenter!.Location!.Longitude.Should().Be(12.370071);
+        result.Items.First().Datacenter!.Location!.NetworkZone.Should().Be("eu-central");
+        result.Items.First().Datacenter!.ServerTypes.Should().NotBeNull();
+        result.Items.First().Datacenter!.ServerTypes!.Available.Should().NotBeNull();
+        result.Items.First().Datacenter!.ServerTypes!.Available.Should().HaveCount(20);
+        result.Items.First().Datacenter!.ServerTypes!.AvailableForMigration.Should().NotBeNull();
+        result.Items.First().Datacenter!.ServerTypes!.AvailableForMigration.Should().HaveCount(28);
+        result.Items.First().Datacenter!.ServerTypes!.Supported.Should().NotBeNull();
+        result.Items.First().Datacenter!.ServerTypes!.Supported.Should().HaveCount(20);
+        
+        result.Items.First().Image.Should().NotBeNull();
+        result.Items.First().Image!.Id.Should().Be(67794396);
+        result.Items.First().Image!.Name.Should().Be("ubuntu-22.04");
+        result.Items.First().Image!.Description.Should().Be("Ubuntu 22.04");
+        result.Items.First().Image!.Type.Should().Be(ImageType.System);
+        result.Items.First().Image!.Status.Should().Be(ImageStatus.Available);
+        result.Items.First().Image!.ImageSize.Should().BeNull();
+        result.Items.First().Image!.DiskSize.Should().Be(5);
+        result.Items.First().Image!.Created.Should().Be(DateTime.Parse("2022-04-21T13:32:38+00:00"));
+        result.Items.First().Image!.CreatedFrom.Should().BeNull();
+        result.Items.First().Image!.BoundTo.Should().BeNull();
+        result.Items.First().Image!.OsFlavor.Should().Be(OsFlavor.Ubuntu);
+        result.Items.First().Image!.OsVersion.Should().Be("22.04");
+        result.Items.First().Image!.RapidDeploy.Should().BeTrue();
+        result.Items.First().Image!.Protection.Should().NotBeNull();
+        result.Items.First().Image!.Protection!.Delete.Should().BeFalse();
+        result.Items.First().Image!.Deprecated.Should().BeNull();
+        result.Items.First().Image!.Labels.Should().NotBeNull();
+        result.Items.First().Image!.Labels.Should().BeEmpty();
+        result.Items.First().Image!.Architecture.Should().Be("x86");
+        
+        result.Items.First().Iso.Should().BeNull();
+        
+        result.Items.First().Labels.Should().NotBeNull();
+        result.Items.First().Labels.Should().HaveCount(3);
+        result.Items.First().Labels.Should().ContainKey("apps");
+        result.Items.First().Labels.Should().ContainKey("apps/demo");
+        result.Items.First().Labels.Should().ContainKey("environment");
+        
+        result.Items.First().LoadBalancers.Should().NotBeNull();
+        result.Items.First().LoadBalancers.Should().BeEmpty();
+        
+        result.Items.First().PlacementGroup.Should().BeNull();
+        
+        result.Items.First().PrivateNetworks.Should().NotBeNull();
+        result.Items.First().PrivateNetworks.Should().BeEmpty();
+        
+        result.Items.First().Protection.Should().NotBeNull();
+        result.Items.First().Protection!.Delete.Should().BeFalse();
+        result.Items.First().Protection!.Rebuild.Should().BeFalse();
+        
+        result.Items.First().PublicNetwork.Should().NotBeNull();
+        result.Items.First().PublicNetwork!.Firewalls.Should().NotBeNull();
+        result.Items.First().PublicNetwork!.Firewalls.Should().BeEmpty();
+        result.Items.First().PublicNetwork!.FloatingIps.Should().NotBeNull();
+        result.Items.First().PublicNetwork!.FloatingIps.Should().BeEmpty();
+        result.Items.First().PublicNetwork!.Ipv4.Should().NotBeNull();
+        result.Items.First().PublicNetwork!.Ipv4!.Id.Should().Be(42);
+        result.Items.First().PublicNetwork!.Ipv4!.Ip.Should().Be("1.2.3.4");
+        result.Items.First().PublicNetwork!.Ipv4!.Blocked.Should().BeFalse();
+        result.Items.First().PublicNetwork!.Ipv4!.DnsPointer.Should().Be("static.1.2.3.4.clients.your-server.de");
+        result.Items.First().PublicNetwork!.Ipv6.Should().NotBeNull();
+        result.Items.First().PublicNetwork!.Ipv6!.Id.Should().Be(42);
+        result.Items.First().PublicNetwork!.Ipv6!.Ip.Should().Be("2001:db8::1");
+        result.Items.First().PublicNetwork!.Ipv6!.Blocked.Should().BeFalse();
+        result.Items.First().PublicNetwork!.Ipv6!.DnsPointer.Should().NotBeNull();
+        result.Items.First().PublicNetwork!.Ipv6!.DnsPointer!.Should().BeEmpty();
+        
+        result.Items.First().Type.Should().NotBeNull();
+        result.Items.First().Type!.Id.Should().Be(3);
+        result.Items.First().Type!.Cores.Should().Be(2);
+        result.Items.First().Type!.CpuType.Should().Be(ServerCpuTypes.Shared);
+        result.Items.First().Type!.Deprecated.Should().BeFalse();
+        result.Items.First().Type!.Description.Should().Be("CX21");
+        result.Items.First().Type!.Disk.Should().Be(40);
+        result.Items.First().Type!.Memory.Should().Be(4.0);
+        result.Items.First().Type!.Name.Should().Be("cx21");
+        result.Items.First().Type!.StorageType.Should().Be(ServerStorageTypes.Local);
+        result.Items.First().Type!.Prices.Should().NotBeNull();
+        result.Items.First().Type!.Prices!.Should().HaveCount(3);
+        
+        result.Items.First().Volumes.Should().NotBeNull();
+        result.Items.First().Volumes.Should().BeEmpty();
     }
 
     [TestMethod]
