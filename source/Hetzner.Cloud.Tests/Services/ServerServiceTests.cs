@@ -1,4 +1,7 @@
+using System.Net;
 using FluentAssertions;
+using Hetzner.Cloud.Exceptions;
+using Hetzner.Cloud.Exceptions.Http;
 using Hetzner.Cloud.Interfaces;
 using Hetzner.Cloud.Models;
 using Hetzner.Cloud.Services;
@@ -759,6 +762,36 @@ public class ServerServiceTests
     }
 
     [TestMethod]
+    public async Task GetAllAsync_WithServerErrorException_Throws()
+    {
+      // Arrange
+      _mockHttp.When("https://localhost/v1/servers*")
+        .Respond(HttpStatusCode.InternalServerError);
+
+      // Act
+      Func<Task> act = async () => await _serverService.GetAllAsync();
+
+      // Assert
+      await act.Should().ThrowAsync<ApiException>()
+        .WithMessage("Invalid Request");
+    }
+
+    [TestMethod]
+    public async Task GetAllAsync_WithInvalidPage_Throws()
+    {
+      // Arrange
+      _mockHttp.When("https://localhost/v1/servers*")
+        .Respond(HttpStatusCode.InternalServerError);
+
+      // Act
+      Func<Task> act = async () => await _serverService.GetAllAsync(0);
+
+      // Assert
+      await act.Should().ThrowAsync<InvalidArgumentException>()
+        .WithMessage("invalid page number (0). must be greather than 0.");
+    }
+
+    [TestMethod]
     public async Task GetByIdAsync_WithHetznerSample_Returns()
     {
         // Arrange
@@ -1081,5 +1114,35 @@ public class ServerServiceTests
         
         result.Item!.Volumes.Should().NotBeNull();
         result.Item!.Volumes.Should().BeEmpty();
+    }
+
+    [TestMethod]
+    public async Task GetByIdAsync_WithNotFoundException_Throws()
+    {
+      // Arrange
+      _mockHttp.When("https://localhost/v1/servers/41")
+        .Respond(HttpStatusCode.NotFound);
+
+      // Act
+      Func<Task> act = async () => await _serverService.GetByIdAsync(41);
+
+      // Assert
+      await act.Should().ThrowAsync<ResourceNotFoundException>()
+        .WithMessage("the server with the id 41 was not found");
+    }
+
+    [TestMethod]
+    public async Task GetByIdAsync_WithServerErrorException_Throws()
+    {
+      // Arrange
+      _mockHttp.When("https://localhost/v1/servers/41")
+        .Respond(HttpStatusCode.InternalServerError);
+
+      // Act
+      Func<Task> act = async () => await _serverService.GetByIdAsync(41);
+
+      // Assert
+      await act.Should().ThrowAsync<ApiException>()
+        .WithMessage("Invalid Request");
     }
 }
