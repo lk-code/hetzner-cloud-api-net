@@ -12,8 +12,7 @@
 
 @code {
 
-    [Parameter]
-    public string Id { get; set; }
+    [Parameter] public string Id { get; set; }
 
     private Server? Server { get; set; }
     private string Error = string.Empty;
@@ -106,6 +105,9 @@ else
                     <li class="list-group-item">Ingoing Traffic: @Server.IngoingTraffic.Ensure(0).AsMegaBytes()</li>
                     <li class="list-group-item">Outgoing Traffic: @Server.OutgoingTraffic.Ensure(0).AsMegaBytes()</li>
                     <li class="list-group-item">Primary Disk Size: @Server.PrimaryDiskSize.AsGigaBytes()</li>
+                    <li class="list-group-item">RescueEnabled: @Server.RescueEnabled.ToString("Yes", "No")</li>
+                    <li class="list-group-item">LoadBalancers: @string.Join(", ", Server.LoadBalancers)</li>
+                    <li class="list-group-item">Volumes: @string.Join(", ", Server.Volumes)</li>
 
                     @if (Server.Protection is null)
                     {
@@ -308,6 +310,10 @@ else
 
         </div>
 
+    </div>
+
+    <div class="row mb-4">
+
         <div class="col-md-4">
 
             <div class="card">
@@ -361,6 +367,65 @@ else
                         <li class="list-group-item">Rebuild: @Server.Protection.Rebuild.ToString("Yes", "No")</li>
                     </ul>
                 }
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card">
+
+                <h5 class="card-header">Type</h5>
+
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Id: @Server.Type.Id</li>
+                    <li class="list-group-item">Name: @Server.Type.Name</li>
+                    <li class="list-group-item">Description: @Server.Type.Description</li>
+                    <li class="list-group-item">Cores: @Server.Type.Cores</li>
+                    <li class="list-group-item">CpuType: @Server.Type.CpuType</li>
+                    <li class="list-group-item">Deprecated: @Server.Type.Deprecated.ToString("Yes", "No")</li>
+                    <li class="list-group-item">Disk: @Server.Type.Disk GB</li>
+                    <li class="list-group-item">Memory: @Server.Type.Memory GB</li>
+                    <li class="list-group-item">StorageType: @Server.Type.StorageType</li>
+                </ul>
+
+                <h6 class="card-header">Prices for Server Type</h6>
+
+                <div class="list-group">
+
+                    <ul class="list-group list-group-flush">
+                        
+                        <li class="list-group-item">
+                            <p>
+                                Location
+                            </p>
+                            <p>
+                                Hourly.Gross/Hourly.Net
+                            </p>
+                            <p>
+                                Monthly.Gross/Monthly.Net
+                            </p>
+                        </li>
+
+                        @foreach (var price in Server.Type.Prices)
+                        {
+                            <li class="list-group-item">
+                                <p>
+                                    @price.Location
+                                </p>
+                                <p>
+                                    @price.Hourly.Gross/@price.Hourly.Net
+                                </p>
+                                <p>
+                                    @price.Monthly.Gross/@price.Monthly.Net
+                                </p>
+                            </li>
+                        }
+
+                    </ul>
+
+                </div>
 
             </div>
 
