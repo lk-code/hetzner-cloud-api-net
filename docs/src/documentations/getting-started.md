@@ -117,6 +117,7 @@ public class SingledResponse<T> {
 }
 ```
 
+
 #### 4.3. Execute own HTTP-Requests
 
 You can retrieve the HTTP client via dependency injection and use it for HTTP requests. The HTTP client is configured and uses the API token.
