@@ -1,18 +1,28 @@
 @page "/servers"
+@rendermode InteractiveServer
+
 @attribute [StreamRendering]
 
 @using Hetzner.Cloud.Interfaces
 @using Hetzner.Cloud.Models
 @using Hetzner.Cloud.Pagination
+@using Hetzner.Cloud.Filter
 
 @inject IServerService ServerService
 
 <PageTitle>Servers</PageTitle>
 
 @code {
-    private List<Server> Servers { get; set; } = new();
-    private string Error = string.Empty;
-    private string ErrorDetails = string.Empty;
+    private bool _loading = false;
+    private List<Server> _servers { get; set; } = new();
+    private string _error = string.Empty;
+    private string _errorDetails = string.Empty;
+    private List<IFilter> _filters = new();
+    private int _page = 1;
+    private int _itemsPerPage = 10;
+    private string _nameFilter = string.Empty;
+    private string _labelFilter = string.Empty;
+    private ServerStatus? _statusFilter = null;
 
     protected override async Task OnInitializedAsync()
     {
@@ -21,45 +31,155 @@
 
     private async Task LoadServersAsync()
     {
-        this.Servers.Clear();
-        this.Error = string.Empty;
-        this.ErrorDetails = string.Empty;
+        _servers.Clear();
+        _error = string.Empty;
+        _errorDetails = string.Empty;
 
         try
         {
-            PagedResponse<Server> servers = await ServerService.GetAllAsync();
+            _loading = true;
+
+            PagedResponse<Server> servers = await ServerService.GetAllAsync(_page,
+                _itemsPerPage,
+                _filters);
 
             foreach (var server in servers.Items)
             {
-                this.Servers.Add(server);
+                this._servers.Add(server);
             }
         }
         catch (Exception ex)
         {
-            this.Error = ex.Message;
-            this.ErrorDetails = ex.StackTrace;
+            _error = ex.Message;
+            _errorDetails = ex.StackTrace;
         }
+        finally
+        {
+            _loading = false;
+        }
+    }
+
+    public async Task OnSearch()
+    {
+        _filters.Clear();
+
+        if (!string.IsNullOrEmpty(_nameFilter))
+        {
+            _filters.Add(new NameFilter(_nameFilter));
+        }
+
+        if (!string.IsNullOrEmpty(_labelFilter))
+        {
+            _filters.Add(new LabelFilter(_labelFilter));
+        }
+
+        if (_statusFilter is not null)
+        {
+            _filters.Add(new StatusFilter(_statusFilter.Value));
+        }
+
+        await LoadServersAsync();
+    }
+
+    public async Task OnClearFilter()
+    {
+        _nameFilter = string.Empty;
+        _labelFilter = string.Empty;
+        _statusFilter = null;
+
+        await OnSearch();
+    }
+
+    public async Task OnSelectStatus(ServerStatus status)
+    {
+        _statusFilter = status;
+        await OnSearch();
     }
 
 }
 
-@if (!string.IsNullOrEmpty(this.Error))
+@if (!string.IsNullOrEmpty(_error))
 {
     <div class="row">
 
         <div class="col-md-12">
 
             <div class="alert alert-danger" role="alert">
-                @Error
-                <br />
-                <br />
-                <code>@ErrorDetails</code>
+                @_error
+                <br/>
+                <hr/>
+                <br/>
+                <code>@_errorDetails</code>
             </div>
 
         </div>
 
     </div>
 }
+
+<div class="row">
+
+    <div class="col-md-12">
+
+        <div class="mb-3">
+            <label for="ServerOverviewSearchNameField"
+                   class="form-label">
+                Server Name
+            </label>
+            <input type="search"
+                   class="form-control"
+                   id="ServerOverviewSearchNameField"
+                   placeholder="search by server name"
+                   @bind="_nameFilter">
+        </div>
+
+        <div class="mb-3">
+            <label for="ServerOverviewSearchLabelField"
+                   class="form-label">
+                Server Label
+            </label>
+            <input type="search"
+                   class="form-control"
+                   id="ServerOverviewSearchLabelField"
+                   placeholder="search by server label"
+                   @bind="_labelFilter">
+        </div>
+
+        <div class="mb-3">
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Server Status
+                    @if (_statusFilter is not null)
+                    {
+                        <span>: @_statusFilter</span>
+                    }
+                </button>
+                <ul class="dropdown-menu">
+                    @foreach(var status in Enum.GetValues(typeof(ServerStatus)))
+                    {
+                        <li><a class="dropdown-item" @onclick="(() => OnSelectStatus((ServerStatus)status))">@status</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <button class="btn btn-primary me-3"
+                    @onclick="OnSearch">
+                <span>Search</span>
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+
+            <button class="btn btn-secondary me-3"
+                    @onclick="OnClearFilter">
+                <span>Clear</span>
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+    </div>
+
+</div>
 
 <div class="row">
 
@@ -82,9 +202,16 @@
 
             <tbody>
 
-            @if (this.Servers.Any())
+            @if (!_loading)
             {
-                @foreach (var server in this.Servers)
+                @if (!_servers.Any())
+                {
+                    <tr>
+                        <th scope="row" colspan="6">no servers found</th>
+                    </tr>
+                }
+
+                @foreach (var server in _servers)
                 {
                     <tr>
                         <th scope="row">@server.Id</th>
@@ -113,7 +240,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="5">
+                        <td colspan="6">
                             @foreach (var label in server.Labels)
                             {
                                 <span class="badge bg-primary me-2">@label.Key / @label.Value</span>
@@ -125,7 +252,7 @@
             else
             {
                 <tr>
-                    <th scope="row">Loading...</th>
+                    <th scope="row" colspan="6">loading...</th>
                 </tr>
             }
             </tbody>

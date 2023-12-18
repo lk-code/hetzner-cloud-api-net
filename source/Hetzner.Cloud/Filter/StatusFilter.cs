@@ -1,13 +1,14 @@
 ﻿using Hetzner.Cloud.Enums;
 using Hetzner.Cloud.Interfaces;
+using Hetzner.Cloud.Models;
 
 namespace Hetzner.Cloud.Filter;
 
 public class StatusFilter : IFilter
 {
-    public StatusFilterField Status { get; private set; }
+    public ServerStatus Status { get; private set; }
 
-    public StatusFilter(StatusFilterField status)
+    public StatusFilter(ServerStatus status)
     {
         this.Status = status;
     }
@@ -19,6 +20,6 @@ public class StatusFilter : IFilter
 
     public string GetValue()
     {
-        return this.Status.ToString();
+        return this.Status.ToString().ToLowerInvariant();
     }
 }

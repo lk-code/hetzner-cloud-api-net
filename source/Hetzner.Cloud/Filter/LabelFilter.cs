@@ -13,7 +13,7 @@ public class LabelFilter : IFilter
 
     public string GetFilterField()
     {
-        return "label";
+        return "label_selector";
     }
 
     public string GetValue()
