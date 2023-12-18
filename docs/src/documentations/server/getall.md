@@ -59,7 +59,7 @@ The following call requests page 4 of the server listing, with 10 entries per pa
 
 ```
 List<IFilter> filter = new();
-filter.Add(new StatusFilter(StatusFilterField.Running));
+filter.Add(new StatusFilter(ServerStatus.Running));
 
 PagedResponse<Server> response = await _serverService.GetAllAsync(1, 25, filter);
 
