@@ -11,4 +11,18 @@ public static class Int64Helper
     {
         return $"{value / 1024 / 1024 / 1024} GB";
     }
+    public static string AsMegaBytes(this double value)
+    {
+        return $"{value / 1024 / 1024} MB";
+    }
+    
+    public static string AsGigaBytes(this double value)
+    {
+        return $"{value / 1024 / 1024 / 1024} GB";
+    }
+
+    public static long Ensure(this long? val, long fallback = 0)
+    {
+        return val ?? fallback;
+    }
 }

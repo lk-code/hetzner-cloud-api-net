@@ -2,7 +2,7 @@ using System.Text.Json;
 
 namespace Hetzner.Cloud.Helper;
 
-public static class JsonHelper
+internal static class JsonHelper
 {
     public static Dictionary<string, string> ToDictionary(this JsonElement jsonElement)
     {
@@ -20,7 +20,7 @@ public static class JsonHelper
     {
         if (jsonElement is null)
         {
-            return null;
+            return Array.Empty<long>();
         }
 
         List<long> list = new();
@@ -33,11 +33,72 @@ public static class JsonHelper
         return list.ToArray();
     }
     
+    public static string[] ToStringArray(this JsonElement? jsonElement)
+    {
+        if (jsonElement is null)
+        {
+            return Array.Empty<string>();
+        }
+
+        List<string> list = new();
+
+        foreach (JsonElement property in jsonElement.Value.EnumerateArray())
+        {
+            list.Add(property.GetString());
+        }
+
+        return list.ToArray();
+    }
+    
     public static JsonElement? GetNullableProperty(this JsonElement jsonElement, string propertyName)
     {
         if (jsonElement.TryGetProperty(propertyName, out var property))
         {
             return property;
+        }
+
+        return null;
+    }
+    
+    public static long? GetInt64(this JsonElement? jsonElement)
+    {
+        if (jsonElement is not null
+            && jsonElement.Value.ValueKind != JsonValueKind.Null)
+        {
+            return jsonElement.Value.GetInt64();
+        }
+
+        return null;
+    }
+    
+    public static DateTime? GetDateTime(this JsonElement? jsonElement)
+    {
+        if (jsonElement is not null
+            && jsonElement.Value.ValueKind != JsonValueKind.Null)
+        {
+            return jsonElement.Value.GetDateTime();
+        }
+
+        return null;
+    }
+    
+    public static double? GetDouble(this JsonElement? jsonElement)
+    {
+        if (jsonElement is not null
+            && jsonElement.Value.ValueKind != JsonValueKind.Null)
+        {
+            return jsonElement.Value.GetDouble();
+        }
+
+        return null;
+    }
+    
+    public static string? GetString(this JsonElement? jsonElement)
+    {
+        if (jsonElement is not null
+            && jsonElement.Value.ValueKind != JsonValueKind.Null)
+        {
+            return jsonElement.Value.GetString();
         }
 
         return null;

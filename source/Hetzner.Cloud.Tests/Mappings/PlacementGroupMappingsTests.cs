@@ -66,6 +66,21 @@ public class PlacementGroupMappingsTests
         placementGroup.Created.Should().Be(new DateTime(2023, 1, 1, 12, 0, 0));
         placementGroup.Labels.Should().BeEmpty();
         placementGroup.Type.Should().Be("TypeA");
-        placementGroup.ServerIds.Should().BeNull();
+        placementGroup.ServerIds.Should().BeEmpty();
+    }
+
+    [TestMethod]
+    public void ToPlacementGroup_WithNullJsonElement_Returns()
+    {
+        // Arrange
+        var jsonElement = new DataBuilder()
+            .Add("NullItem", (object?)null)
+            .Build().RootElement;
+
+        // Act
+        var placementGroup = jsonElement.GetProperty("NullItem").ToPlacementGroup();
+
+        // Assert
+        placementGroup.Should().BeNull();
     }
 }

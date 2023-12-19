@@ -19,7 +19,7 @@ public class ServerService(IHttpClientFactory httpClientFactory) : IServerServic
     public async Task<PagedResponse<Server>> GetAllAsync(int page = 1,
         int itemsPerPage = 25,
         List<IFilter>? filter = null,
-        Sorting<ServerSortField>? sorting = null,
+        Sorting<ServerSorting>? sorting = null,
         CancellationToken cancellationToken = default)
     {
         if (page <= 0)

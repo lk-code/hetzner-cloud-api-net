@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentDataBuilder.Json" Version="1.2.77" />
+        <PackageReference Include="FluentDataBuilder.Json" Version="1.2.84" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
         <PackageReference Include="MSTest.TestAdapter" Version="3.1.1" />
         <PackageReference Include="MSTest.TestFramework" Version="3.1.1" />
@@ -19,6 +19,7 @@
         </PackageReference>
         <PackageReference Include="FluentAssertions" Version="6.12.0" />
         <PackageReference Include="NSubstitute" Version="5.1.0" />
+        <PackageReference Include="RichardSzalay.MockHttp" Version="7.0.0" />
     </ItemGroup>
 
     <ItemGroup>

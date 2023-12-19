@@ -12,10 +12,10 @@
 
 @code {
 
-    [Parameter]
-    public string Id { get; set; }
+    [Parameter] public string Id { get; set; }
 
     private Server? Server { get; set; }
+    private string Error = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -27,15 +27,32 @@
         try
         {
             this.Server = null;
+            this.Error = string.Empty;
 
             SingledResponse<Server> serverDetails = await ServerService.GetByIdAsync(Convert.ToInt64(Id));
             this.Server = serverDetails.Item;
         }
         catch (Exception ex)
         {
+            this.Error = ex.Message;
         }
     }
 
+}
+
+@if (!string.IsNullOrEmpty(this.Error))
+{
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="alert alert-danger" role="alert">
+                @Error
+            </div>
+
+        </div>
+
+    </div>
 }
 
 <div class="row">
@@ -44,12 +61,16 @@
         <h1>Server</h1>
     </div>
 
-    @if (Server is null)
-    {
-        <p>Loading ...</p>
-    }
-    else
-    {
+</div>
+
+@if (Server is null)
+{
+    <p>Loading ...</p>
+}
+else
+{
+    <div class="row mb-4">
+
         <div class="col-md-6">
 
             <div class="card">
@@ -76,12 +97,29 @@
 
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">Id: @Server.Id</li>
+                    <li class="list-group-item">Status: @Server.Status.ToString()</li>
                     <li class="list-group-item">Created: @Server.Created.ToShortDateString() @Server.Created.ToShortTimeString()</li>
                     <li class="list-group-item">Backup Window: @Server.BackupWindow</li>
-                    <li class="list-group-item">Included Traffic: @Server.IncludedTraffic.AsGigaBytes()</li>
-                    <li class="list-group-item">Ingoing Traffic: @Server.IngoingTraffic.AsMegaBytes()</li>
-                    <li class="list-group-item">Outgoing Traffic: @Server.OutgoingTraffic.AsMegaBytes()</li>
                     <li class="list-group-item">Locked: @Server.Locked.ToString("Yes", "No")</li>
+                    <li class="list-group-item">Included Traffic: @Server.IncludedTraffic.Ensure(0).AsGigaBytes()</li>
+                    <li class="list-group-item">Ingoing Traffic: @Server.IngoingTraffic.Ensure(0).AsMegaBytes()</li>
+                    <li class="list-group-item">Outgoing Traffic: @Server.OutgoingTraffic.Ensure(0).AsMegaBytes()</li>
+                    <li class="list-group-item">Primary Disk Size: @Server.PrimaryDiskSize.AsGigaBytes()</li>
+                    <li class="list-group-item">RescueEnabled: @Server.RescueEnabled.ToString("Yes", "No")</li>
+                    <li class="list-group-item">LoadBalancers: @string.Join(", ", Server.LoadBalancers)</li>
+                    <li class="list-group-item">Volumes: @string.Join(", ", Server.Volumes)</li>
+
+                    @if (Server.Protection is null)
+                    {
+                        <div class="card-body">
+                            no protection given
+                        </div>
+                    }
+                    else
+                    {
+                        <li class="list-group-item">Protection Delete: @Server.Protection.Delete.ToString("Yes", "No")</li>
+                        <li class="list-group-item">Protection Rebuild: @Server.Protection.Rebuild.ToString("Yes", "No")</li>
+                    }
                 </ul>
 
                 <div class="card-footer text-body-secondary">
@@ -94,6 +132,187 @@
             </div>
 
         </div>
+
+    </div>
+
+    <div class="row mb-4">
+
+        <div class="col-md-4">
+
+            <div class="card">
+
+                <h5 class="card-header">Datacenter</h5>
+
+                @if (Server.Datacenter is null)
+                {
+                    <div class="card-body">
+                        no datacenter given
+                    </div>
+                }
+                else
+                {
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Id: @Server.Datacenter.Id</li>
+                        <li class="list-group-item">Name: @Server.Datacenter.Name</li>
+                        <li class="list-group-item">Description: @Server.Datacenter.Description</li>
+
+                        @if (Server.Datacenter.Location is null)
+                        {
+                            <li class="list-group-item">no location for datacenter given</li>
+                        }
+                        else
+                        {
+                            <li class="list-group-item">Location City: @Server.Datacenter.Location!.City</li>
+                            <li class="list-group-item">Location Country: @Server.Datacenter.Location!.Country</li>
+                        }
+
+                        @if (Server.Datacenter.ServerTypes is null)
+                        {
+                            <li class="list-group-item">no server types for datacenter given</li>
+                        }
+                        else
+                        {
+                            <li class="list-group-item">ServerTypes Available: @string.Join(", ", Server.Datacenter.ServerTypes!.Available)</li>
+                            <li class="list-group-item">ServerTypes AvailableForMigration: @string.Join(", ", Server.Datacenter.ServerTypes!.AvailableForMigration)</li>
+                            <li class="list-group-item">ServerTypes Supported: @string.Join(", ", Server.Datacenter.ServerTypes!.Supported)</li>
+                        }
+                    </ul>
+                }
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card">
+
+                <h5 class="card-header">Image</h5>
+
+                @if (Server.Image is null)
+                {
+                    <div class="card-body">
+                        no image given
+                    </div>
+                }
+                else
+                {
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Id: @Server.Image.Id</li>
+                        <li class="list-group-item">Name: @Server.Image.Name.Ensure()</li>
+                        <li class="list-group-item">Architecture: @Server.Image.Architecture</li>
+                        <li class="list-group-item">Created: @Server.Image.Created.ToShortDateString() @Server.Image.Created.ToShortTimeString()</li>
+                        <li class="list-group-item">DiskSize: @Server.Image.DiskSize GB</li>
+                        <li class="list-group-item">ImageSize: @Server.Image.ImageSize.Ensure(0) GB</li>
+                        <li class="list-group-item">OsFlavor: @Server.Image.OsFlavor.ToString()</li>
+                        <li class="list-group-item">OsVersion: @Server.Image.OsVersion.Ensure()</li>
+                        <li class="list-group-item">RapidDeploy: @Server.Image.RapidDeploy.ToString("Yes", "No")</li>
+                        <li class="list-group-item">Status: @Server.Image.Status.ToString()</li>
+                        <li class="list-group-item">Type: @Server.Image.Type.ToString()</li>
+
+                        @if (Server.Image.CreatedFrom is null)
+                        {
+                            <li class="list-group-item">no created from for image given</li>
+                        }
+                        else
+                        {
+                            <li class="list-group-item">CreatedFrom Id: @string.Join(", ", Server.Image.CreatedFrom!.Id)</li>
+                            <li class="list-group-item">CreatedFrom Name: @string.Join(", ", Server.Image.CreatedFrom!.Name)</li>
+                        }
+
+                        @if (Server.Image.Protection is null)
+                        {
+                            <div class="card-body">
+                                no protection for image given
+                            </div>
+                        }
+                        else
+                        {
+                            <li class="list-group-item">Protection Delete: @Server.Image.Protection.Delete.ToString("Yes", "No")</li>
+                        }
+                    </ul>
+
+                    <div class="card-footer text-body-secondary">
+                        @foreach (var label in Server.Image.Labels)
+                        {
+                            <span class="badge bg-secondary me-2">@label.Key / @label.Value</span>
+                        }
+                        @if (Server.Image.Labels.Count == 0)
+                        {
+                            <span>no labels for image given</span>
+                        }
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card">
+
+                <h5 class="card-header">IsoImage</h5>
+
+                @if (Server.IsoImage is null)
+                {
+                    <div class="card-body">
+                        no iso image given
+                    </div>
+                }
+                else
+                {
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Id: @Server.IsoImage.Id</li>
+                        <li class="list-group-item">Name: @Server.IsoImage.Name.Ensure()</li>
+                        <li class="list-group-item">Description: @Server.IsoImage.Description</li>
+
+                        @if (Server.IsoImage.Architecture is null)
+                        {
+                            <li class="list-group-item">no architecture for iso image given</li>
+                        }
+                        else
+                        {
+                            <li class="list-group-item">Architecture: @Server.IsoImage.Architecture.ToString()</li>
+                        }
+
+                        @if (Server.IsoImage.Deprecated is null)
+                        {
+                            <li class="list-group-item">no deprecated for iso image given</li>
+                        }
+                        else
+                        {
+                            <li class="list-group-item">Deprecated: @Server.IsoImage.Deprecated.Value.ToShortDateString() @Server.IsoImage.Deprecated.Value.ToShortTimeString()</li>
+                        }
+
+                        @if (Server.IsoImage.Deprecation is null)
+                        {
+                            <li class="list-group-item">no deprecation for iso image given</li>
+                        }
+                        else
+                        {
+                            <li class="list-group-item">Deprecation Announced: @Server.IsoImage.Deprecation.Announced.ToShortDateString() @Server.IsoImage.Deprecation.Announced.ToShortTimeString()</li>
+                            <li class="list-group-item">Deprecation UnavailableAfter: @Server.IsoImage.Deprecation.UnavailableAfter.ToShortDateString() @Server.IsoImage.Deprecation.UnavailableAfter.ToShortTimeString()</li>
+                        }
+
+                        @if (Server.IsoImage.Type is null)
+                        {
+                            <li class="list-group-item">no type for iso image given</li>
+                        }
+                        else
+                        {
+                            <li class="list-group-item">Type: @Server.IsoImage.Type.ToString()</li>
+                        }
+                    </ul>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row mb-4">
 
         <div class="col-md-4">
 
@@ -128,6 +347,89 @@
             </div>
 
         </div>
-    }
 
-</div>
+        <div class="col-md-4">
+
+            <div class="card">
+
+                <h5 class="card-header">Protection</h5>
+
+                @if (Server.PlacementGroup is null)
+                {
+                    <div class="card-body">
+                        no protection given
+                    </div>
+                }
+                else
+                {
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Delete: @Server.Protection.Delete.ToString("Yes", "No")</li>
+                        <li class="list-group-item">Rebuild: @Server.Protection.Rebuild.ToString("Yes", "No")</li>
+                    </ul>
+                }
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card">
+
+                <h5 class="card-header">Type</h5>
+
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Id: @Server.Type.Id</li>
+                    <li class="list-group-item">Name: @Server.Type.Name</li>
+                    <li class="list-group-item">Description: @Server.Type.Description</li>
+                    <li class="list-group-item">Cores: @Server.Type.Cores</li>
+                    <li class="list-group-item">CpuType: @Server.Type.CpuType</li>
+                    <li class="list-group-item">Deprecated: @Server.Type.Deprecated.ToString("Yes", "No")</li>
+                    <li class="list-group-item">Disk: @Server.Type.Disk GB</li>
+                    <li class="list-group-item">Memory: @Server.Type.Memory GB</li>
+                    <li class="list-group-item">StorageType: @Server.Type.StorageType</li>
+                </ul>
+
+                <h6 class="card-header">Prices for Server Type</h6>
+
+                <div class="list-group">
+
+                    <ul class="list-group list-group-flush">
+                        
+                        <li class="list-group-item">
+                            <p>
+                                Location
+                            </p>
+                            <p>
+                                Hourly.Gross/Hourly.Net
+                            </p>
+                            <p>
+                                Monthly.Gross/Monthly.Net
+                            </p>
+                        </li>
+
+                        @foreach (var price in Server.Type.Prices)
+                        {
+                            <li class="list-group-item">
+                                <p>
+                                    @price.Location
+                                </p>
+                                <p>
+                                    @price.Hourly.Gross/@price.Hourly.Net
+                                </p>
+                                <p>
+                                    @price.Monthly.Gross/@price.Monthly.Net
+                                </p>
+                            </li>
+                        }
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+}
