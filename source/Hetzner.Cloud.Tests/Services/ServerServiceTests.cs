@@ -765,7 +765,7 @@ public class ServerServiceTests
     public async Task GetAllAsync_WithServerErrorException_Throws()
     {
       // Arrange
-      _mockHttp.When("https://localhost/v1/servers*")
+      _mockHttp.When("https://localhost/v1/servers")
         .Respond(HttpStatusCode.InternalServerError);
 
       // Act
@@ -780,7 +780,7 @@ public class ServerServiceTests
     public async Task GetAllAsync_WithInvalidPage_Throws()
     {
       // Arrange
-      _mockHttp.When("https://localhost/v1/servers*")
+      _mockHttp.When("https://localhost/v1/servers")
         .Respond(HttpStatusCode.InternalServerError);
 
       // Act

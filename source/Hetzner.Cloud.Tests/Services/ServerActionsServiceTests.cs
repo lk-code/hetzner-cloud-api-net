@@ -1,6 +1,7 @@
 using System.Net;
 using FluentAssertions;
 using Hetzner.Cloud.Exceptions;
+using Hetzner.Cloud.Exceptions.Http;
 using Hetzner.Cloud.Interfaces;
 using Hetzner.Cloud.Models;
 using Hetzner.Cloud.Services;
@@ -104,10 +105,25 @@ public class ServerActionsServiceTests
     }
 
     [TestMethod]
+    public async Task GetAllAsync_WithServerErrorException_Throws()
+    {
+        // Arrange
+        _mockHttp.When("https://localhost/v1/servers/actions")
+            .Respond(HttpStatusCode.InternalServerError);
+
+        // Act
+        Func<Task> act = async () => await _instance.GetAllAsync();
+
+        // Assert
+        await act.Should().ThrowAsync<ApiException>()
+            .WithMessage("Invalid Request");
+    }
+
+    [TestMethod]
     public async Task GetAllAsync_WithInvalidPage_Throws()
     {
         // Arrange
-        _mockHttp.When("https://localhost/v1/servers*")
+        _mockHttp.When("https://localhost/v1/servers/actions")
             .Respond(HttpStatusCode.InternalServerError);
 
         // Act
