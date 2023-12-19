@@ -1,17 +1,11 @@
-﻿using Hetzner.Cloud.Enums;
-using Hetzner.Cloud.Interfaces;
+﻿using Hetzner.Cloud.Interfaces;
 using Hetzner.Cloud.Models;
 
 namespace Hetzner.Cloud.Filter;
 
-public class StatusFilter : IFilter
+public class StatusFilter(ServerStatus status) : IFilter
 {
-    public ServerStatus Status { get; private set; }
-
-    public StatusFilter(ServerStatus status)
-    {
-        this.Status = status;
-    }
+    public ServerStatus Status { get; } = status;
 
     public string GetFilterField()
     {

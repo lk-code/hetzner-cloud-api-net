@@ -2,14 +2,9 @@
 
 namespace Hetzner.Cloud.Filter;
 
-public class LabelFilter : IFilter
+public class LabelFilter(string label) : IFilter
 {
-    public string Label { get; private set; }
-
-    public LabelFilter(string label)
-    {
-        this.Label = label;
-    }
+    public string Label { get; } = label;
 
     public string GetFilterField()
     {
