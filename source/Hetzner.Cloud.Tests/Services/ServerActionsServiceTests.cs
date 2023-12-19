@@ -1,6 +1,6 @@
 using System.Net;
 using FluentAssertions;
-using Hetzner.Cloud.Exceptions.Http;
+using Hetzner.Cloud.Exceptions;
 using Hetzner.Cloud.Interfaces;
 using Hetzner.Cloud.Models;
 using Hetzner.Cloud.Services;
@@ -14,7 +14,7 @@ public class ServerActionsServiceTests
 {
     private MockHttpMessageHandler _mockHttp;
     private IHttpClientFactory _httpClientFactory;
-    private IServerActionsService _serverActionsService;
+    private IServerActionsService _instance;
 
     [TestInitialize]
     public void TestInitialize()
@@ -28,7 +28,7 @@ public class ServerActionsServiceTests
         _httpClientFactory.CreateClient(Arg.Any<string>())
             .Returns(httpClient);
         
-        _serverActionsService = new ServerActionsService(_httpClientFactory);
+        _instance = new ServerActionsService(_httpClientFactory);
     }
 
     [TestMethod]
@@ -73,7 +73,7 @@ public class ServerActionsServiceTests
             .Respond("application/json", jsonContent);
 
         // Act
-        var result = await _serverActionsService.GetAllAsync();
+        var result = await _instance.GetAllAsync();
 
         // Assert
         result.Should().NotBeNull();
@@ -104,20 +104,17 @@ public class ServerActionsServiceTests
     }
 
     [TestMethod]
-    public async Task GetByIdAsync_WithServerErrorException_Throws()
+    public async Task GetAllAsync_WithInvalidPage_Throws()
     {
         // Arrange
-        var jsonContent = """
-                          a
-                          """;
-        _mockHttp.When("https://localhost/v1/servers/actions")
-            .Respond("application/json", jsonContent);
+        _mockHttp.When("https://localhost/v1/servers*")
+            .Respond(HttpStatusCode.InternalServerError);
 
         // Act
-        Func<Task> act = async () => await _serverActionsService.GetAllAsync();
+        Func<Task> act = async () => await _instance.GetAllAsync(0);
 
         // Assert
-        await act.Should().ThrowAsync<ApiException>()
-            .WithMessage("Invalid Request");
+        await act.Should().ThrowAsync<InvalidArgumentException>()
+            .WithMessage("invalid page number (0). must be greather than 0.");
     }
 }

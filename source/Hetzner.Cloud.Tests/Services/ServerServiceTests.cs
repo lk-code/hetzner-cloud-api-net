@@ -15,7 +15,7 @@ public class ServerServiceTests
 {
     private MockHttpMessageHandler _mockHttp;
     private IHttpClientFactory _httpClientFactory;
-    private IServerService _serverService;
+    private IServerService _instance;
 
     [TestInitialize]
     public void TestInitialize()
@@ -29,7 +29,7 @@ public class ServerServiceTests
         _httpClientFactory.CreateClient(Arg.Any<string>())
             .Returns(httpClient);
         
-        _serverService = new ServerService(_httpClientFactory);
+        _instance = new ServerService(_httpClientFactory);
     }
 
     [TestMethod]
@@ -215,7 +215,7 @@ public class ServerServiceTests
             .Respond("application/json", jsonContent);
 
         // Act
-        var result = await _serverService.GetAllAsync();
+        var result = await _instance.GetAllAsync();
 
         // Assert
         result.Should().NotBeNull();
@@ -400,7 +400,7 @@ public class ServerServiceTests
         .Respond("application/json", jsonContent);
 
       // Act
-      var result = await _serverService.GetAllAsync();
+      var result = await _instance.GetAllAsync();
 
       // Assert
       result.Should().NotBeNull();
@@ -640,7 +640,7 @@ public class ServerServiceTests
         .Respond("application/json", jsonContent);
 
       // Act
-      var result = await _serverService.GetAllAsync();
+      var result = await _instance.GetAllAsync();
 
       // Assert
         result.Should().NotBeNull();
@@ -769,7 +769,7 @@ public class ServerServiceTests
         .Respond(HttpStatusCode.InternalServerError);
 
       // Act
-      Func<Task> act = async () => await _serverService.GetAllAsync();
+      Func<Task> act = async () => await _instance.GetAllAsync();
 
       // Assert
       await act.Should().ThrowAsync<ApiException>()
@@ -784,7 +784,7 @@ public class ServerServiceTests
         .Respond(HttpStatusCode.InternalServerError);
 
       // Act
-      Func<Task> act = async () => await _serverService.GetAllAsync(0);
+      Func<Task> act = async () => await _instance.GetAllAsync(0);
 
       // Assert
       await act.Should().ThrowAsync<InvalidArgumentException>()
@@ -962,7 +962,7 @@ public class ServerServiceTests
             .Respond("application/json", jsonContent);
 
         // Act
-        var result = await _serverService.GetByIdAsync(42);
+        var result = await _instance.GetByIdAsync(42);
 
         // Assert
         result.Should().NotBeNull();
@@ -1124,7 +1124,7 @@ public class ServerServiceTests
         .Respond(HttpStatusCode.NotFound);
 
       // Act
-      Func<Task> act = async () => await _serverService.GetByIdAsync(41);
+      Func<Task> act = async () => await _instance.GetByIdAsync(41);
 
       // Assert
       await act.Should().ThrowAsync<ResourceNotFoundException>()
@@ -1139,7 +1139,7 @@ public class ServerServiceTests
         .Respond(HttpStatusCode.InternalServerError);
 
       // Act
-      Func<Task> act = async () => await _serverService.GetByIdAsync(41);
+      Func<Task> act = async () => await _instance.GetByIdAsync(41);
 
       // Assert
       await act.Should().ThrowAsync<ApiException>()
