@@ -7,6 +7,7 @@
 @using Hetzner.Cloud.Models
 @using Hetzner.Cloud.Pagination
 @using Hetzner.Cloud.Filter
+@using Hetzner.Cloud.Sorting
 
 @inject IServerService ServerService
 
@@ -23,6 +24,7 @@
     private string _nameFilter = string.Empty;
     private string _labelFilter = string.Empty;
     private ServerStatus? _statusFilter = null;
+    private Sorting<ServerSorting>? _sorting = null;
 
     protected override async Task OnInitializedAsync()
     {
@@ -41,7 +43,8 @@
 
             PagedResponse<Server> servers = await ServerService.GetAllAsync(_page,
                 _itemsPerPage,
-                _filters);
+                _filters,
+                _sorting);
 
             foreach (var server in servers.Items)
             {
@@ -93,6 +96,12 @@
     public async Task OnSelectStatus(ServerStatus status)
     {
         _statusFilter = status;
+        await OnSearch();
+    }
+
+    public async Task OnSelectSorting(Sorting<ServerSorting> sorting)
+    {
+        _sorting = sorting;
         await OnSearch();
     }
 
@@ -158,6 +167,27 @@
                     @foreach(var status in Enum.GetValues(typeof(ServerStatus)))
                     {
                         <li><a class="dropdown-item" @onclick="(() => OnSelectStatus((ServerStatus)status))">@status</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Sort
+                    @if (_sorting is not null)
+                    {
+                        <span>: @_sorting.Field @_sorting.Direction</span>
+                    }
+                </button>
+                <ul class="dropdown-menu">
+                    @foreach(var sorting in Enum.GetValues(typeof(ServerSorting)))
+                    {
+                        @foreach(var direction in Enum.GetValues(typeof(SortingDirection)))
+                        {
+                            <li><a class="dropdown-item" @onclick="(() => OnSelectSorting(new((ServerSorting)sorting, (SortingDirection)direction)))">@sorting @direction</a></li>
+                        }
                     }
                 </ul>
             </div>

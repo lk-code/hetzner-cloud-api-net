@@ -29,11 +29,11 @@ public static class UriBuilderExtensions
         return uriBuilder;
     }
 
-    public static UriBuilder AddSorting(this UriBuilder uriBuilder, Sorting<ServerSortField>? sorting)
+    public static UriBuilder AddSorting(this UriBuilder uriBuilder, Sorting<ServerSorting>? sorting)
     {
         if (sorting is not null)
         {
-            uriBuilder.AddUriParameter(sorting.Field.ToString(), sorting.Direction.ToString());
+            uriBuilder.AddUriParameter("sort", sorting.AsUriParameter());
         }
         
         return uriBuilder;

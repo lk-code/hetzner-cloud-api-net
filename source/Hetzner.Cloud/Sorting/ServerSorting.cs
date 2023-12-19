@@ -1,6 +1,6 @@
 ﻿namespace Hetzner.Cloud.Sorting;
 
-public enum ServerSortField
+public enum ServerSorting
 {
     Id,
     Name,

@@ -11,4 +11,9 @@ public class Sorting<T>
         this.Field = field;
         this.Direction = sortDirection;
     }
+    
+    public string AsUriParameter()
+    {
+        return $"{Field.ToString().ToLowerInvariant()}:{Direction.ToString().ToLowerInvariant()}";
+    }
 }
