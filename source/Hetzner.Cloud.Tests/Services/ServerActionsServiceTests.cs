@@ -13,9 +13,9 @@ namespace Hetzner.Cloud.Tests.Services;
 [TestClass]
 public class ServerActionsServiceTests
 {
-    private MockHttpMessageHandler _mockHttp;
-    private IHttpClientFactory _httpClientFactory;
-    private IServerActionsService _instance;
+    private MockHttpMessageHandler _mockHttp = null!;
+    private IHttpClientFactory _httpClientFactory = null!;
+    private IServerActionsService _instance = null!;
 
     [TestInitialize]
     public void TestInitialize()

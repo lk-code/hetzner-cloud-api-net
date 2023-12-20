@@ -17,7 +17,7 @@ internal static class IsoImageMappings
         {
             Architecture = jsonElement.GetProperty("architecture").ToNullableEnum<IsoImageArchitecture>(),
             Deprecated = jsonElement.GetProperty("deprecated").GetDateTime(),
-            Deprecation = jsonElement.GetProperty("deprecation").ToIsoImageDeprecation()!,
+            Deprecation = jsonElement.GetProperty("deprecation").ToIsoImageDeprecation(),
             Description = jsonElement.GetProperty("description").GetString()!,
             Name = jsonElement.GetNullableProperty("name").GetString(),
             Type = jsonElement.GetProperty("type").ToNullableEnum<IsoImageType>(),

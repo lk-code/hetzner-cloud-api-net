@@ -26,9 +26,9 @@ internal static class ServerMappings
             Image = json.GetProperty("image").ToImage(),
             IsoImage = json.GetProperty("iso").ToIsoImage(),
             RescueEnabled = json.GetProperty("rescue_enabled").GetBoolean(),
-            LoadBalancers = json.GetNullableProperty("load_balancers").ToLongArray()!,
+            LoadBalancers = json.GetNullableProperty("load_balancers").ToLongArray(),
             PrivateNetworks = json.GetProperty("private_net").ToPrivateNetworks(),
-            Volumes = json.GetNullableProperty("volumes").ToLongArray()!,
+            Volumes = json.GetNullableProperty("volumes").ToLongArray(),
             Type = json.GetProperty("server_type").ToServerType(),
             PublicNetwork = json.GetProperty("public_net").ToPublicNetwork(),
         };

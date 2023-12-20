@@ -6,9 +6,10 @@ public class Firewall(long id, FirewallStatus status)
     /// ID of the Resource
     /// </summary>
     public long Id { get; } = id;
+
     /// <summary>
     /// Possible enum values: applied, pending
     /// Status of the Firewall on the Server
     /// </summary>
-    public FirewallStatus Status { get; }
+    public FirewallStatus Status { get; } = status;
 }

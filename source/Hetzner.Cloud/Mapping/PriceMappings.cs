@@ -25,8 +25,8 @@ internal static class PriceMappings
     
     internal static PriceValue ToPriceValue(this JsonElement json)
     {
-        PriceValue data = new(json.GetProperty("gross").GetString(),
-            json.GetProperty("net").GetString());
+        PriceValue data = new(json.GetProperty("gross").GetString()!,
+            json.GetProperty("net").GetString()!);
 
         return data;
     }

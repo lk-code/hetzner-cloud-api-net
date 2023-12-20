@@ -10,9 +10,9 @@ internal static class ServerActionMappings
     {
         ServerAction data = new(json.GetProperty("id").GetInt64(),
             json.GetProperty("command").GetString()!,
-            json.GetProperty("progress").GetInt32()!,
-            json.GetProperty("resources").ToServerActionResources()!,
-            json.GetProperty("started").GetDateTime()!,
+            json.GetProperty("progress").GetInt32(),
+            json.GetProperty("resources").ToServerActionResources(),
+            json.GetProperty("started").GetDateTime(),
             json.GetProperty("command").ToEnum<ServerActionStatus>())
         {
             Error = json.GetProperty("error").ToError(),
@@ -32,7 +32,7 @@ internal static class ServerActionMappings
     
     internal static ServerActionResource ToServerActionResource(this JsonElement json)
     {
-        ServerActionResource data = new(json.GetProperty("id").GetInt64()!,
+        ServerActionResource data = new(json.GetProperty("id").GetInt64(),
             json.GetProperty("type").GetString()!);
 
         return data;

@@ -9,7 +9,7 @@ public class Image(long id)
     /// <summary>
     /// Type of cpu architecture this image is compatible with.
     /// </summary>
-    public string Architecture { get; internal set; }
+    public string Architecture { get; internal set; } = string.Empty;
     /// <summary>
     /// ID of Server the Image is bound to. Only set for Images of type backup.
     /// </summary>
@@ -33,7 +33,7 @@ public class Image(long id)
     /// <summary>
     /// Description of the Image
     /// </summary>
-    public string Description { get; internal set; }
+    public string Description { get; internal set; } = string.Empty;
     /// <summary>
     /// Size of the disk contained in the Image in GB
     /// </summary>

@@ -1,4 +1,4 @@
-namespace Hetzner.Cloud.Mapping;
+namespace Hetzner.Cloud.Models;
 
 public class ServerActionResource(long id, string type)
 {

@@ -7,10 +7,12 @@ namespace Hetzner.Cloud;
 
 public static class ServiceCollectionExtensions
 {
+    
     /// <summary>
     /// add hetzner cloud services
     /// </summary>
     /// <param name="services">the <see cref="IServiceCollection"/> instance</param>
+    /// <param name="apiToken"></param>
     /// <returns>the <see cref="IServiceCollection"/> instance</returns>
     public static IServiceCollection AddHetznerCloud(this IServiceCollection services, string apiToken = "")
     {

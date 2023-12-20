@@ -12,20 +12,20 @@ public class SortingTests
     }
 
     [TestMethod]
-    public async Task AsUriParameter_WithServerSortingCreatedAndSortingDirectionDESC_Returns()
+    public void AsUriParameter_WithServerSortingCreatedAndSortingDirectionDESC_Returns()
     {
         // Act
-        var sorting = new Sorting<ServerSorting>(ServerSorting.Created, SortingDirection.DESC);
+        var sorting = new Sorting<ServerSorting>(ServerSorting.Created, SortingDirection.Desc);
 
         // Assert
         sorting.AsUriParameter().Should().Be("created:desc");
     }
 
     [TestMethod]
-    public async Task AsUriParameter_WithServerSortingNameAndSortingDirectionASC_Returns()
+    public void AsUriParameter_WithServerSortingNameAndSortingDirectionASC_Returns()
     {
         // Act
-        var sorting = new Sorting<ServerSorting>(ServerSorting.Name, SortingDirection.ASC);
+        var sorting = new Sorting<ServerSorting>(ServerSorting.Name, SortingDirection.Asc);
 
         // Assert
         sorting.AsUriParameter().Should().Be("name:asc");

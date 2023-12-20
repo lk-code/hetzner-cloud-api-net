@@ -14,6 +14,7 @@ public interface IServerService
     /// <param name="itemsPerPage">Items to load per page.</param>
     /// <param name="filter">filter allows only <seealso cref="NameFilter"/>, <seealso cref="LabelFilter"/> and <seealso cref="StatusFilter"/>.</param>
     /// <param name="sorting">sorts the result</param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<PagedResponse<Server>> GetAllAsync(long page = 1,
         long itemsPerPage = 25,
@@ -25,6 +26,7 @@ public interface IServerService
     /// Returns a specific Server object. The Server must exist inside the Project
     /// </summary>
     /// <param name="id">ID of the Server</param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<SingledResponse<Server>> GetByIdAsync(long id,
         CancellationToken cancellationToken = default);

@@ -4,7 +4,7 @@ public enum OsFlavor
 {
     Unknown,
     Ubuntu,
-    CentOS,
+    CentOs,
     Debian,
     Fedora,
     Rocky,

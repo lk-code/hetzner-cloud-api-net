@@ -11,7 +11,7 @@ internal static class PublicNetworkMappings
         PublicNetwork data = new()
         {
             Firewalls = json.GetProperty("firewalls").ToFirewalls(),
-            FloatingIps = json.GetNullableProperty("floating_ips").ToLongArray()!,
+            FloatingIps = json.GetNullableProperty("floating_ips").ToLongArray(),
             Ipv4 = json.GetProperty("ipv4").ToIp4Address(),
             Ipv6 = json.GetProperty("ipv6").ToIp6Address(),
         };

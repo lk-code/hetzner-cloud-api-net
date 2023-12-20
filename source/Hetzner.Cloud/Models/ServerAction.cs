@@ -1,5 +1,3 @@
-using Hetzner.Cloud.Mapping;
-
 namespace Hetzner.Cloud.Models;
 
 public class ServerAction(

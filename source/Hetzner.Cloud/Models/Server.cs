@@ -1,6 +1,4 @@
-﻿using Hetzner.Cloud.Enums;
-
-namespace Hetzner.Cloud.Models;
+﻿namespace Hetzner.Cloud.Models;
 
 public class Server(long id)
 {
@@ -88,9 +86,9 @@ public class Server(long id)
     /// <summary>
     /// Private networks information
     /// </summary>
-    public ServerType Type { get; internal set; }
+    public ServerType Type { get; internal set; } = null!;
     /// <summary>
     /// Public network information. The Server's IPv4 address can be found in public_net->ipv4->ip
     /// </summary>
-    public PublicNetwork PublicNetwork { get; internal set; }
+    public PublicNetwork PublicNetwork { get; internal set; } = null!;
 }
