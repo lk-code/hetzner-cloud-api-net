@@ -29,7 +29,7 @@ internal static class ImageMappings
             OsFlavor = json.GetProperty("os_flavor").ToEnum<OsFlavor>(),
             OsVersion = json.GetNullableProperty("os_version").GetString()!,
             Protection = json.GetProperty("protection").ToImageProtection(),
-            RapidDeploy = json.GetProperty("rapid_deploy").GetBoolean()!,
+            RapidDeploy = json.GetProperty("rapid_deploy").GetBoolean(),
             Status = json.GetProperty("status").ToEnum<ImageStatus>(),
             Type = json.GetProperty("type").ToEnum<ImageType>(),
         };

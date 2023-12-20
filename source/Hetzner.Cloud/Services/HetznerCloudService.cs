@@ -7,24 +7,25 @@ namespace Hetzner.Cloud.Services;
 /// <inheritdoc/>
 public class HetznerCloudService : IHetznerCloudService
 {
-    private readonly IConfiguration _configuration = null!;
-    private HttpClient? _httpClient = null;
+    private HttpClient? _httpClient;
 
-    public const string API_SERVER = "https://api.hetzner.cloud";
+    private const string API_SERVER = "https://api.hetzner.cloud";
 
-    private string? _apiToken = null;
-    private readonly string _clientUserAgent;
+    private string? _apiToken;
+    private readonly string? _clientUserAgent;
 
     public HetznerCloudService(IConfiguration configuration)
     {
-        this._configuration = configuration;
-
         // load config
-        IConfigurationSection hcloudConfig = this._configuration.GetSection("HetznerCloud");
+        IConfigurationSection hcloudConfig = configuration.GetSection("HetznerCloud");
 
-        this._clientUserAgent = hcloudConfig.GetSection("useragent").Value;
+        string? userAgent = hcloudConfig.GetSection("useragent").Value;
+        if (string.IsNullOrEmpty(userAgent))
+            this._clientUserAgent = userAgent!;
 
-        this.LoadApiToken(hcloudConfig.GetSection("apitoken").Value);
+        string? apiToken = hcloudConfig.GetSection("apitoken").Value;
+        if (string.IsNullOrEmpty(apiToken))
+            this.LoadApiToken(apiToken!);
     }
 
     /// <inheritdoc/>
@@ -34,7 +35,8 @@ public class HetznerCloudService : IHetznerCloudService
 
         if (this._httpClient is not null)
         {
-            this._httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this._apiToken);
+            this._httpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", this._apiToken);
         }
     }
 
@@ -42,7 +44,7 @@ public class HetznerCloudService : IHetznerCloudService
     public void ConfigureClient(IServiceProvider serviceProvider, HttpClient httpClient)
     {
         this._httpClient = httpClient;
-        
+
         this._httpClient.BaseAddress = new Uri(API_SERVER);
 
         // httpClient.DefaultRequestHeaders.Add("User-Agent", this._clientUserAgent);

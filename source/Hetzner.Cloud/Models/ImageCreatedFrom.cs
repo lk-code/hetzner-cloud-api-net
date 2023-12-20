@@ -9,5 +9,5 @@ public class ImageCreatedFrom(long id)
     /// <summary>
     /// Server name at the time the Image was created
     /// </summary>
-    public string Name { get; internal set; }
+    public string Name { get; internal set; } = string.Empty;
 }

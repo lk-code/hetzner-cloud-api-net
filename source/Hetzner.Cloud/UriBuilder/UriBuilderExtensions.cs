@@ -11,7 +11,7 @@ public static class UriBuilderExtensions
         return new UriBuilder(address);
     }
     
-    public static UriBuilder AddPagination(this UriBuilder uriBuilder, int currentPage, int itemsPerPage)
+    public static UriBuilder AddPagination(this UriBuilder uriBuilder, long currentPage, long itemsPerPage)
     {
         if (currentPage <= 0)
         {
@@ -29,7 +29,7 @@ public static class UriBuilderExtensions
         return uriBuilder;
     }
 
-    public static UriBuilder AddSorting(this UriBuilder uriBuilder, Sorting<ServerSorting>? sorting)
+    public static UriBuilder AddSorting<T>(this UriBuilder uriBuilder, Sorting<T>? sorting)
     {
         if (sorting is not null)
         {

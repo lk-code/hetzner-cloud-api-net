@@ -13,9 +13,9 @@ namespace Hetzner.Cloud.Tests.Services;
 [TestClass]
 public class ServerServiceTests
 {
-    private MockHttpMessageHandler _mockHttp;
-    private IHttpClientFactory _httpClientFactory;
-    private IServerService _serverService;
+    private MockHttpMessageHandler _mockHttp = null!;
+    private IHttpClientFactory _httpClientFactory = null!;
+    private IServerService _instance = null!;
 
     [TestInitialize]
     public void TestInitialize()
@@ -29,7 +29,7 @@ public class ServerServiceTests
         _httpClientFactory.CreateClient(Arg.Any<string>())
             .Returns(httpClient);
         
-        _serverService = new ServerService(_httpClientFactory);
+        _instance = new ServerService(_httpClientFactory);
     }
 
     [TestMethod]
@@ -215,7 +215,7 @@ public class ServerServiceTests
             .Respond("application/json", jsonContent);
 
         // Act
-        var result = await _serverService.GetAllAsync();
+        var result = await _instance.GetAllAsync();
 
         // Assert
         result.Should().NotBeNull();
@@ -294,7 +294,7 @@ public class ServerServiceTests
         result.Items.First().Image!.Architecture.Should().Be("x86");
         
         result.Items.First().IsoImage.Should().NotBeNull();
-        result.Items.First().IsoImage!.Architecture.Should().Be(IsoImageArchitecture.x86);
+        result.Items.First().IsoImage!.Architecture.Should().Be(IsoImageArchitecture.X86);
         result.Items.First().IsoImage!.Deprecated.Should().Be(DateTime.Parse("2018-02-28T00:00:00+00:00"));
         result.Items.First().IsoImage!.Deprecation.Should().NotBeNull();
         result.Items.First().IsoImage!.Deprecation!.Announced.Should().Be(DateTime.Parse("2023-06-01T00:00:00+00:00"));
@@ -331,46 +331,46 @@ public class ServerServiceTests
         result.Items.First().Protection!.Rebuild.Should().BeFalse();
         
         result.Items.First().PublicNetwork.Should().NotBeNull();
-        result.Items.First().PublicNetwork!.Firewalls.Should().NotBeNull();
-        result.Items.First().PublicNetwork!.Firewalls.Should().HaveCount(1);
-        result.Items.First().PublicNetwork!.Firewalls.First().Id.Should().Be(42);
-        result.Items.First().PublicNetwork!.Firewalls.First().Status.Should().Be(FirewallStatus.Applied);
-        result.Items.First().PublicNetwork!.FloatingIps.Should().NotBeNull();
-        result.Items.First().PublicNetwork!.FloatingIps.Should().HaveCount(1);
-        result.Items.First().PublicNetwork!.FloatingIps.Should().Contain(478);
-        result.Items.First().PublicNetwork!.Ipv4.Should().NotBeNull();
-        result.Items.First().PublicNetwork!.Ipv4!.Id.Should().Be(42);
-        result.Items.First().PublicNetwork!.Ipv4!.Ip.Should().Be("1.2.3.4");
-        result.Items.First().PublicNetwork!.Ipv4!.Blocked.Should().BeFalse();
-        result.Items.First().PublicNetwork!.Ipv4!.DnsPointer.Should().Be("server01.example.com");
-        result.Items.First().PublicNetwork!.Ipv6.Should().NotBeNull();
-        result.Items.First().PublicNetwork!.Ipv6!.Id.Should().Be(42);
-        result.Items.First().PublicNetwork!.Ipv6!.Ip.Should().Be("2001:db8::/64");
-        result.Items.First().PublicNetwork!.Ipv6!.Blocked.Should().BeFalse();
-        result.Items.First().PublicNetwork!.Ipv6!.DnsPointer.Should().NotBeNull();
-        result.Items.First().PublicNetwork!.Ipv6!.DnsPointer!.Should().HaveCount(1);
-        result.Items.First().PublicNetwork!.Ipv6!.DnsPointer!.First().Ip.Should().Be("2001:db8::1");
-        result.Items.First().PublicNetwork!.Ipv6!.DnsPointer!.First().DnsPointer.Should().Be("server.example.com");
+        result.Items.First().PublicNetwork.Firewalls.Should().NotBeNull();
+        result.Items.First().PublicNetwork.Firewalls.Should().HaveCount(1);
+        result.Items.First().PublicNetwork.Firewalls.First().Id.Should().Be(42);
+        result.Items.First().PublicNetwork.Firewalls.First().Status.Should().Be(FirewallStatus.Applied);
+        result.Items.First().PublicNetwork.FloatingIps.Should().NotBeNull();
+        result.Items.First().PublicNetwork.FloatingIps.Should().HaveCount(1);
+        result.Items.First().PublicNetwork.FloatingIps.Should().Contain(478);
+        result.Items.First().PublicNetwork.Ipv4.Should().NotBeNull();
+        result.Items.First().PublicNetwork.Ipv4!.Id.Should().Be(42);
+        result.Items.First().PublicNetwork.Ipv4!.Ip.Should().Be("1.2.3.4");
+        result.Items.First().PublicNetwork.Ipv4!.Blocked.Should().BeFalse();
+        result.Items.First().PublicNetwork.Ipv4!.DnsPointer.Should().Be("server01.example.com");
+        result.Items.First().PublicNetwork.Ipv6.Should().NotBeNull();
+        result.Items.First().PublicNetwork.Ipv6!.Id.Should().Be(42);
+        result.Items.First().PublicNetwork.Ipv6!.Ip.Should().Be("2001:db8::/64");
+        result.Items.First().PublicNetwork.Ipv6!.Blocked.Should().BeFalse();
+        result.Items.First().PublicNetwork.Ipv6!.DnsPointer.Should().NotBeNull();
+        result.Items.First().PublicNetwork.Ipv6!.DnsPointer.Should().HaveCount(1);
+        result.Items.First().PublicNetwork.Ipv6!.DnsPointer.First().Ip.Should().Be("2001:db8::1");
+        result.Items.First().PublicNetwork.Ipv6!.DnsPointer.First().DnsPointer.Should().Be("server.example.com");
         
         result.Items.First().Type.Should().NotBeNull();
-        result.Items.First().Type!.Id.Should().Be(1);
-        result.Items.First().Type!.Cores.Should().Be(1);
-        result.Items.First().Type!.CpuType.Should().Be(ServerCpuTypes.Shared);
-        result.Items.First().Type!.Deprecated.Should().BeFalse();
-        result.Items.First().Type!.Description.Should().Be("CX11");
-        result.Items.First().Type!.Disk.Should().Be(25);
-        result.Items.First().Type!.Memory.Should().Be(1);
-        result.Items.First().Type!.Name.Should().Be("cx11");
-        result.Items.First().Type!.StorageType.Should().Be(ServerStorageTypes.Local);
-        result.Items.First().Type!.Prices.Should().NotBeNull();
-        result.Items.First().Type!.Prices!.Should().HaveCount(1);
-        result.Items.First().Type!.Prices!.First().Location.Should().Be("fsn1");
-        result.Items.First().Type!.Prices!.First().Hourly.Should().NotBeNull();
-        result.Items.First().Type!.Prices!.First().Hourly!.Gross.Should().Be("1.1900000000000000");
-        result.Items.First().Type!.Prices!.First().Hourly!.Net.Should().Be("1.0000000000");
-        result.Items.First().Type!.Prices!.First().Monthly.Should().NotBeNull();
-        result.Items.First().Type!.Prices!.First().Monthly!.Gross.Should().Be("1.1900000000000000");
-        result.Items.First().Type!.Prices!.First().Monthly!.Net.Should().Be("1.0000000000");
+        result.Items.First().Type.Id.Should().Be(1);
+        result.Items.First().Type.Cores.Should().Be(1);
+        result.Items.First().Type.CpuType.Should().Be(ServerCpuTypes.Shared);
+        result.Items.First().Type.Deprecated.Should().BeFalse();
+        result.Items.First().Type.Description.Should().Be("CX11");
+        result.Items.First().Type.Disk.Should().Be(25);
+        result.Items.First().Type.Memory.Should().Be(1);
+        result.Items.First().Type.Name.Should().Be("cx11");
+        result.Items.First().Type.StorageType.Should().Be(ServerStorageTypes.Local);
+        result.Items.First().Type.Prices.Should().NotBeNull();
+        result.Items.First().Type.Prices.Should().HaveCount(1);
+        result.Items.First().Type.Prices.First().Location.Should().Be("fsn1");
+        result.Items.First().Type.Prices.First().Hourly.Should().NotBeNull();
+        result.Items.First().Type.Prices.First().Hourly.Gross.Should().Be("1.1900000000000000");
+        result.Items.First().Type.Prices.First().Hourly.Net.Should().Be("1.0000000000");
+        result.Items.First().Type.Prices.First().Monthly.Should().NotBeNull();
+        result.Items.First().Type.Prices.First().Monthly.Gross.Should().Be("1.1900000000000000");
+        result.Items.First().Type.Prices.First().Monthly.Net.Should().Be("1.0000000000");
         
         result.Items.First().Volumes.Should().NotBeNull();
         result.Items.First().Volumes.Should().BeEmpty();
@@ -400,7 +400,7 @@ public class ServerServiceTests
         .Respond("application/json", jsonContent);
 
       // Act
-      var result = await _serverService.GetAllAsync();
+      var result = await _instance.GetAllAsync();
 
       // Assert
       result.Should().NotBeNull();
@@ -640,7 +640,7 @@ public class ServerServiceTests
         .Respond("application/json", jsonContent);
 
       // Act
-      var result = await _serverService.GetAllAsync();
+      var result = await _instance.GetAllAsync();
 
       // Assert
         result.Should().NotBeNull();
@@ -728,34 +728,34 @@ public class ServerServiceTests
         result.Items.First().Protection!.Rebuild.Should().BeFalse();
         
         result.Items.First().PublicNetwork.Should().NotBeNull();
-        result.Items.First().PublicNetwork!.Firewalls.Should().NotBeNull();
-        result.Items.First().PublicNetwork!.Firewalls.Should().BeEmpty();
-        result.Items.First().PublicNetwork!.FloatingIps.Should().NotBeNull();
-        result.Items.First().PublicNetwork!.FloatingIps.Should().BeEmpty();
-        result.Items.First().PublicNetwork!.Ipv4.Should().NotBeNull();
-        result.Items.First().PublicNetwork!.Ipv4!.Id.Should().Be(42);
-        result.Items.First().PublicNetwork!.Ipv4!.Ip.Should().Be("1.2.3.4");
-        result.Items.First().PublicNetwork!.Ipv4!.Blocked.Should().BeFalse();
-        result.Items.First().PublicNetwork!.Ipv4!.DnsPointer.Should().Be("static.1.2.3.4.clients.your-server.de");
-        result.Items.First().PublicNetwork!.Ipv6.Should().NotBeNull();
-        result.Items.First().PublicNetwork!.Ipv6!.Id.Should().Be(42);
-        result.Items.First().PublicNetwork!.Ipv6!.Ip.Should().Be("2001:db8::1");
-        result.Items.First().PublicNetwork!.Ipv6!.Blocked.Should().BeFalse();
-        result.Items.First().PublicNetwork!.Ipv6!.DnsPointer.Should().NotBeNull();
-        result.Items.First().PublicNetwork!.Ipv6!.DnsPointer!.Should().BeEmpty();
+        result.Items.First().PublicNetwork.Firewalls.Should().NotBeNull();
+        result.Items.First().PublicNetwork.Firewalls.Should().BeEmpty();
+        result.Items.First().PublicNetwork.FloatingIps.Should().NotBeNull();
+        result.Items.First().PublicNetwork.FloatingIps.Should().BeEmpty();
+        result.Items.First().PublicNetwork.Ipv4.Should().NotBeNull();
+        result.Items.First().PublicNetwork.Ipv4!.Id.Should().Be(42);
+        result.Items.First().PublicNetwork.Ipv4!.Ip.Should().Be("1.2.3.4");
+        result.Items.First().PublicNetwork.Ipv4!.Blocked.Should().BeFalse();
+        result.Items.First().PublicNetwork.Ipv4!.DnsPointer.Should().Be("static.1.2.3.4.clients.your-server.de");
+        result.Items.First().PublicNetwork.Ipv6.Should().NotBeNull();
+        result.Items.First().PublicNetwork.Ipv6!.Id.Should().Be(42);
+        result.Items.First().PublicNetwork.Ipv6!.Ip.Should().Be("2001:db8::1");
+        result.Items.First().PublicNetwork.Ipv6!.Blocked.Should().BeFalse();
+        result.Items.First().PublicNetwork.Ipv6!.DnsPointer.Should().NotBeNull();
+        result.Items.First().PublicNetwork.Ipv6!.DnsPointer.Should().BeEmpty();
         
         result.Items.First().Type.Should().NotBeNull();
-        result.Items.First().Type!.Id.Should().Be(3);
-        result.Items.First().Type!.Cores.Should().Be(2);
-        result.Items.First().Type!.CpuType.Should().Be(ServerCpuTypes.Shared);
-        result.Items.First().Type!.Deprecated.Should().BeFalse();
-        result.Items.First().Type!.Description.Should().Be("CX21");
-        result.Items.First().Type!.Disk.Should().Be(40);
-        result.Items.First().Type!.Memory.Should().Be(4.0);
-        result.Items.First().Type!.Name.Should().Be("cx21");
-        result.Items.First().Type!.StorageType.Should().Be(ServerStorageTypes.Local);
-        result.Items.First().Type!.Prices.Should().NotBeNull();
-        result.Items.First().Type!.Prices!.Should().HaveCount(3);
+        result.Items.First().Type.Id.Should().Be(3);
+        result.Items.First().Type.Cores.Should().Be(2);
+        result.Items.First().Type.CpuType.Should().Be(ServerCpuTypes.Shared);
+        result.Items.First().Type.Deprecated.Should().BeFalse();
+        result.Items.First().Type.Description.Should().Be("CX21");
+        result.Items.First().Type.Disk.Should().Be(40);
+        result.Items.First().Type.Memory.Should().Be(4.0);
+        result.Items.First().Type.Name.Should().Be("cx21");
+        result.Items.First().Type.StorageType.Should().Be(ServerStorageTypes.Local);
+        result.Items.First().Type.Prices.Should().NotBeNull();
+        result.Items.First().Type.Prices.Should().HaveCount(3);
         
         result.Items.First().Volumes.Should().NotBeNull();
         result.Items.First().Volumes.Should().BeEmpty();
@@ -765,11 +765,11 @@ public class ServerServiceTests
     public async Task GetAllAsync_WithServerErrorException_Throws()
     {
       // Arrange
-      _mockHttp.When("https://localhost/v1/servers*")
+      _mockHttp.When("https://localhost/v1/servers")
         .Respond(HttpStatusCode.InternalServerError);
 
       // Act
-      Func<Task> act = async () => await _serverService.GetAllAsync();
+      Func<Task> act = async () => await _instance.GetAllAsync();
 
       // Assert
       await act.Should().ThrowAsync<ApiException>()
@@ -780,11 +780,11 @@ public class ServerServiceTests
     public async Task GetAllAsync_WithInvalidPage_Throws()
     {
       // Arrange
-      _mockHttp.When("https://localhost/v1/servers*")
+      _mockHttp.When("https://localhost/v1/servers")
         .Respond(HttpStatusCode.InternalServerError);
 
       // Act
-      Func<Task> act = async () => await _serverService.GetAllAsync(0);
+      Func<Task> act = async () => await _instance.GetAllAsync(0);
 
       // Assert
       await act.Should().ThrowAsync<InvalidArgumentException>()
@@ -962,158 +962,158 @@ public class ServerServiceTests
             .Respond("application/json", jsonContent);
 
         // Act
-        var result = await _serverService.GetByIdAsync(42);
+        var result = await _instance.GetByIdAsync(42);
 
         // Assert
         result.Should().NotBeNull();
         result.Item.Should().NotBeNull();
         
-        result.Item!.BackupWindow.Should().Be("22-02");
-        result.Item!.Created.Should().Be(DateTime.Parse("2016-01-30T23:55:00+00:00"));
-        result.Item!.Id.Should().Be(42);
-        result.Item!.IncludedTraffic.Should().Be(654321);
-        result.Item!.IngoingTraffic.Should().Be(123456);
-        result.Item!.Locked.Should().BeFalse();
-        result.Item!.Name.Should().Be("my-resource");
-        result.Item!.OutgoingTraffic.Should().Be(123456);
-        result.Item!.PrimaryDiskSize.Should().Be(50);
-        result.Item!.RescueEnabled.Should().BeFalse();
-        result.Item!.Status.Should().Be(ServerStatus.Running);
+        result.Item.BackupWindow.Should().Be("22-02");
+        result.Item.Created.Should().Be(DateTime.Parse("2016-01-30T23:55:00+00:00"));
+        result.Item.Id.Should().Be(42);
+        result.Item.IncludedTraffic.Should().Be(654321);
+        result.Item.IngoingTraffic.Should().Be(123456);
+        result.Item.Locked.Should().BeFalse();
+        result.Item.Name.Should().Be("my-resource");
+        result.Item.OutgoingTraffic.Should().Be(123456);
+        result.Item.PrimaryDiskSize.Should().Be(50);
+        result.Item.RescueEnabled.Should().BeFalse();
+        result.Item.Status.Should().Be(ServerStatus.Running);
         
-        result.Item!.Datacenter.Should().NotBeNull();
-        result.Item!.Datacenter!.Id.Should().Be(42);
-        result.Item!.Datacenter!.Name.Should().Be("fsn1-dc8");
-        result.Item!.Datacenter!.Description.Should().Be("Falkenstein DC Park 8");
-        result.Item!.Datacenter!.Location.Should().NotBeNull();
-        result.Item!.Datacenter!.Location!.Id.Should().Be(1);
-        result.Item!.Datacenter!.Location!.Name.Should().Be("fsn1");
-        result.Item!.Datacenter!.Location!.Description.Should().Be("Falkenstein DC Park 1");
-        result.Item!.Datacenter!.Location!.City.Should().Be("Falkenstein");
-        result.Item!.Datacenter!.Location!.Country.Should().Be("DE");
-        result.Item!.Datacenter!.Location!.Latitude.Should().Be(50.47612);
-        result.Item!.Datacenter!.Location!.Longitude.Should().Be(12.370071);
-        result.Item!.Datacenter!.Location!.NetworkZone.Should().Be("eu-central");
-        result.Item!.Datacenter!.ServerTypes.Should().NotBeNull();
-        result.Item!.Datacenter!.ServerTypes!.Available.Should().NotBeNull();
-        result.Item!.Datacenter!.ServerTypes!.Available.Should().HaveCount(3);
-        result.Item!.Datacenter!.ServerTypes!.Available.Should().Contain(1);
-        result.Item!.Datacenter!.ServerTypes!.Available.Should().Contain(2);
-        result.Item!.Datacenter!.ServerTypes!.Available.Should().Contain(3);
-        result.Item!.Datacenter!.ServerTypes!.AvailableForMigration.Should().NotBeNull();
-        result.Item!.Datacenter!.ServerTypes!.AvailableForMigration.Should().HaveCount(3);
-        result.Item!.Datacenter!.ServerTypes!.AvailableForMigration.Should().Contain(1);
-        result.Item!.Datacenter!.ServerTypes!.AvailableForMigration.Should().Contain(2);
-        result.Item!.Datacenter!.ServerTypes!.AvailableForMigration.Should().Contain(3);
-        result.Item!.Datacenter!.ServerTypes!.Supported.Should().NotBeNull();
-        result.Item!.Datacenter!.ServerTypes!.Supported.Should().HaveCount(3);
-        result.Item!.Datacenter!.ServerTypes!.Supported.Should().Contain(1);
-        result.Item!.Datacenter!.ServerTypes!.Supported.Should().Contain(2);
-        result.Item!.Datacenter!.ServerTypes!.Supported.Should().Contain(3);
+        result.Item.Datacenter.Should().NotBeNull();
+        result.Item.Datacenter!.Id.Should().Be(42);
+        result.Item.Datacenter!.Name.Should().Be("fsn1-dc8");
+        result.Item.Datacenter!.Description.Should().Be("Falkenstein DC Park 8");
+        result.Item.Datacenter!.Location.Should().NotBeNull();
+        result.Item.Datacenter!.Location!.Id.Should().Be(1);
+        result.Item.Datacenter!.Location!.Name.Should().Be("fsn1");
+        result.Item.Datacenter!.Location!.Description.Should().Be("Falkenstein DC Park 1");
+        result.Item.Datacenter!.Location!.City.Should().Be("Falkenstein");
+        result.Item.Datacenter!.Location!.Country.Should().Be("DE");
+        result.Item.Datacenter!.Location!.Latitude.Should().Be(50.47612);
+        result.Item.Datacenter!.Location!.Longitude.Should().Be(12.370071);
+        result.Item.Datacenter!.Location!.NetworkZone.Should().Be("eu-central");
+        result.Item.Datacenter!.ServerTypes.Should().NotBeNull();
+        result.Item.Datacenter!.ServerTypes!.Available.Should().NotBeNull();
+        result.Item.Datacenter!.ServerTypes!.Available.Should().HaveCount(3);
+        result.Item.Datacenter!.ServerTypes!.Available.Should().Contain(1);
+        result.Item.Datacenter!.ServerTypes!.Available.Should().Contain(2);
+        result.Item.Datacenter!.ServerTypes!.Available.Should().Contain(3);
+        result.Item.Datacenter!.ServerTypes!.AvailableForMigration.Should().NotBeNull();
+        result.Item.Datacenter!.ServerTypes!.AvailableForMigration.Should().HaveCount(3);
+        result.Item.Datacenter!.ServerTypes!.AvailableForMigration.Should().Contain(1);
+        result.Item.Datacenter!.ServerTypes!.AvailableForMigration.Should().Contain(2);
+        result.Item.Datacenter!.ServerTypes!.AvailableForMigration.Should().Contain(3);
+        result.Item.Datacenter!.ServerTypes!.Supported.Should().NotBeNull();
+        result.Item.Datacenter!.ServerTypes!.Supported.Should().HaveCount(3);
+        result.Item.Datacenter!.ServerTypes!.Supported.Should().Contain(1);
+        result.Item.Datacenter!.ServerTypes!.Supported.Should().Contain(2);
+        result.Item.Datacenter!.ServerTypes!.Supported.Should().Contain(3);
         
-        result.Item!.Image.Should().NotBeNull();
-        result.Item!.Image!.Id.Should().Be(42);
-        result.Item!.Image!.Name.Should().Be("ubuntu-20.04");
-        result.Item!.Image!.Description.Should().Be("Ubuntu 20.04 Standard 64 bit");
-        result.Item!.Image!.Type.Should().Be(ImageType.Snapshot);
-        result.Item!.Image!.Status.Should().Be(ImageStatus.Available);
-        result.Item!.Image!.ImageSize.Should().Be(2.3);
-        result.Item!.Image!.DiskSize.Should().Be(10);
-        result.Item!.Image!.Created.Should().Be(DateTime.Parse("2016-01-30T23:55:00+00:00"));
-        result.Item!.Image!.CreatedFrom.Should().NotBeNull();
-        result.Item!.Image!.CreatedFrom!.Id.Should().Be(1);
-        result.Item!.Image!.CreatedFrom!.Name.Should().Be("Server");
-        result.Item!.Image!.BoundTo.Should().BeNull();
-        result.Item!.Image!.OsFlavor.Should().Be(OsFlavor.Ubuntu);
-        result.Item!.Image!.OsVersion.Should().Be("20.04");
-        result.Item!.Image!.RapidDeploy.Should().BeFalse();
-        result.Item!.Image!.Protection.Should().NotBeNull();
-        result.Item!.Image!.Protection!.Delete.Should().BeFalse();
-        result.Item!.Image!.Deprecated.Should().Be(DateTime.Parse("2018-02-28T00:00:00+00:00"));
-        result.Item!.Image!.Labels.Should().NotBeNull();
-        result.Item!.Image!.Labels.Should().BeEmpty();
-        result.Item!.Image!.Architecture.Should().Be("x86");
+        result.Item.Image.Should().NotBeNull();
+        result.Item.Image!.Id.Should().Be(42);
+        result.Item.Image!.Name.Should().Be("ubuntu-20.04");
+        result.Item.Image!.Description.Should().Be("Ubuntu 20.04 Standard 64 bit");
+        result.Item.Image!.Type.Should().Be(ImageType.Snapshot);
+        result.Item.Image!.Status.Should().Be(ImageStatus.Available);
+        result.Item.Image!.ImageSize.Should().Be(2.3);
+        result.Item.Image!.DiskSize.Should().Be(10);
+        result.Item.Image!.Created.Should().Be(DateTime.Parse("2016-01-30T23:55:00+00:00"));
+        result.Item.Image!.CreatedFrom.Should().NotBeNull();
+        result.Item.Image!.CreatedFrom!.Id.Should().Be(1);
+        result.Item.Image!.CreatedFrom!.Name.Should().Be("Server");
+        result.Item.Image!.BoundTo.Should().BeNull();
+        result.Item.Image!.OsFlavor.Should().Be(OsFlavor.Ubuntu);
+        result.Item.Image!.OsVersion.Should().Be("20.04");
+        result.Item.Image!.RapidDeploy.Should().BeFalse();
+        result.Item.Image!.Protection.Should().NotBeNull();
+        result.Item.Image!.Protection!.Delete.Should().BeFalse();
+        result.Item.Image!.Deprecated.Should().Be(DateTime.Parse("2018-02-28T00:00:00+00:00"));
+        result.Item.Image!.Labels.Should().NotBeNull();
+        result.Item.Image!.Labels.Should().BeEmpty();
+        result.Item.Image!.Architecture.Should().Be("x86");
         
-        result.Item!.IsoImage.Should().NotBeNull();
-        result.Item!.IsoImage!.Architecture.Should().Be(IsoImageArchitecture.x86);
-        result.Item!.IsoImage!.Deprecated.Should().Be(DateTime.Parse("2018-02-28T00:00:00+00:00"));
-        result.Item!.IsoImage!.Deprecation.Should().NotBeNull();
-        result.Item!.IsoImage!.Deprecation!.Announced.Should().Be(DateTime.Parse("2023-06-01T00:00:00+00:00"));
-        result.Item!.IsoImage!.Deprecation!.UnavailableAfter.Should().Be(DateTime.Parse("2023-09-01T00:00:00+00:00"));
-        result.Item!.IsoImage!.Description.Should().Be("FreeBSD 11.0 x64");
-        result.Item!.IsoImage!.Id.Should().Be(42);
-        result.Item!.IsoImage!.Name.Should().Be("FreeBSD-11.0-RELEASE-amd64-dvd1");
-        result.Item!.IsoImage!.Type.Should().Be(IsoImageType.Public);
+        result.Item.IsoImage.Should().NotBeNull();
+        result.Item.IsoImage!.Architecture.Should().Be(IsoImageArchitecture.X86);
+        result.Item.IsoImage!.Deprecated.Should().Be(DateTime.Parse("2018-02-28T00:00:00+00:00"));
+        result.Item.IsoImage!.Deprecation.Should().NotBeNull();
+        result.Item.IsoImage!.Deprecation!.Announced.Should().Be(DateTime.Parse("2023-06-01T00:00:00+00:00"));
+        result.Item.IsoImage!.Deprecation!.UnavailableAfter.Should().Be(DateTime.Parse("2023-09-01T00:00:00+00:00"));
+        result.Item.IsoImage!.Description.Should().Be("FreeBSD 11.0 x64");
+        result.Item.IsoImage!.Id.Should().Be(42);
+        result.Item.IsoImage!.Name.Should().Be("FreeBSD-11.0-RELEASE-amd64-dvd1");
+        result.Item.IsoImage!.Type.Should().Be(IsoImageType.Public);
         
-        result.Item!.Labels.Should().NotBeNull();
-        result.Item!.Labels.Should().BeEmpty();
+        result.Item.Labels.Should().NotBeNull();
+        result.Item.Labels.Should().BeEmpty();
         
-        result.Item!.LoadBalancers.Should().NotBeNull();
-        result.Item!.LoadBalancers.Should().BeEmpty();
+        result.Item.LoadBalancers.Should().NotBeNull();
+        result.Item.LoadBalancers.Should().BeEmpty();
         
-        result.Item!.PlacementGroup.Should().NotBeNull();
-        result.Item!.PlacementGroup!.Id.Should().Be(42);
-        result.Item!.PlacementGroup!.Name.Should().Be("my-resource");
-        result.Item!.PlacementGroup!.Type.Should().Be("spread");
-        result.Item!.PlacementGroup!.ServerIds.Should().NotBeNull();
-        result.Item!.PlacementGroup!.ServerIds.Should().HaveCount(1);
-        result.Item!.PlacementGroup!.ServerIds.Should().Contain(42);
+        result.Item.PlacementGroup.Should().NotBeNull();
+        result.Item.PlacementGroup!.Id.Should().Be(42);
+        result.Item.PlacementGroup!.Name.Should().Be("my-resource");
+        result.Item.PlacementGroup!.Type.Should().Be("spread");
+        result.Item.PlacementGroup!.ServerIds.Should().NotBeNull();
+        result.Item.PlacementGroup!.ServerIds.Should().HaveCount(1);
+        result.Item.PlacementGroup!.ServerIds.Should().Contain(42);
         
-        result.Item!.PrivateNetworks.Should().NotBeNull();
-        result.Item!.PrivateNetworks.Should().HaveCount(1);
-        result.Item!.PrivateNetworks.First().AliasIps.Should().NotBeNull();
-        result.Item!.PrivateNetworks.First().AliasIps.Should().BeEmpty();
-        result.Item!.PrivateNetworks.First().Ip.Should().Be("10.0.0.2");
-        result.Item!.PrivateNetworks.First().MacAddress.Should().Be("86:00:ff:2a:7d:e1");
-        result.Item!.PrivateNetworks.First().Network.Should().Be(4711);
+        result.Item.PrivateNetworks.Should().NotBeNull();
+        result.Item.PrivateNetworks.Should().HaveCount(1);
+        result.Item.PrivateNetworks.First().AliasIps.Should().NotBeNull();
+        result.Item.PrivateNetworks.First().AliasIps.Should().BeEmpty();
+        result.Item.PrivateNetworks.First().Ip.Should().Be("10.0.0.2");
+        result.Item.PrivateNetworks.First().MacAddress.Should().Be("86:00:ff:2a:7d:e1");
+        result.Item.PrivateNetworks.First().Network.Should().Be(4711);
         
-        result.Item!.Protection.Should().NotBeNull();
-        result.Item!.Protection!.Delete.Should().BeFalse();
-        result.Item!.Protection!.Rebuild.Should().BeFalse();
+        result.Item.Protection.Should().NotBeNull();
+        result.Item.Protection!.Delete.Should().BeFalse();
+        result.Item.Protection!.Rebuild.Should().BeFalse();
         
-        result.Item!.PublicNetwork.Should().NotBeNull();
-        result.Item!.PublicNetwork!.Firewalls.Should().NotBeNull();
-        result.Item!.PublicNetwork!.Firewalls.Should().HaveCount(1);
-        result.Item!.PublicNetwork!.Firewalls.First().Id.Should().Be(42);
-        result.Item!.PublicNetwork!.Firewalls.First().Status.Should().Be(FirewallStatus.Applied);
-        result.Item!.PublicNetwork!.FloatingIps.Should().NotBeNull();
-        result.Item!.PublicNetwork!.FloatingIps.Should().HaveCount(1);
-        result.Item!.PublicNetwork!.FloatingIps.Should().Contain(478);
-        result.Item!.PublicNetwork!.Ipv4.Should().NotBeNull();
-        result.Item!.PublicNetwork!.Ipv4!.Id.Should().Be(42);
-        result.Item!.PublicNetwork!.Ipv4!.Ip.Should().Be("1.2.3.4");
-        result.Item!.PublicNetwork!.Ipv4!.Blocked.Should().BeFalse();
-        result.Item!.PublicNetwork!.Ipv4!.DnsPointer.Should().Be("server01.example.com");
-        result.Item!.PublicNetwork!.Ipv6.Should().NotBeNull();
-        result.Item!.PublicNetwork!.Ipv6!.Id.Should().Be(42);
-        result.Item!.PublicNetwork!.Ipv6!.Ip.Should().Be("2001:db8::/64");
-        result.Item!.PublicNetwork!.Ipv6!.Blocked.Should().BeFalse();
-        result.Item!.PublicNetwork!.Ipv6!.DnsPointer.Should().NotBeNull();
-        result.Item!.PublicNetwork!.Ipv6!.DnsPointer!.Should().HaveCount(1);
-        result.Item!.PublicNetwork!.Ipv6!.DnsPointer!.First().Ip.Should().Be("2001:db8::1");
-        result.Item!.PublicNetwork!.Ipv6!.DnsPointer!.First().DnsPointer.Should().Be("server.example.com");
+        result.Item.PublicNetwork.Should().NotBeNull();
+        result.Item.PublicNetwork.Firewalls.Should().NotBeNull();
+        result.Item.PublicNetwork.Firewalls.Should().HaveCount(1);
+        result.Item.PublicNetwork.Firewalls.First().Id.Should().Be(42);
+        result.Item.PublicNetwork.Firewalls.First().Status.Should().Be(FirewallStatus.Applied);
+        result.Item.PublicNetwork.FloatingIps.Should().NotBeNull();
+        result.Item.PublicNetwork.FloatingIps.Should().HaveCount(1);
+        result.Item.PublicNetwork.FloatingIps.Should().Contain(478);
+        result.Item.PublicNetwork.Ipv4.Should().NotBeNull();
+        result.Item.PublicNetwork.Ipv4!.Id.Should().Be(42);
+        result.Item.PublicNetwork.Ipv4!.Ip.Should().Be("1.2.3.4");
+        result.Item.PublicNetwork.Ipv4!.Blocked.Should().BeFalse();
+        result.Item.PublicNetwork.Ipv4!.DnsPointer.Should().Be("server01.example.com");
+        result.Item.PublicNetwork.Ipv6.Should().NotBeNull();
+        result.Item.PublicNetwork.Ipv6!.Id.Should().Be(42);
+        result.Item.PublicNetwork.Ipv6!.Ip.Should().Be("2001:db8::/64");
+        result.Item.PublicNetwork.Ipv6!.Blocked.Should().BeFalse();
+        result.Item.PublicNetwork.Ipv6!.DnsPointer.Should().NotBeNull();
+        result.Item.PublicNetwork.Ipv6!.DnsPointer.Should().HaveCount(1);
+        result.Item.PublicNetwork.Ipv6!.DnsPointer.First().Ip.Should().Be("2001:db8::1");
+        result.Item.PublicNetwork.Ipv6!.DnsPointer.First().DnsPointer.Should().Be("server.example.com");
         
-        result.Item!.Type.Should().NotBeNull();
-        result.Item!.Type!.Id.Should().Be(1);
-        result.Item!.Type!.Cores.Should().Be(1);
-        result.Item!.Type!.CpuType.Should().Be(ServerCpuTypes.Shared);
-        result.Item!.Type!.Deprecated.Should().BeFalse();
-        result.Item!.Type!.Description.Should().Be("CX11");
-        result.Item!.Type!.Disk.Should().Be(25);
-        result.Item!.Type!.Memory.Should().Be(1);
-        result.Item!.Type!.Name.Should().Be("cx11");
-        result.Item!.Type!.StorageType.Should().Be(ServerStorageTypes.Local);
-        result.Item!.Type!.Prices.Should().NotBeNull();
-        result.Item!.Type!.Prices!.Should().HaveCount(1);
-        result.Item!.Type!.Prices!.First().Location.Should().Be("fsn1");
-        result.Item!.Type!.Prices!.First().Hourly.Should().NotBeNull();
-        result.Item!.Type!.Prices!.First().Hourly!.Gross.Should().Be("1.1900000000000000");
-        result.Item!.Type!.Prices!.First().Hourly!.Net.Should().Be("1.0000000000");
-        result.Item!.Type!.Prices!.First().Monthly.Should().NotBeNull();
-        result.Item!.Type!.Prices!.First().Monthly!.Gross.Should().Be("1.1900000000000000");
-        result.Item!.Type!.Prices!.First().Monthly!.Net.Should().Be("1.0000000000");
+        result.Item.Type.Should().NotBeNull();
+        result.Item.Type.Id.Should().Be(1);
+        result.Item.Type.Cores.Should().Be(1);
+        result.Item.Type.CpuType.Should().Be(ServerCpuTypes.Shared);
+        result.Item.Type.Deprecated.Should().BeFalse();
+        result.Item.Type.Description.Should().Be("CX11");
+        result.Item.Type.Disk.Should().Be(25);
+        result.Item.Type.Memory.Should().Be(1);
+        result.Item.Type.Name.Should().Be("cx11");
+        result.Item.Type.StorageType.Should().Be(ServerStorageTypes.Local);
+        result.Item.Type.Prices.Should().NotBeNull();
+        result.Item.Type.Prices.Should().HaveCount(1);
+        result.Item.Type.Prices.First().Location.Should().Be("fsn1");
+        result.Item.Type.Prices.First().Hourly.Should().NotBeNull();
+        result.Item.Type.Prices.First().Hourly.Gross.Should().Be("1.1900000000000000");
+        result.Item.Type.Prices.First().Hourly.Net.Should().Be("1.0000000000");
+        result.Item.Type.Prices.First().Monthly.Should().NotBeNull();
+        result.Item.Type.Prices.First().Monthly.Gross.Should().Be("1.1900000000000000");
+        result.Item.Type.Prices.First().Monthly.Net.Should().Be("1.0000000000");
         
-        result.Item!.Volumes.Should().NotBeNull();
-        result.Item!.Volumes.Should().BeEmpty();
+        result.Item.Volumes.Should().NotBeNull();
+        result.Item.Volumes.Should().BeEmpty();
     }
 
     [TestMethod]
@@ -1124,7 +1124,7 @@ public class ServerServiceTests
         .Respond(HttpStatusCode.NotFound);
 
       // Act
-      Func<Task> act = async () => await _serverService.GetByIdAsync(41);
+      Func<Task> act = async () => await _instance.GetByIdAsync(41);
 
       // Assert
       await act.Should().ThrowAsync<ResourceNotFoundException>()
@@ -1139,7 +1139,7 @@ public class ServerServiceTests
         .Respond(HttpStatusCode.InternalServerError);
 
       // Act
-      Func<Task> act = async () => await _serverService.GetByIdAsync(41);
+      Func<Task> act = async () => await _instance.GetByIdAsync(41);
 
       // Assert
       await act.Should().ThrowAsync<ApiException>()

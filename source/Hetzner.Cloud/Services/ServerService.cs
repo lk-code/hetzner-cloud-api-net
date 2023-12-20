@@ -16,16 +16,13 @@ public class ServerService(IHttpClientFactory httpClientFactory) : IServerServic
     private readonly HttpClient _httpClient = httpClientFactory.CreateClient("HetznerCloudHttpClient");
 
     /// <inheritdoc/>
-    public async Task<PagedResponse<Server>> GetAllAsync(int page = 1,
-        int itemsPerPage = 25,
+    public async Task<PagedResponse<Server>> GetAllAsync(long page = 1,
+        long itemsPerPage = 25,
         List<IFilter>? filter = null,
         Sorting<ServerSorting>? sorting = null,
         CancellationToken cancellationToken = default)
     {
-        if (page <= 0)
-        {
-            throw new InvalidArgumentException($"invalid page number ({page}). must be greather than 0.");
-        }
+        page.IsValidPageRequest();
 
         string requestUri = "/v1/servers".AsUriBuilder()
             .AddPagination(page, itemsPerPage)
@@ -44,7 +41,7 @@ public class ServerService(IHttpClientFactory httpClientFactory) : IServerServic
             }
         }
 
-        string content = await response.Content.ReadAsStringAsync();
+        string content = await response.Content.ReadAsStringAsync(cancellationToken);
 
         PagedResponse<Server> result = content
             .AsPagedResponse()
@@ -73,7 +70,7 @@ public class ServerService(IHttpClientFactory httpClientFactory) : IServerServic
             }
         }
 
-        string content = await response.Content.ReadAsStringAsync();
+        string content = await response.Content.ReadAsStringAsync(cancellationToken);
 
         SingledResponse<Server> result = content
             .AsSingledResponse()

@@ -15,8 +15,8 @@ internal static class ServerTypesMappings
 
         ServerTypes data = new()
         {
-            Available = json.GetNullableProperty("available").ToLongArray()!,
-            AvailableForMigration = json.GetNullableProperty("available_for_migration").ToLongArray()!,
+            Available = json.GetNullableProperty("available").ToLongArray(),
+            AvailableForMigration = json.GetNullableProperty("available_for_migration").ToLongArray(),
             Supported = json.GetNullableProperty("supported").ToLongArray(),
         };
 

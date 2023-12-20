@@ -44,7 +44,7 @@ internal static class JsonHelper
 
         foreach (JsonElement property in jsonElement.Value.EnumerateArray())
         {
-            list.Add(property.GetString());
+            list.Add(property.GetString()!);
         }
 
         return list.ToArray();
