@@ -119,6 +119,20 @@ public class ServerActionsServiceTests
     }
 
     [TestMethod]
+    public async Task GetAllAsync_WithUnauthorizedException_Throws()
+    {
+        // Arrange
+        _mockHttp.When("https://localhost/v1/servers/actions")
+            .Respond(HttpStatusCode.Unauthorized);
+
+        // Act
+        Func<Task> act = async () => await _instance.GetAllAsync();
+
+        // Assert
+        await act.Should().ThrowAsync<UnauthorizedException>();
+    }
+
+    [TestMethod]
     public async Task GetAllAsync_WithInvalidPage_Throws()
     {
         // Arrange

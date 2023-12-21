@@ -764,16 +764,30 @@ public class ServerServiceTests
     [TestMethod]
     public async Task GetAllAsync_WithServerErrorException_Throws()
     {
-        // Arrange
-        _mockHttp.When("https://localhost/v1/servers")
-            .Respond(HttpStatusCode.InternalServerError);
+      // Arrange
+      _mockHttp.When("https://localhost/v1/servers")
+        .Respond(HttpStatusCode.InternalServerError);
 
-        // Act
-        Func<Task> act = async () => await _instance.GetAllAsync();
+      // Act
+      Func<Task> act = async () => await _instance.GetAllAsync();
 
-        // Assert
-        await act.Should().ThrowAsync<ApiException>()
-            .WithMessage("Invalid Request");
+      // Assert
+      await act.Should().ThrowAsync<ApiException>()
+        .WithMessage("Invalid Request");
+    }
+
+    [TestMethod]
+    public async Task GetAllAsync_WithUnauthorizedException_Throws()
+    {
+      // Arrange
+      _mockHttp.When("https://localhost/v1/servers")
+        .Respond(HttpStatusCode.Unauthorized);
+
+      // Act
+      Func<Task> act = async () => await _instance.GetAllAsync();
+
+      // Assert
+      await act.Should().ThrowAsync<UnauthorizedException>();
     }
 
     [TestMethod]
