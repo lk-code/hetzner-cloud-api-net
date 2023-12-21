@@ -22,7 +22,23 @@ public class ServerService(IHttpClientFactory httpClientFactory) : IServerServic
         Sorting<ServerSorting>? sorting = null,
         CancellationToken cancellationToken = default)
     {
-        page.IsValidPageRequest();
+        try
+        {
+            page.MustBeGreatherThanZero();
+        }
+        catch (InvalidArgumentException err)
+        {
+            throw new InvalidArgumentException($"invalid page number ({page}).", err);
+        }
+
+        try
+        {
+            itemsPerPage.MustBeGreatherThanZero();
+        }
+        catch (InvalidArgumentException err)
+        {
+            throw new InvalidArgumentException($"invalid items per page ({itemsPerPage}).", err);
+        }
 
         string requestUri = "/v1/servers".AsUriBuilder()
             .AddPagination(page, itemsPerPage)

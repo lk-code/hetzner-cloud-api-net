@@ -4,11 +4,11 @@ namespace Hetzner.Cloud.Pagination;
 
 public static class PaginationExtensions
 {
-    public static void IsValidPageRequest(this long page)
+    public static void MustBeGreatherThanZero(this long val)
     {
-        if (page <= 0)
+        if (val <= 0)
         {
-            throw new InvalidArgumentException($"invalid page number ({page}). must be greather than 0.");
+            throw new InvalidArgumentException($"invalid number ({val}). must be greather than 0.");
         }
     }
 }

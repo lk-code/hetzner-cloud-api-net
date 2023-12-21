@@ -131,6 +131,6 @@ public class ServerActionsServiceTests
 
         // Assert
         await act.Should().ThrowAsync<InvalidArgumentException>()
-            .WithMessage("invalid page number (0). must be greather than 0.");
+            .WithMessage("invalid page number (0).");
     }
 }

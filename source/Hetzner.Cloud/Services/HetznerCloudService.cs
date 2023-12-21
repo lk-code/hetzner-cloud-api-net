@@ -35,11 +35,7 @@ public class HetznerCloudService : IHetznerCloudService
 
         if (this._httpClient is not null)
         {
-            this._httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this._apiToken);
-            if (!string.IsNullOrEmpty(this._clientUserAgent))
-            {
-                this._httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(this._clientUserAgent));
-            }
+            AddHeadersToHttpClient(this._httpClient);
         }
     }
 
@@ -49,12 +45,17 @@ public class HetznerCloudService : IHetznerCloudService
         this._httpClient = httpClient;
 
         this._httpClient.BaseAddress = new Uri(API_SERVER);
-
-        // httpClient.DefaultRequestHeaders.Add("User-Agent", this._clientUserAgent);
-        this._httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this._apiToken);
+        
+        AddHeadersToHttpClient(this._httpClient);
+    }
+    
+    private void AddHeadersToHttpClient(HttpClient httpClient)
+    {
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this._apiToken);
+        
         if (!string.IsNullOrEmpty(this._clientUserAgent))
         {
-            this._httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(this._clientUserAgent));
+            httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(this._clientUserAgent));
         }
     }
 }

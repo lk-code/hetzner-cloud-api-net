@@ -1,4 +1,3 @@
-using Hetzner.Cloud.Exceptions;
 using Hetzner.Cloud.Interfaces;
 using Hetzner.Cloud.Sorting;
 
@@ -10,22 +9,12 @@ public static class UriBuilderExtensions
     {
         return new UriBuilder(address);
     }
-    
+
     public static UriBuilder AddPagination(this UriBuilder uriBuilder, long currentPage, long itemsPerPage)
     {
-        if (currentPage <= 0)
-        {
-            throw new InvalidArgumentException($"invalid page number ({currentPage}). must be greather than 0.");
-        }
-        
-        if (itemsPerPage <= 0)
-        {
-            throw new InvalidArgumentException($"invalid page number ({itemsPerPage}). must be greather than 0.");
-        }
-        
         uriBuilder.AddUriParameter("page", currentPage.ToString());
         uriBuilder.AddUriParameter("per_page", itemsPerPage.ToString());
-        
+
         return uriBuilder;
     }
 
@@ -35,27 +24,23 @@ public static class UriBuilderExtensions
         {
             uriBuilder.AddUriParameter("sort", sorting.AsUriParameter());
         }
-        
+
         return uriBuilder;
     }
 
     public static UriBuilder AddFilter(this UriBuilder uriBuilder, IEnumerable<IFilter>? filters)
     {
-        if (filters is not null && filters.Any())
+        if (filters is null)
         {
-            foreach (var filter in filters)
-            {
-                uriBuilder.AddFilter(filter);
-            }
+            return uriBuilder;
         }
-        
-        return uriBuilder;
-    }
 
-    public static UriBuilder AddFilter(this UriBuilder uriBuilder, IFilter? filter)
-    {
-        uriBuilder.AddUriParameter(filter.GetFilterField(), filter.GetValue());
-        
+        IEnumerable<IFilter> enumerable = filters as IFilter[] ?? filters.ToArray();
+        foreach (var filter in enumerable)
+        {
+            uriBuilder.AddUriParameter(filter.GetFilterField(), filter.GetValue());
+        }
+
         return uriBuilder;
     }
 }
