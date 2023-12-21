@@ -3,12 +3,12 @@ namespace Hetzner.Cloud.Models;
 public class ServerActionResource(long id, string type)
 {
     /// <summary>
-    /// ID of the Action. Limited to 52 bits to ensure compatability with JSON double precision floats.
+    /// ID of the Resource
     /// </summary>
     public long Id { get; } = id;
 
     /// <summary>
-    /// Command executed in the Action
+    /// Type of resource referenced
     /// </summary>
     public string Type { get; } = type;
 }

@@ -196,7 +196,7 @@
 
     <div class="col-md-12">
 
-        <h1>Servers</h1>
+        <h1>Server-Actions</h1>
 
         <table class="table">
 
@@ -206,6 +206,8 @@
                 <th scope="col">Command</th>
                 <th scope="col">Progress</th>
                 <th scope="col">Started</th>
+                <th scope="col">Finished</th>
+                <th scope="col">Status</th>
             </tr>
             </thead>
 
@@ -225,8 +227,25 @@
                     <tr>
                         <th scope="row">@serverAction.Id</th>
                         <td>@serverAction.Command</td>
-                        <td>@serverAction.Progress</td>
+                        <td>@serverAction.Progress %</td>
                         <td>@serverAction.Started.ToShortDateString() @serverAction.Started.ToShortTimeString()</td>
+                        @if (serverAction.Finished is not null)
+                        {
+                            <td>@serverAction.Finished.Value.ToShortDateString() @serverAction.Finished.Value.ToShortTimeString()</td>
+                        }
+                        else
+                        {
+                            <td>-</td>
+                        }
+                        <td>@serverAction.Status</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            @foreach (var resource in serverAction.Resources)
+                            {
+                                <span class="badge bg-primary me-2">Id: @resource.Id / Type: @resource.Type</span>
+                            }
+                        </td>
                     </tr>
                 }
             }
