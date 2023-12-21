@@ -4,21 +4,32 @@ namespace Hetzner.Cloud.UriBuilder;
 
 public class UriBuilder(string address)
 {
-    private string _address = address;
-    private Dictionary<string, string> _arguments = new();
+    private readonly Dictionary<string, string> _arguments = new();
     
     public UriBuilder AddUriParameter(string key, string value)
     {
-        this._arguments.Add(key, value);
+        _arguments.Add(key, value);
 
         return this;
     }
 
     public string ToUri()
     {
-        StringBuilder builder = new(this._address);
+        if (string.IsNullOrEmpty(address))
+        {
+            throw new ArgumentException("Value cannot be null or empty.", nameof(address));
+        }
         
-        if (this._arguments.Any())
+        StringBuilder builder = new();
+
+        if (!address.StartsWith("/"))
+        {
+            address = $"/{address}";
+        }
+        
+        builder.Append(address);
+        
+        if (_arguments.Any())
         {
             builder.Append("?");
             

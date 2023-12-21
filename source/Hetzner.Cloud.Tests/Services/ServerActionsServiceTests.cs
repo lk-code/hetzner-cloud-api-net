@@ -1,7 +1,6 @@
 using System.Net;
 using FluentAssertions;
 using Hetzner.Cloud.Exceptions;
-using Hetzner.Cloud.Exceptions.Http;
 using Hetzner.Cloud.Interfaces;
 using Hetzner.Cloud.Models;
 using Hetzner.Cloud.Services;
@@ -120,6 +119,20 @@ public class ServerActionsServiceTests
     }
 
     [TestMethod]
+    public async Task GetAllAsync_WithUnauthorizedException_Throws()
+    {
+        // Arrange
+        _mockHttp.When("https://localhost/v1/servers/actions")
+            .Respond(HttpStatusCode.Unauthorized);
+
+        // Act
+        Func<Task> act = async () => await _instance.GetAllAsync();
+
+        // Assert
+        await act.Should().ThrowAsync<UnauthorizedException>();
+    }
+
+    [TestMethod]
     public async Task GetAllAsync_WithInvalidPage_Throws()
     {
         // Arrange
@@ -131,6 +144,21 @@ public class ServerActionsServiceTests
 
         // Assert
         await act.Should().ThrowAsync<InvalidArgumentException>()
-            .WithMessage("invalid page number (0). must be greather than 0.");
+            .WithMessage("invalid page number (0).");
+    }
+
+    [TestMethod]
+    public async Task GetAllAsync_WithInvalidItemsPerPage_Throws()
+    {
+        // Arrange
+        _mockHttp.When("https://localhost/v1/servers/actions")
+            .Respond(HttpStatusCode.InternalServerError);
+
+        // Act
+        Func<Task> act = async () => await _instance.GetAllAsync(1, 0);
+
+        // Assert
+        await act.Should().ThrowAsync<InvalidArgumentException>()
+            .WithMessage("invalid items per page (0).");
     }
 }
