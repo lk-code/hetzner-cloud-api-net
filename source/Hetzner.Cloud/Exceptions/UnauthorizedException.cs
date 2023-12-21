@@ -1,14 +1,14 @@
-﻿namespace Hetzner.Cloud.Exceptions;
+namespace Hetzner.Cloud.Exceptions;
 
-public class ResourceNotFoundException : ApiException
+public class UnauthorizedException : ApiException
 {
-    public ResourceNotFoundException(string message,
+    public UnauthorizedException(string message,
         HttpResponseMessage response)
         : base(response, message)
     {
     }
 
-    public ResourceNotFoundException(string message,
+    public UnauthorizedException(string message,
         HttpResponseMessage response,
         Exception inner)
         : base(response, message, inner)

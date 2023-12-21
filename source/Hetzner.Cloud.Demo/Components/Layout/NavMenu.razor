@@ -7,7 +7,9 @@
 <input type="checkbox" title="Navigation menu" class="navbar-toggler"/>
 
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+    
     <nav class="flex-column">
+
         <div class="nav-item px-3">
             <NavLink class="nav-link ps-3 fs-4" href="" Match="NavLinkMatch.All">
                 <i class="bi bi-house-door-fill"></i> Home
@@ -19,5 +21,13 @@
                 <i class="bi bi-hdd-rack-fill"></i> Servers
             </NavLink>
         </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link ps-3 fs-4" href="servers/actions">
+                <i class="bi bi-hdd-rack-fill"></i> Server-Actions
+            </NavLink>
+        </div>
+
     </nav>
+
 </div>

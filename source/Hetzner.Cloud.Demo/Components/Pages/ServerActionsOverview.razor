@@ -1,4 +1,4 @@
-@page "/servers"
+@page "/servers/actions"
 @rendermode InteractiveServer
 
 @attribute [StreamRendering]
@@ -9,22 +9,21 @@
 @using Hetzner.Cloud.Filter
 @using Hetzner.Cloud.Sorting
 
-@inject IServerService ServerService
+@inject IServerActionsService ServerActionsService
 
-<PageTitle>Servers</PageTitle>
+<PageTitle>Servers-Actions</PageTitle>
 
 @code {
     private bool _loading = false;
-    private List<Server> _servers { get; set; } = new();
+    private List<ServerAction> _serverActions { get; set; } = new();
     private string _error = string.Empty;
     private string _errorDetails = string.Empty;
     private List<IFilter> _filters = new();
     private int _page = 1;
     private int _itemsPerPage = 10;
-    private string _nameFilter = string.Empty;
-    private string _labelFilter = string.Empty;
-    private ServerStatus? _statusFilter = null;
-    private Sorting<ServerSorting>? _sorting = null;
+    private long? _idFilter = null;
+    private ServerActionStatus? _statusFilter = null;
+    private Sorting<ServerActionSorting>? _sorting = null;
 
     protected override async Task OnInitializedAsync()
     {
@@ -33,7 +32,7 @@
 
     private async Task LoadAsync()
     {
-        _servers.Clear();
+        _serverActions.Clear();
         _error = string.Empty;
         _errorDetails = string.Empty;
 
@@ -41,14 +40,14 @@
         {
             _loading = true;
 
-            PagedResponse<Server> items = await ServerService.GetAllAsync(_page,
+            PagedResponse<ServerAction> items = await ServerActionsService.GetAllAsync(_page,
                 _itemsPerPage,
                 _filters,
                 _sorting);
 
             foreach (var item in items.Items)
             {
-                this._servers.Add(item);
+                this._serverActions.Add(item);
             }
         }
         catch (Exception ex)
@@ -66,19 +65,14 @@
     {
         _filters.Clear();
 
-        if (!string.IsNullOrEmpty(_nameFilter))
+        if (_idFilter is not null)
         {
-            _filters.Add(new NameFilter(_nameFilter));
-        }
-
-        if (!string.IsNullOrEmpty(_labelFilter))
-        {
-            _filters.Add(new LabelFilter(_labelFilter));
+            _filters.Add(new IdFilter(_idFilter.Value));
         }
 
         if (_statusFilter is not null)
         {
-            _filters.Add(new StatusFilter<ServerStatus>(_statusFilter.Value));
+            _filters.Add(new StatusFilter<ServerActionStatus>(_statusFilter.Value));
         }
 
         await LoadAsync();
@@ -86,20 +80,19 @@
 
     public async Task OnClearFilter()
     {
-        _nameFilter = string.Empty;
-        _labelFilter = string.Empty;
+        _idFilter = null;
         _statusFilter = null;
 
         await OnSearch();
     }
 
-    public async Task OnSelectStatus(ServerStatus status)
+    public async Task OnSelectStatus(ServerActionStatus status)
     {
         _statusFilter = status;
         await OnSearch();
     }
 
-    public async Task OnSelectSorting(Sorting<ServerSorting> sorting)
+    public async Task OnSelectSorting(Sorting<ServerActionSorting> sorting)
     {
         _sorting = sorting;
         await OnSearch();
@@ -131,42 +124,30 @@
     <div class="col-md-12">
 
         <div class="mb-3">
-            <label for="ServerOverviewSearchNameField"
+            <label for="ServerActionOverviewSearchIdField"
                    class="form-label">
-                Server Name
+                Server Action Id
             </label>
-            <input type="search"
+            <input type="number"
                    class="form-control"
-                   id="ServerOverviewSearchNameField"
-                   placeholder="search by server name"
-                   @bind="_nameFilter">
-        </div>
-
-        <div class="mb-3">
-            <label for="ServerOverviewSearchLabelField"
-                   class="form-label">
-                Server Label
-            </label>
-            <input type="search"
-                   class="form-control"
-                   id="ServerOverviewSearchLabelField"
-                   placeholder="search by server label"
-                   @bind="_labelFilter">
+                   id="ServerActionOverviewSearchIdField"
+                   placeholder="filter by server action id"
+                   @bind="_idFilter">
         </div>
 
         <div class="mb-3">
             <div class="dropdown">
                 <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Server Status
+                    Server Action Status
                     @if (_statusFilter is not null)
                     {
                         <span>: @_statusFilter</span>
                     }
                 </button>
                 <ul class="dropdown-menu">
-                    @foreach(var status in Enum.GetValues(typeof(ServerStatus)))
+                    @foreach(var status in Enum.GetValues(typeof(ServerActionStatus)))
                     {
-                        <li><a class="dropdown-item" @onclick="(() => OnSelectStatus((ServerStatus)status))">@status</a></li>
+                        <li><a class="dropdown-item" @onclick="(() => OnSelectStatus((ServerActionStatus)status))">@status</a></li>
                     }
                 </ul>
             </div>
@@ -182,11 +163,11 @@
                     }
                 </button>
                 <ul class="dropdown-menu">
-                    @foreach(var sorting in Enum.GetValues(typeof(ServerSorting)))
+                    @foreach(var sorting in Enum.GetValues(typeof(ServerActionSorting)))
                     {
-                        @foreach(var direction in Enum.GetValues(typeof(SortingDirection)))
+                        @foreach(var direction in Enum.GetValues(typeof(ServerActionSorting)))
                         {
-                            <li><a class="dropdown-item" @onclick="(() => OnSelectSorting(new((ServerSorting)sorting, (SortingDirection)direction)))">@sorting @direction</a></li>
+                            <li><a class="dropdown-item" @onclick="(() => OnSelectSorting(new((ServerActionSorting)sorting, (SortingDirection)direction)))">@sorting @direction</a></li>
                         }
                     }
                 </ul>
@@ -222,11 +203,9 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Status</th>
-                <th scope="col">Created</th>
-                <th scope="col">Locked</th>
-                <th scope="col">Actions</th>
+                <th scope="col">Command</th>
+                <th scope="col">Progress</th>
+                <th scope="col">Started</th>
             </tr>
             </thead>
 
@@ -234,48 +213,20 @@
 
             @if (!_loading)
             {
-                @if (!_servers.Any())
+                @if (!_serverActions.Any())
                 {
                     <tr>
-                        <th scope="row" colspan="6">no servers found</th>
+                        <th scope="row" colspan="6">no server-actions found</th>
                     </tr>
                 }
 
-                @foreach (var server in _servers)
+                @foreach (var serverAction in _serverActions)
                 {
                     <tr>
-                        <th scope="row">@server.Id</th>
-                        <td>@server.Name</td>
-                        <td>@server.Status</td>
-                        <td>@server.Created.ToShortDateString() @server.Created.ToShortTimeString()</td>
-                        <td>
-                            @if (@server.Locked)
-                            {
-                                <button type="button" disabled class="btn btn-sm btn-secondary">
-                                    <i class="bi bi-lock"></i>
-                                </button>
-                            }
-                            else
-                            {
-                                <button type="button" disabled class="btn btn-sm btn-secondary">
-                                    <i class="bi bi-unlock"></i>
-                                </button>
-                            }
-                        </td>
-                        <td>
-
-                            <div class="btn-group" role="group" aria-label="Server Actions">
-                                <a class="btn btn-sm btn-primary" href="servers/@server.Id">Open</a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="6">
-                            @foreach (var label in server.Labels)
-                            {
-                                <span class="badge bg-primary me-2">@label.Key / @label.Value</span>
-                            }
-                        </td>
+                        <th scope="row">@serverAction.Id</th>
+                        <td>@serverAction.Command</td>
+                        <td>@serverAction.Progress</td>
+                        <td>@serverAction.Started.ToShortDateString() @serverAction.Started.ToShortTimeString()</td>
                     </tr>
                 }
             }

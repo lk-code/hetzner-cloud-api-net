@@ -1,7 +1,6 @@
 using System.Net;
 using FluentAssertions;
 using Hetzner.Cloud.Exceptions;
-using Hetzner.Cloud.Exceptions.Http;
 using Hetzner.Cloud.Interfaces;
 using Hetzner.Cloud.Models;
 using Hetzner.Cloud.Services;

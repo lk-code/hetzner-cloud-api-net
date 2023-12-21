@@ -1,5 +1,5 @@
 using Hetzner.Cloud.Exceptions;
-using Hetzner.Cloud.Exceptions.Http;
+using Hetzner.Cloud.Extensions;
 using Hetzner.Cloud.Helper;
 using Hetzner.Cloud.Interfaces;
 using Hetzner.Cloud.Mapping;
@@ -46,15 +46,7 @@ public class ServerActionsService(IHttpClientFactory httpClientFactory) : IServe
             .ToUri();
 
         HttpResponseMessage response = await this._httpClient.GetAsync(requestUri, cancellationToken);
-
-        if (!response.IsSuccessStatusCode)
-        {
-            switch (response.StatusCode)
-            {
-                default:
-                    throw new ApiException(response.StatusCode, $"Invalid Request");
-            }
-        }
+        response.ThrowIfNotSuccess();
 
         string content = await response.Content.ReadAsStringAsync(cancellationToken);
 

@@ -3,9 +3,9 @@ using Hetzner.Cloud.Models;
 
 namespace Hetzner.Cloud.Filter;
 
-public class StatusFilter(ServerStatus status) : IFilter
+public class StatusFilter<T>(T status) : IFilter
 {
-    public ServerStatus Status { get; } = status;
+    private T Status { get; } = status;
 
     public string GetFilterField()
     {
@@ -14,6 +14,6 @@ public class StatusFilter(ServerStatus status) : IFilter
 
     public string GetValue()
     {
-        return this.Status.ToString().ToLowerInvariant();
+        return this.Status!.ToString()!.ToLowerInvariant();
     }
 }
