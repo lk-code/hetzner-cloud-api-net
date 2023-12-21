@@ -779,16 +779,31 @@ public class ServerServiceTests
     [TestMethod]
     public async Task GetAllAsync_WithInvalidPage_Throws()
     {
-        // Arrange
-        _mockHttp.When("https://localhost/v1/servers")
-            .Respond(HttpStatusCode.InternalServerError);
+      // Arrange
+      _mockHttp.When("https://localhost/v1/servers")
+        .Respond(HttpStatusCode.InternalServerError);
 
-        // Act
-        Func<Task> act = async () => await _instance.GetAllAsync(0);
+      // Act
+      Func<Task> act = async () => await _instance.GetAllAsync(0);
 
-        // Assert
-        await act.Should().ThrowAsync<InvalidArgumentException>()
-            .WithMessage("invalid page number (0).");
+      // Assert
+      await act.Should().ThrowAsync<InvalidArgumentException>()
+        .WithMessage("invalid page number (0).");
+    }
+
+    [TestMethod]
+    public async Task GetAllAsync_WithInvalidItemsPerPage_Throws()
+    {
+      // Arrange
+      _mockHttp.When("https://localhost/v1/servers")
+        .Respond(HttpStatusCode.InternalServerError);
+
+      // Act
+      Func<Task> act = async () => await _instance.GetAllAsync(1, 0);
+
+      // Assert
+      await act.Should().ThrowAsync<InvalidArgumentException>()
+        .WithMessage("invalid items per page (0).");
     }
 
     [TestMethod]

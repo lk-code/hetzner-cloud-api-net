@@ -132,4 +132,19 @@ public class ServerActionsServiceTests
         await act.Should().ThrowAsync<InvalidArgumentException>()
             .WithMessage("invalid page number (0).");
     }
+
+    [TestMethod]
+    public async Task GetAllAsync_WithInvalidItemsPerPage_Throws()
+    {
+        // Arrange
+        _mockHttp.When("https://localhost/v1/servers/actions")
+            .Respond(HttpStatusCode.InternalServerError);
+
+        // Act
+        Func<Task> act = async () => await _instance.GetAllAsync(1, 0);
+
+        // Assert
+        await act.Should().ThrowAsync<InvalidArgumentException>()
+            .WithMessage("invalid items per page (0).");
+    }
 }
